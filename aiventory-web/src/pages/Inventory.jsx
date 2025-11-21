@@ -141,23 +141,46 @@ export default function Inventory() {
       
       console.log('📥 Raw response from API:', res.data);
       
-      const formatted = res.data.map(p => ({
-        id: p.product_id || p.Product_id || null,
-        name: p.product_name || p.Product_name || '',
-        sku: p.product_sku || p.Product_sku || '',
-        category: p.product_category || p.Product_category || '',
-        stock: p.product_stock !== undefined ? p.product_stock : (p.Product_stock !== undefined ? p.Product_stock : 0),
-        threshold: p.reorder_level !== undefined ? p.reorder_level : 0,
-        price: p.product_price !== undefined ? p.product_price : (p.Product_price !== undefined ? p.Product_price : 0),
-        status: getProductStatus(
-          p.product_stock !== undefined ? p.product_stock : (p.Product_stock !== undefined ? p.Product_stock : 0), 
-          p.reorder_level !== undefined ? p.reorder_level : 0
-        ),
-        productStatus: p.product_status || p.Product_status || 'Active',
-        created_at: p.created_at || null,
-        updated_at: p.updated_at || null
-      }));
-
+      // Enhanced data mapping to handle various field name conventions
+      const formatted = res.data.map(p => {
+        // Handle potential undefined or null product objects
+        if (!p) return {};
+        
+        // Extract all possible field names for each property
+        const id = p.product_id || p.Product_id || p.id || null;
+        const name = p.product_name || p.Product_name || p.name || '';
+        const sku = p.product_sku || p.Product_sku || p.sku || '';
+        const category = p.product_category || p.Product_category || p.category || '';
+        const stock = p.product_stock !== undefined ? p.product_stock : 
+                     (p.Product_stock !== undefined ? p.Product_stock : 
+                     (p.stock !== undefined ? p.stock : 0));
+        const threshold = p.reorder_level !== undefined ? p.reorder_level : 
+                         (p.threshold !== undefined ? p.threshold : 0);
+        const price = p.product_price !== undefined ? p.product_price : 
+                     (p.Product_price !== undefined ? p.Product_price : 
+                     (p.price !== undefined ? p.price : 0));
+        const productStatus = p.product_status || p.Product_status || p.status || 'Active';
+        const created_at = p.created_at || null;
+        const updated_at = p.updated_at || null;
+        
+        // Calculate status based on stock levels
+        const status = getProductStatus(stock, threshold);
+        
+        return {
+          id,
+          name,
+          sku,
+          category,
+          stock,
+          threshold,
+          price,
+          status,
+          productStatus,
+          created_at,
+          updated_at
+        };
+      });
+      
       console.log('📦 Formatted products:', formatted);
       
       setInventory(formatted);
@@ -356,7 +379,6 @@ export default function Inventory() {
       Product_category: form.category,
       reorder_level: Number(form.threshold),
       supplier_id: 1, // Set default supplier_id to avoid null constraint
-      Product_stock: Number(form.stock),
       Product_status: 'Active' // Set default status
     };
 
@@ -365,17 +387,45 @@ export default function Inventory() {
         const id = inventory[editIndex].id;
         await axios.put(`${API_BASE}/api/products/${id}`, newItem);
         const res = await axios.get(`${API_BASE}/api/products`);
-        setInventory(res.data.map(p => ({
-          id: p.product_id || p.Product_id || null,
-          name: p.product_name || p.Product_name || '',
-          sku: p.product_sku || p.Product_sku || '',
-          category: p.product_category || p.Product_category || '',
-          stock: p.product_stock !== undefined ? p.product_stock : (p.Product_stock !== undefined ? p.Product_stock : 0),
-          threshold: p.reorder_level !== undefined ? p.reorder_level : 0,
-          price: p.product_price !== undefined ? p.product_price : (p.Product_price !== undefined ? p.Product_price : 0),
-          status: p.product_status || p.Product_status || 'Active',
-          productStatus: p.product_status || p.Product_status || 'Active'
-        })));
+        
+        // Use the same enhanced data mapping for consistency
+        const formatted = res.data.map(p => {
+          if (!p) return {};
+          
+          const id = p.product_id || p.Product_id || p.id || null;
+          const name = p.product_name || p.Product_name || p.name || '';
+          const sku = p.product_sku || p.Product_sku || p.sku || '';
+          const category = p.product_category || p.Product_category || p.category || '';
+          const stock = p.product_stock !== undefined ? p.product_stock : 
+                       (p.Product_stock !== undefined ? p.Product_stock : 
+                       (p.stock !== undefined ? p.stock : 0));
+          const threshold = p.reorder_level !== undefined ? p.reorder_level : 
+                           (p.threshold !== undefined ? p.threshold : 0);
+          const price = p.product_price !== undefined ? p.product_price : 
+                       (p.Product_price !== undefined ? p.Product_price : 
+                       (p.price !== undefined ? p.price : 0));
+          const productStatus = p.product_status || p.Product_status || p.status || 'Active';
+          const created_at = p.created_at || null;
+          const updated_at = p.updated_at || null;
+          
+          const status = getProductStatus(stock, threshold);
+          
+          return {
+            id,
+            name,
+            sku,
+            category,
+            stock,
+            threshold,
+            price,
+            status,
+            productStatus,
+            created_at,
+            updated_at
+          };
+        });
+        
+        setInventory(formatted);
         setSnackbarMsg("Item updated successfully!");
       } else {
         const res = await axios.post(`${API_BASE}/api/products`, newItem);
@@ -406,17 +456,45 @@ export default function Inventory() {
       try {
         await axios.delete(`${API_BASE}/api/products/${id}`);
         const res = await axios.get(`${API_BASE}/api/products`);
-        setInventory(res.data.map(p => ({
-          id: p.product_id || p.Product_id || null,
-          name: p.product_name || p.Product_name || '',
-          sku: p.product_sku || p.Product_sku || '',
-          category: p.product_category || p.Product_category || '',
-          stock: p.product_stock !== undefined ? p.product_stock : (p.Product_stock !== undefined ? p.Product_stock : 0),
-          threshold: p.reorder_level !== undefined ? p.reorder_level : 0,
-          price: p.product_price !== undefined ? p.product_price : (p.Product_price !== undefined ? p.Product_price : 0),
-          status: p.product_status || p.Product_status || 'Active',
-          productStatus: p.product_status || p.Product_status || 'Active'
-        })));
+        
+        // Use the same enhanced data mapping for consistency
+        const formatted = res.data.map(p => {
+          if (!p) return {};
+          
+          const id = p.product_id || p.Product_id || p.id || null;
+          const name = p.product_name || p.Product_name || p.name || '';
+          const sku = p.product_sku || p.Product_sku || p.sku || '';
+          const category = p.product_category || p.Product_category || p.category || '';
+          const stock = p.product_stock !== undefined ? p.product_stock : 
+                       (p.Product_stock !== undefined ? p.Product_stock : 
+                       (p.stock !== undefined ? p.stock : 0));
+          const threshold = p.reorder_level !== undefined ? p.reorder_level : 
+                           (p.threshold !== undefined ? p.threshold : 0);
+          const price = p.product_price !== undefined ? p.product_price : 
+                       (p.Product_price !== undefined ? p.Product_price : 
+                       (p.price !== undefined ? p.price : 0));
+          const productStatus = p.product_status || p.Product_status || p.status || 'Active';
+          const created_at = p.created_at || null;
+          const updated_at = p.updated_at || null;
+          
+          const status = getProductStatus(stock, threshold);
+          
+          return {
+            id,
+            name,
+            sku,
+            category,
+            stock,
+            threshold,
+            price,
+            status,
+            productStatus,
+            created_at,
+            updated_at
+          };
+        });
+        
+        setInventory(formatted);
         setSnackbarMsg("Item deleted successfully!");
       } catch (err) {
         console.error(err);
@@ -482,22 +560,50 @@ export default function Inventory() {
       console.log("API Response:", response);
 
       if (response.status === 200) {
-        // Update in local state
-        const updatedInventory = inventory.map(item => 
-          item.id === selectedItem.id ? {
-            ...item,
-            stock: newStock,
-            status: getProductStatus(newStock, Number(item.threshold))
-          } : item
-        );
-        setInventory(updatedInventory);
-
+        // Refresh the data to get the updated information
+        const res = await axios.get(`${API_BASE}/api/products`);
+        
+        // Use the same enhanced data mapping for consistency
+        const formatted = res.data.map(p => {
+          if (!p) return {};
+          
+          const id = p.product_id || p.Product_id || p.id || null;
+          const name = p.product_name || p.Product_name || p.name || '';
+          const sku = p.product_sku || p.Product_sku || p.sku || '';
+          const category = p.product_category || p.Product_category || p.category || '';
+          const stock = p.product_stock !== undefined ? p.product_stock : 
+                       (p.Product_stock !== undefined ? p.Product_stock : 
+                       (p.stock !== undefined ? p.stock : 0));
+          const threshold = p.reorder_level !== undefined ? p.reorder_level : 
+                           (p.threshold !== undefined ? p.threshold : 0);
+          const price = p.product_price !== undefined ? p.product_price : 
+                       (p.Product_price !== undefined ? p.Product_price : 
+                       (p.price !== undefined ? p.price : 0));
+          const productStatus = p.product_status || p.Product_status || p.status || 'Active';
+          const created_at = p.created_at || null;
+          const updated_at = p.updated_at || null;
+          
+          const status = getProductStatus(stock, threshold);
+          
+          return {
+            id,
+            name,
+            sku,
+            category,
+            stock,
+            threshold,
+            price,
+            status,
+            productStatus,
+            created_at,
+            updated_at
+          };
+        });
+        
+        setInventory(formatted);
         setSnackbarMsg(`Successfully ${adjustmentType === 'add' ? 'added' : 'removed'} ${adjustment} item(s)!`);
         setSnackbarOpen(true);
         handleAdjustmentClose();
-      
-        // Refresh the data
-        fetchAndSyncProducts();
       } else {
         throw new Error(`Failed to update stock. Status: ${response.status}`);
       }
