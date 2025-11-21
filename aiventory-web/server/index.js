@@ -241,6 +241,141 @@ app.get("/api/suppliers", async (req, res) => {
   }
 });
 
+// Add new product
+app.post("/api/products", async (req, res) => {
+  try {
+    const { data, error } = await supabase
+      .from('product')
+      .insert(req.body)
+      .select();
+    
+    if (error) {
+      console.error("❌ Add Product Error:", error.message);
+      return res.status(500).json({ 
+        error: "Database error", 
+        message: error.message
+      });
+    }
+    
+    res.status(201).json(data[0]);
+  } catch (err) {
+    console.error("❌ Add Product Error:", err);
+    return res.status(500).json({ 
+      error: "Database error", 
+      message: err.message
+    });
+  }
+});
+
+// Update product
+app.put("/api/products/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { data, error } = await supabase
+      .from('product')
+      .update(req.body)
+      .eq('product_id', id)
+      .select();
+    
+    if (error) {
+      console.error("❌ Update Product Error:", error.message);
+      return res.status(500).json({ 
+        error: "Database error", 
+        message: error.message
+      });
+    }
+    
+    if (data.length === 0) {
+      return res.status(404).json({ error: "Product not found" });
+    }
+    
+    res.json(data[0]);
+  } catch (err) {
+    console.error("❌ Update Product Error:", err);
+    return res.status(500).json({ 
+      error: "Database error", 
+      message: err.message
+    });
+  }
+});
+
+// Delete product
+app.delete("/api/products/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { data, error } = await supabase
+      .from('product')
+      .delete()
+      .eq('product_id', id);
+    
+    if (error) {
+      console.error("❌ Delete Product Error:", error.message);
+      return res.status(500).json({ 
+        error: "Database error", 
+        message: error.message
+      });
+    }
+    
+    if (data.length === 0) {
+      return res.status(404).json({ error: "Product not found" });
+    }
+    
+    res.status(204).send();
+  } catch (err) {
+    console.error("❌ Delete Product Error:", err);
+    return res.status(500).json({ 
+      error: "Database error", 
+      message: err.message
+    });
+  }
+});
+
+// Get all suppliers
+app.get("/api/suppliers", async (req, res) => {
+  try {
+    const { data, error } = await supabase
+      .from('supplier')
+      .select('*');
+    
+    if (error) {
+      console.error("❌ Fetch Suppliers Error:", error.message);
+      return res.status(500).json({ 
+        error: "Database error", 
+        message: error.message
+      });
+    }
+    
+    res.json(data || []);
+  } catch (err) {
+    console.error("❌ Fetch Suppliers Error:", err);
+    return res.status(500).json({ 
+      error: "Database error", 
+      message: err.message
+    });
+  }
+});
+
+// Server-Sent Events for real-time updates
+app.get('/api/events', (req, res) => {
+  // Set CORS headers for SSE
+  res.writeHead(200, {
+    'Content-Type': 'text/event-stream',
+    'Cache-Control': 'no-cache',
+    'Connection': 'keep-alive',
+    'Access-Control-Allow-Origin': '*'
+  });
+  
+  // Send a heartbeat message every 30 seconds
+  const heartbeat = setInterval(() => {
+    res.write(': keep-alive\n\n');
+  }, 30000);
+  
+  // Clean up on client disconnect
+  req.on('close', () => {
+    clearInterval(heartbeat);
+  });
+});
+
 // Dashboard metrics
 app.get("/api/dashboard/metrics", async (req, res) => {
   try {
