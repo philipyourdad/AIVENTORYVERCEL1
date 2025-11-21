@@ -330,6 +330,56 @@ app.delete("/api/products/:id", async (req, res) => {
   }
 });
 
+// Get all invoices
+app.get("/api/invoices", async (req, res) => {
+  try {
+    const { data, error } = await supabase
+      .from('invoices')
+      .select('*');
+    
+    if (error) {
+      console.error("❌ Fetch Invoices Error:", error.message);
+      return res.status(500).json({ 
+        error: "Database error", 
+        message: error.message
+      });
+    }
+    
+    res.json(data || []);
+  } catch (err) {
+    console.error("❌ Fetch Invoices Error:", err);
+    return res.status(500).json({ 
+      error: "Database error", 
+      message: err.message
+    });
+  }
+});
+
+// Get invoice items
+app.get("/api/invoice-items", async (req, res) => {
+  try {
+    const { data, error } = await supabase
+      .from('invoice_items')
+      .select('*');
+    
+    if (error) {
+      console.error("❌ Fetch Invoice Items Error:", error.message);
+      return res.status(500).json({ 
+        error: "Database error", 
+        message: error.message
+      });
+    }
+    
+    res.json(data || []);
+  } catch (err) {
+    console.error("❌ Fetch Invoice Items Error:", err);
+    return res.status(500).json({ 
+      error: "Database error", 
+      message: err.message
+    });
+  }
+});
+
 // Get all suppliers
 app.get("/api/suppliers", async (req, res) => {
   try {
@@ -348,6 +398,56 @@ app.get("/api/suppliers", async (req, res) => {
     res.json(data || []);
   } catch (err) {
     console.error("❌ Fetch Suppliers Error:", err);
+    return res.status(500).json({ 
+      error: "Database error", 
+      message: err.message
+    });
+  }
+});
+
+// Get all orders from supplier
+app.get("/api/orders", async (req, res) => {
+  try {
+    const { data, error } = await supabase
+      .from('orders_from_supplier')
+      .select('*');
+    
+    if (error) {
+      console.error("❌ Fetch Orders Error:", error.message);
+      return res.status(500).json({ 
+        error: "Database error", 
+        message: error.message
+      });
+    }
+    
+    res.json(data || []);
+  } catch (err) {
+    console.error("❌ Fetch Orders Error:", err);
+    return res.status(500).json({ 
+      error: "Database error", 
+      message: err.message
+    });
+  }
+});
+
+// Get all notifications
+app.get("/api/notifications", async (req, res) => {
+  try {
+    const { data, error } = await supabase
+      .from('notifications')
+      .select('*');
+    
+    if (error) {
+      console.error("❌ Fetch Notifications Error:", error.message);
+      return res.status(500).json({ 
+        error: "Database error", 
+        message: error.message
+      });
+    }
+    
+    res.json(data || []);
+  } catch (err) {
+    console.error("❌ Fetch Notifications Error:", err);
     return res.status(500).json({ 
       error: "Database error", 
       message: err.message
