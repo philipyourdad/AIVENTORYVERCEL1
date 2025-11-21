@@ -194,12 +194,18 @@ export default function Inventory() {
 
   // Filter inventory based on search, category, and status
   const filteredInventory = inventory.filter(item => {
-    const matchesSearch = item.name.toLowerCase().includes(search.toLowerCase()) ||
-      item.sku.toLowerCase().includes(search.toLowerCase());
+    // Add null checks for all fields
+    const itemName = item.name || '';
+    const itemSku = item.sku || '';
+    const itemCategory = item.category || '';
+    const itemStatus = item.status || '';
     
-    const matchesCategory = categoryFilter === 'All' || item.category === categoryFilter;
+    const matchesSearch = itemName.toLowerCase().includes(search.toLowerCase()) ||
+      itemSku.toLowerCase().includes(search.toLowerCase());
     
-    const matchesStatus = statusFilter === 'All' || item.status === statusFilter;
+    const matchesCategory = categoryFilter === 'All' || itemCategory === categoryFilter;
+    
+    const matchesStatus = statusFilter === 'All' || itemStatus === statusFilter;
     
     return matchesSearch && matchesCategory && matchesStatus;
   });
