@@ -150,17 +150,17 @@ const Dashboard = () => {
     });
 
     const totalItems = products.length;
-    const lowStock = products.filter((item) => Number(item.Product_stock ?? 0) <= Number(item.reorder_level ?? 0));
-    const critical = lowStock.filter((item) => Number(item.Product_stock ?? 0) <= 0);
+    const lowStock = products.filter((item) => Number(item.product_stock ?? item.Product_stock ?? 0) <= Number(item.reorder_level ?? item.reorder_level ?? 0));
+    const critical = lowStock.filter((item) => Number(item.product_stock ?? item.Product_stock ?? 0) <= 0);
 
     // Only calculate alerts if lowStock alerts are enabled
     const alerts = shouldShowAlerts ? products
       .map((item) => {
-        const stock = Number(item.Product_stock ?? 0);
-        const threshold = Number(item.reorder_level ?? 0);
+        const stock = Number(item.product_stock ?? item.Product_stock ?? 0);
+        const threshold = Number(item.reorder_level ?? item.reorder_level ?? 0);
         if (!threshold && stock > 0) return null;
 
-        const idKey = String(item.Product_id ?? item.Product_sku ?? item.ProductId ?? `sku-${item.Product_sku}`);
+        const idKey = String(item.product_id ?? item.Product_id ?? item.product_sku ?? item.Product_sku ?? item.ProductId ?? `sku-${item.product_sku ?? item.Product_sku}`);
         const usageRecord = usageMap.get(idKey);
 
         let dailyUsage;
@@ -180,8 +180,8 @@ const Dashboard = () => {
 
         return {
           id: idKey,
-          name: item.Product_name,
-          sku: item.Product_sku,
+          name: item.product_name ?? item.Product_name,
+          sku: item.product_sku ?? item.Product_sku,
           status,
           stock,
           threshold,

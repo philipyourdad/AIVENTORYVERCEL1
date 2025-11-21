@@ -355,6 +355,93 @@ app.get("/api/invoices", async (req, res) => {
   }
 });
 
+// Add new invoice
+app.post("/api/invoices", async (req, res) => {
+  try {
+    // First create the invoice
+    const { data: invoiceData, error: invoiceError } = await supabase
+      .from('invoices')
+      .insert({
+        invoice_number: req.body.invoice_number,
+        invoice_date: req.body.invoice_date,
+        due_date: req.body.due_date,
+        status: req.body.status,
+        customer_name: req.body.customer_name,
+        customer_phone: req.body.customer_phone,
+        customer_address: req.body.customer_address,
+        notes: req.body.notes,
+        subtotal: req.body.items?.reduce((sum, item) => sum + (item.quantity * item.unit_price), 0) || 0,
+        tax: req.body.items?.reduce((sum, item) => sum + (item.quantity * item.unit_price), 0) * 0.05 || 0,
+        total: req.body.items?.reduce((sum, item) => sum + (item.quantity * item.unit_price), 0) * 1.05 || 0
+      })
+      .select();
+    
+    if (invoiceError) {
+      console.error("❌ Add Invoice Error:", invoiceError.message);
+      return res.status(500).json({ 
+        error: "Database error", 
+        message: invoiceError.message
+      });
+    }
+    
+    const invoice = invoiceData[0];
+    
+    // Then create the invoice items
+    if (req.body.items && req.body.items.length > 0) {
+      const itemsToInsert = req.body.items.map(item => ({
+        invoice_id: invoice.invoice_id,
+        description: item.description,
+        quantity: item.quantity,
+        unit_price: item.unit_price,
+        product_id: item.product_id
+      }));
+      
+      const { error: itemsError } = await supabase
+        .from('invoice_items')
+        .insert(itemsToInsert);
+      
+      if (itemsError) {
+        console.error("❌ Add Invoice Items Error:", itemsError.message);
+        // Try to delete the invoice if items failed to insert
+        await supabase
+          .from('invoices')
+          .delete()
+          .eq('invoice_id', invoice.invoice_id);
+        return res.status(500).json({ 
+          error: "Database error", 
+          message: itemsError.message
+        });
+      }
+    }
+    
+    // Fetch the complete invoice with items
+    const { data: completeInvoice, error: fetchError } = await supabase
+      .from('invoices')
+      .select(`
+        *,
+        invoice_items(*)
+      `)
+      .eq('invoice_id', invoice.invoice_id)
+      .single();
+    
+    if (fetchError) {
+      console.error("❌ Fetch Complete Invoice Error:", fetchError.message);
+      return res.status(500).json({ 
+        error: "Database error", 
+        message: fetchError.message
+      });
+    }
+    
+    res.status(201).json(completeInvoice);
+  } catch (err) {
+    console.error("❌ Add Invoice Error:", err);
+    return res.status(500).json({ 
+      error: "Database error", 
+      message: err.message
+    });
+  }
+});
+
 // Get invoice items
 app.get("/api/invoice-items", async (req, res) => {
   try {
@@ -448,6 +535,95 @@ app.get("/api/notifications", async (req, res) => {
     res.json(data || []);
   } catch (err) {
     console.error("❌ Fetch Notifications Error:", err);
+    return res.status(500).json({ 
+      error: "Database error", 
+      message: err.message
+    });
+  }
+});
+
+// Add new supplier
+app.post("/api/suppliers", async (req, res) => {
+  try {
+    const { data, error } = await supabase
+      .from('supplier')
+      .insert(req.body)
+      .select();
+    
+    if (error) {
+      console.error("❌ Add Supplier Error:", error.message);
+      return res.status(500).json({ 
+        error: "Database error", 
+        message: error.message
+      });
+    }
+    
+    res.status(201).json(data[0]);
+  } catch (err) {
+    console.error("❌ Add Supplier Error:", err);
+    return res.status(500).json({ 
+      error: "Database error", 
+      message: err.message
+    });
+  }
+});
+
+// Update supplier
+app.put("/api/suppliers/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { data, error } = await supabase
+      .from('supplier')
+      .update(req.body)
+      .eq('supplier_id', id)
+      .select();
+    
+    if (error) {
+      console.error("❌ Update Supplier Error:", error.message);
+      return res.status(500).json({ 
+        error: "Database error", 
+        message: error.message
+      });
+    }
+    
+    if (data.length === 0) {
+      return res.status(404).json({ error: "Supplier not found" });
+    }
+    
+    res.json(data[0]);
+  } catch (err) {
+    console.error("❌ Update Supplier Error:", err);
+    return res.status(500).json({ 
+      error: "Database error", 
+      message: err.message
+    });
+  }
+});
+
+// Delete supplier
+app.delete("/api/suppliers/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { data, error } = await supabase
+      .from('supplier')
+      .delete()
+      .eq('supplier_id', id);
+    
+    if (error) {
+      console.error("❌ Delete Supplier Error:", error.message);
+      return res.status(500).json({ 
+        error: "Database error", 
+        message: error.message
+      });
+    }
+    
+    if (data.length === 0) {
+      return res.status(404).json({ error: "Supplier not found" });
+    }
+    
+    res.status(204).send();
+  } catch (err) {
+    console.error("❌ Delete Supplier Error:", err);
     return res.status(500).json({ 
       error: "Database error", 
       message: err.message
