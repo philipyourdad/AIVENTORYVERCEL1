@@ -136,22 +136,30 @@ export default function Inventory() {
     setIsLoading(true);
     try {
       console.log('🔄 Fetching products from database...');
+      console.log('API Base URL:', API_BASE);
       const res = await axios.get(`${API_BASE}/api/products`);
       
+      console.log('📥 Raw response from API:', res.data);
+      
       const formatted = res.data.map(p => ({
-        id: p.product_id || p.Product_id,
+        id: p.product_id || p.Product_id || null,
         name: p.product_name || p.Product_name || '',
         sku: p.product_sku || p.Product_sku || '',
         category: p.product_category || p.Product_category || '',
-        stock: p.product_stock || p.Product_stock || 0,
-        threshold: p.reorder_level || 0,
-        price: p.product_price || p.Product_price || 0,
-        status: getProductStatus(p.product_stock || p.Product_stock || 0, p.reorder_level || 0),
+        stock: p.product_stock !== undefined ? p.product_stock : (p.Product_stock !== undefined ? p.Product_stock : 0),
+        threshold: p.reorder_level !== undefined ? p.reorder_level : 0,
+        price: p.product_price !== undefined ? p.product_price : (p.Product_price !== undefined ? p.Product_price : 0),
+        status: getProductStatus(
+          p.product_stock !== undefined ? p.product_stock : (p.Product_stock !== undefined ? p.Product_stock : 0), 
+          p.reorder_level !== undefined ? p.reorder_level : 0
+        ),
         productStatus: p.product_status || p.Product_status || 'Active',
-        created_at: p.created_at,
-        updated_at: p.updated_at
+        created_at: p.created_at || null,
+        updated_at: p.updated_at || null
       }));
 
+      console.log('📦 Formatted products:', formatted);
+      
       setInventory(formatted);
       setTotalItems(formatted.length);
       setFetchError(null);
@@ -162,6 +170,15 @@ export default function Inventory() {
     } catch (err) {
       setFetchError("Error fetching products. Please check your backend connection.");
       console.error("❌ Error fetching products:", err);
+      if (err.response) {
+        console.error("📡 Error response:", err.response.data);
+        console.error("🔢 Error status:", err.response.status);
+        console.error("📋 Error headers:", err.response.headers);
+      } else if (err.request) {
+        console.error("📡 Error request:", err.request);
+      } else {
+        console.error("💬 Error message:", err.message);
+      }
       logAuditTrail('SYNC_ERROR', { error: err.message });
     } finally {
       setIsLoading(false);
@@ -202,8 +219,11 @@ export default function Inventory() {
     
     // Ensure search term is defined before calling toLowerCase
     const searchTerm = search || '';
-    const matchesSearch = itemName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      itemSku.toLowerCase().includes(searchTerm.toLowerCase());
+    
+    // Safely check if search term matches item name or SKU
+    const matchesSearch = (itemName && typeof itemName === 'string' && itemName.toLowerCase().includes(searchTerm.toLowerCase())) ||
+      (itemSku && typeof itemSku === 'string' && itemSku.toLowerCase().includes(searchTerm.toLowerCase())) ||
+      searchTerm === '';
     
     const matchesCategory = categoryFilter === 'All' || itemCategory === categoryFilter;
     
@@ -220,10 +240,10 @@ export default function Inventory() {
   );
 
   // Get unique categories for filter
-  const uniqueCategories = ['All', ...new Set(inventory.map(item => item.category || ''))];
+  const uniqueCategories = ['All', ...new Set(inventory.map(item => (item.category && typeof item.category === 'string') ? item.category : ''))];
 
   // Get unique statuses for filter
-  const uniqueStatuses = ['All', ...new Set(inventory.map(item => item.status || ''))];
+  const uniqueStatuses = ['All', ...new Set(inventory.map(item => (item.status && typeof item.status === 'string') ? item.status : ''))];
 
   const handleOpenModal = (item, idx) => {
     if (item) {
@@ -275,13 +295,15 @@ export default function Inventory() {
         await axios.put(`${API_BASE}/api/products/${id}`, newItem);
         const res = await axios.get(`${API_BASE}/api/products`);
         setInventory(res.data.map(p => ({
-          id: p.product_id || p.Product_id,
+          id: p.product_id || p.Product_id || null,
           name: p.product_name || p.Product_name || '',
           sku: p.product_sku || p.Product_sku || '',
           category: p.product_category || p.Product_category || '',
-          stock: p.product_stock || p.Product_stock || 0,
-          threshold: p.reorder_level || 0,
-          status: p.product_status || p.Product_status || 'Active'
+          stock: p.product_stock !== undefined ? p.product_stock : (p.Product_stock !== undefined ? p.Product_stock : 0),
+          threshold: p.reorder_level !== undefined ? p.reorder_level : 0,
+          price: p.product_price !== undefined ? p.product_price : (p.Product_price !== undefined ? p.Product_price : 0),
+          status: p.product_status || p.Product_status || 'Active',
+          productStatus: p.product_status || p.Product_status || 'Active'
         })));
         setSnackbarMsg("Item updated successfully!");
       } else {
@@ -314,13 +336,15 @@ export default function Inventory() {
         await axios.delete(`${API_BASE}/api/products/${id}`);
         const res = await axios.get(`${API_BASE}/api/products`);
         setInventory(res.data.map(p => ({
-          id: p.product_id || p.Product_id,
+          id: p.product_id || p.Product_id || null,
           name: p.product_name || p.Product_name || '',
           sku: p.product_sku || p.Product_sku || '',
           category: p.product_category || p.Product_category || '',
-          stock: p.product_stock || p.Product_stock || 0,
-          threshold: p.reorder_level || 0,
-          status: p.product_status || p.Product_status || 'Active'
+          stock: p.product_stock !== undefined ? p.product_stock : (p.Product_stock !== undefined ? p.Product_stock : 0),
+          threshold: p.reorder_level !== undefined ? p.reorder_level : 0,
+          price: p.product_price !== undefined ? p.product_price : (p.Product_price !== undefined ? p.Product_price : 0),
+          status: p.product_status || p.Product_status || 'Active',
+          productStatus: p.product_status || p.Product_status || 'Active'
         })));
         setSnackbarMsg("Item deleted successfully!");
       } catch (err) {
@@ -628,6 +652,10 @@ export default function Inventory() {
         {fetchError ? (
           <Box sx={{ color: 'red', textAlign: 'center', mt: 8 }}>
             <Typography variant="h5">{fetchError}</Typography>
+          </Box>
+        ) : isLoading ? (
+          <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '400px' }}>
+            <Typography variant="h6">Loading inventory data...</Typography>
           </Box>
         ) : (
           <>
