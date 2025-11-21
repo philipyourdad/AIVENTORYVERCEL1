@@ -244,9 +244,21 @@ app.get("/api/suppliers", async (req, res) => {
 // Add new product
 app.post("/api/products", async (req, res) => {
   try {
+    // Map frontend field names to Supabase field names
+    const productData = {
+      product_name: req.body.Product_name || req.body.product_name,
+      product_sku: req.body.Product_sku || req.body.product_sku,
+      product_price: req.body.Product_price || req.body.product_price,
+      product_stock: req.body.Product_stock || req.body.product_stock,
+      product_status: req.body.Product_status || req.body.product_status || 'Active',
+      product_category: req.body.Product_category || req.body.product_category,
+      reorder_level: req.body.reorder_level || req.body.reorder_level,
+      supplier_id: req.body.supplier_id || req.body.supplier_id
+    };
+    
     const { data, error } = await supabase
       .from('product')
-      .insert(req.body)
+      .insert(productData)
       .select();
     
     if (error) {
@@ -271,9 +283,22 @@ app.post("/api/products", async (req, res) => {
 app.put("/api/products/:id", async (req, res) => {
   try {
     const { id } = req.params;
+    
+    // Map frontend field names to Supabase field names
+    const productData = {
+      product_name: req.body.Product_name || req.body.product_name,
+      product_sku: req.body.Product_sku || req.body.product_sku,
+      product_price: req.body.Product_price || req.body.product_price,
+      product_stock: req.body.Product_stock || req.body.product_stock,
+      product_status: req.body.Product_status || req.body.product_status || 'Active',
+      product_category: req.body.Product_category || req.body.product_category,
+      reorder_level: req.body.reorder_level || req.body.reorder_level,
+      supplier_id: req.body.supplier_id || req.body.supplier_id
+    };
+    
     const { data, error } = await supabase
       .from('product')
-      .update(req.body)
+      .update(productData)
       .eq('product_id', id)
       .select();
     

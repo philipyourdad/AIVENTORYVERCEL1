@@ -200,8 +200,10 @@ export default function Inventory() {
     const itemCategory = item.category || '';
     const itemStatus = item.status || '';
     
-    const matchesSearch = itemName.toLowerCase().includes(search.toLowerCase()) ||
-      itemSku.toLowerCase().includes(search.toLowerCase());
+    // Ensure search term is defined before calling toLowerCase
+    const searchTerm = search || '';
+    const matchesSearch = itemName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      itemSku.toLowerCase().includes(searchTerm.toLowerCase());
     
     const matchesCategory = categoryFilter === 'All' || itemCategory === categoryFilter;
     
