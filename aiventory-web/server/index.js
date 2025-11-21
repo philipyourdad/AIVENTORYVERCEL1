@@ -50,11 +50,13 @@ supabase.from('product').select('*').limit(1)
 
 // Registration route
 app.post("/api/register", async (req, res) => {
-  const { name, email, username, password, role } = req.body;
-  console.log("📥 Registration request:", { name, email, username, password, role });
+  const { fullName, name, email, username, password, role } = req.body;
+  // Use fullName if provided, otherwise use name
+  const actualName = fullName || name;
+  console.log("📥 Registration request:", { name: actualName, email, username, password, role });
   
   // Validate required fields
-  if (!name || !email || !username || !password || !role) {
+  if (!actualName || !email || !username || !password || !role) {
     return res.status(400).json({ error: "Missing required fields" });
   }
   
@@ -89,7 +91,7 @@ app.post("/api/register", async (req, res) => {
     const { data, error } = await supabase
       .from(table)
       .insert({
-        [name_field]: name,
+        [name_field]: actualName,
         [email_field]: email,
         [username_field]: username,
         [password_field]: hashedPassword,
@@ -102,7 +104,7 @@ app.post("/api/register", async (req, res) => {
       return res.status(500).json({ error: "Database error" });
     }
     
-    console.log("✅ Registration successful for:", name);
+    console.log("✅ Registration successful for:", actualName);
     res.status(201).json({ message: "Registration successful" });
   } catch (err) {
     console.error("❌ Registration Error:", err);
