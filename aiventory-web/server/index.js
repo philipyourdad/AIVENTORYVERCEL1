@@ -27,24 +27,27 @@ app.options('*', cors(corsOptions));
 app.use(express.json());
 
 // Supabase connection
-console.log("Attempting to connect to Supabase with URL:", `https://${process.env.DATABASE_URL?.split('@')[1]?.split(':')[0]}`);
-const supabaseUrl = `https://${process.env.DATABASE_URL?.split('@')[1]?.split(':')[0]}`;
-const supabaseKey = process.env.SUPABASE_KEY || '';
+const supabaseUrl = process.env.VITE_SUPABASE_URL || '';
+const supabaseKey = process.env.SUPABASE_KEY || process.env.VITE_SUPABASE_ANON_KEY || '';
 const supabase = createClient(supabaseUrl, supabaseKey);
 
+console.log("Attempting to connect to Supabase with URL:", supabaseUrl);
+
 // ✅ Test Supabase connection
-supabase.from('product').select('*').limit(1)
-  .then(({ data, error }) => {
-    if (error) {
-      console.error("❌ Supabase connection failed:", error.message);
-    } else {
-      console.log("✅ Connected to Supabase database");
-      console.log("Test query successful, found", data.length, "products");
-    }
-  })
-  .catch(err => {
-    console.error("❌ Supabase connection error:", err.message);
-  });
+setTimeout(() => {
+  supabase.from('product').select('*').limit(1)
+    .then(({ data, error }) => {
+      if (error) {
+        console.error("❌ Supabase connection failed:", error.message);
+      } else {
+        console.log("✅ Connected to Supabase database");
+        console.log("Test query successful, found", data?.length || 0, "products");
+      }
+    })
+    .catch(err => {
+      console.error("❌ Supabase connection error:", err.message);
+    });
+}, 2000);
 
 // ------------------ ROUTES ------------------
 
@@ -246,12 +249,12 @@ app.post("/api/products", async (req, res) => {
   try {
     // Map frontend field names to Supabase field names
     const productData = {
-      product_name: req.body.Product_name || req.body.product_name,
-      product_sku: req.body.Product_sku || req.body.product_sku,
-      product_price: req.body.Product_price || req.body.product_price,
-      product_stock: req.body.Product_stock || req.body.product_stock,
-      product_status: req.body.Product_status || req.body.product_status || 'Active',
-      product_category: req.body.Product_category || req.body.product_category,
+      Product_name: req.body.Product_name || req.body.product_name,
+      Product_sku: req.body.Product_sku || req.body.product_sku,
+      Product_price: req.body.Product_price || req.body.product_price,
+      Product_stock: req.body.Product_stock || req.body.product_stock,
+      Product_status: req.body.Product_status || req.body.product_status || 'Active',
+      Product_category: req.body.Product_category || req.body.product_category,
       reorder_level: req.body.reorder_level || req.body.reorder_level,
       supplier_id: req.body.supplier_id || req.body.supplier_id
     };
@@ -286,12 +289,12 @@ app.put("/api/products/:id", async (req, res) => {
     
     // Map frontend field names to Supabase field names
     const productData = {
-      product_name: req.body.Product_name || req.body.product_name,
-      product_sku: req.body.Product_sku || req.body.product_sku,
-      product_price: req.body.Product_price || req.body.product_price,
-      product_stock: req.body.Product_stock || req.body.product_stock,
-      product_status: req.body.Product_status || req.body.product_status || 'Active',
-      product_category: req.body.Product_category || req.body.product_category,
+      Product_name: req.body.Product_name || req.body.product_name,
+      Product_sku: req.body.Product_sku || req.body.product_sku,
+      Product_price: req.body.Product_price || req.body.product_price,
+      Product_stock: req.body.Product_stock || req.body.product_stock,
+      Product_status: req.body.Product_status || req.body.product_status || 'Active',
+      Product_category: req.body.Product_category || req.body.product_category,
       reorder_level: req.body.reorder_level || req.body.reorder_level,
       supplier_id: req.body.supplier_id || req.body.supplier_id
     };

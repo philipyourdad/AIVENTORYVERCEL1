@@ -2,6 +2,10 @@
 
 This guide helps you launch the backend API, optional ML service, and the React Native mobile app on your local machine.
 
+### Supabase Deployment
+
+For deploying to production with Supabase, Vercel, and Railway, please refer to the detailed guide in `SUPABASE_DEPLOYMENT_REFINED.md`.
+
 ### Prerequisites
 - Node.js 18+ and npm
 - Python 3.10+ (for ML scripts)

@@ -1,0 +1,23 @@
+{
+  "name": "supabase-migration",
+  "version": "1.0.0",
+  "description": "Supabase database migration scripts for AIventory",
+  "main": "init_supabase_db.js",
+  "type": "module",
+  "scripts": {
+    "init-db": "node init_supabase_db.js",
+    "test-connection": "node -e \"import('./init_supabase_db.js').then(() => console.log('Script loaded successfully'))\""
+  },
+  "keywords": [
+    "supabase",
+    "migration",
+    "aiventory",
+    "database"
+  ],
+  "author": "AIventory Team",
+  "license": "MIT",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.84.0",
+    "dotenv": "^16.4.5"
+  }
+}
