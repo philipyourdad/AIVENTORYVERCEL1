@@ -211,39 +211,110 @@ export default function Inventory() {
 
   // Filter inventory based on search, category, and status
   const filteredInventory = inventory.filter(item => {
-    // Add null checks for all fields
-    const itemName = item.name || '';
-    const itemSku = item.sku || '';
-    const itemCategory = item.category || '';
-    const itemStatus = item.status || '';
-    
-    // Ensure search term is defined before calling toLowerCase
-    const searchTerm = search || '';
-    
-    // Safely check if search term matches item name or SKU
-    const matchesSearch = (itemName && typeof itemName === 'string' && itemName.toLowerCase().includes(searchTerm.toLowerCase())) ||
-      (itemSku && typeof itemSku === 'string' && itemSku.toLowerCase().includes(searchTerm.toLowerCase())) ||
-      searchTerm === '';
-    
-    const matchesCategory = categoryFilter === 'All' || itemCategory === categoryFilter;
-    
-    const matchesStatus = statusFilter === 'All' || itemStatus === statusFilter;
-    
-    return matchesSearch && matchesCategory && matchesStatus;
+    try {
+      // Defensive checks for item existence
+      if (!item) return false;
+      
+      // Add null checks for all fields with default values
+      const itemName = (item.name && typeof item.name === 'string') ? item.name : '';
+      const itemSku = (item.sku && typeof item.sku === 'string') ? item.sku : '';
+      const itemCategory = (item.category && typeof item.category === 'string') ? item.category : '';
+      const itemStatus = (item.status && typeof item.status === 'string') ? item.status : '';
+      
+      // Ensure search term is defined before calling toLowerCase
+      const searchTerm = (search && typeof search === 'string') ? search : '';
+      
+      // Debug logging (will be removed in production builds)
+      // console.log('🔍 Filtering item:', { itemName, itemSku, itemCategory, itemStatus, searchTerm });
+      
+      // Safely check if search term matches item name or SKU
+      let matchesSearch = false;
+      try {
+        // Extra safety check for toLowerCase calls
+        const safeItemName = itemName || '';
+        const safeItemSku = itemSku || '';
+        const safeSearchTerm = searchTerm || '';
+        
+        matchesSearch = (safeItemName.toLowerCase && safeItemName.toLowerCase().includes(safeSearchTerm.toLowerCase())) ||
+          (safeItemSku.toLowerCase && safeItemSku.toLowerCase().includes(safeSearchTerm.toLowerCase())) ||
+          safeSearchTerm === '';
+      } catch (e) {
+        console.error('❌ Error in search filter:', e);
+        console.error('🔍 Search filter values:', { itemName, itemSku, searchTerm });
+        matchesSearch = true; // Default to showing item if there's an error
+      }
+      
+      // Category filter with extra safety
+      let matchesCategory = true;
+      try {
+        const safeItemCategory = itemCategory || '';
+        const safeCategoryFilter = (categoryFilter && typeof categoryFilter === 'string') ? categoryFilter : 'All';
+        matchesCategory = safeCategoryFilter === 'All' || 
+          (safeItemCategory.toLowerCase && safeItemCategory === safeCategoryFilter);
+      } catch (e) {
+        console.error('❌ Error in category filter:', e);
+        matchesCategory = true;
+      }
+      
+      // Status filter with extra safety
+      let matchesStatus = true;
+      try {
+        const safeItemStatus = itemStatus || '';
+        const safeStatusFilter = (statusFilter && typeof statusFilter === 'string') ? statusFilter : 'All';
+        matchesStatus = safeStatusFilter === 'All' || 
+          (safeItemStatus.toLowerCase && safeItemStatus === safeStatusFilter);
+      } catch (e) {
+        console.error('❌ Error in status filter:', e);
+        matchesStatus = true;
+      }
+      
+      const result = matchesSearch && matchesCategory && matchesStatus;
+      // console.log('📊 Filter result:', result);
+      
+      return result;
+    } catch (error) {
+      console.error('❌ Error in filter function:', error);
+      console.error('🔍 Item causing error:', item);
+      return true; // Show all items if there's an error in filtering
+    }
   });
 
   // Pagination
-  const totalPages = Math.ceil(filteredInventory.length / itemsPerPage);
+  // console.log('📄 Pagination input:', { filteredInventoryLength: filteredInventory.length, itemsPerPage, page });
+  const totalPages = Math.ceil((filteredInventory.length || 0) / itemsPerPage);
   const paginatedInventory = filteredInventory.slice(
     (page - 1) * itemsPerPage,
     page * itemsPerPage
   );
+  // console.log('📄 Pagination output:', { totalPages, paginatedInventoryLength: paginatedInventory.length });
 
-  // Get unique categories for filter
-  const uniqueCategories = ['All', ...new Set(inventory.map(item => (item.category && typeof item.category === 'string') ? item.category : ''))];
+  // Get unique categories for filter with extra safety
+  const uniqueCategories = ['All', ...new Set(inventory.map(item => {
+    try {
+      // console.log('🔍 Processing category for item:', item);
+      if (!item) return '';
+      const category = (item.category && typeof item.category === 'string') ? item.category : '';
+      // console.log('🏷️ Category result:', category);
+      return category;
+    } catch (error) {
+      console.error('❌ Error processing category for item:', item, error);
+      return '';
+    }
+  }).filter(cat => cat !== ''))]; // Filter out empty strings
 
-  // Get unique statuses for filter
-  const uniqueStatuses = ['All', ...new Set(inventory.map(item => (item.status && typeof item.status === 'string') ? item.status : ''))];
+  // Get unique statuses for filter with extra safety
+  const uniqueStatuses = ['All', ...new Set(inventory.map(item => {
+    try {
+      // console.log('🔍 Processing status for item:', item);
+      if (!item) return '';
+      const status = (item.status && typeof item.status === 'string') ? item.status : '';
+      // console.log('📊 Status result:', status);
+      return status;
+    } catch (error) {
+      console.error('❌ Error processing status for item:', item, error);
+      return '';
+    }
+  }).filter(status => status !== ''))]; // Filter out empty strings
 
   const handleOpenModal = (item, idx) => {
     if (item) {

@@ -2,8 +2,6 @@
 
 This guide helps you launch the backend API, optional ML service, and the React Native mobile app on your local machine.
 
-### Supabase Deployment
-
 For deploying to production with Supabase, Vercel, and Railway, please refer to the detailed guide in `SUPABASE_DEPLOYMENT_REFINED.md`.
 
 ### Prerequisites
@@ -72,7 +70,7 @@ Note: If you only want core inventory features, you can skip this section.
 ### 4) Mobile App (Expo)
 Path: `AIVENTORYMOBILEV2`
 
-1. Configure API base URL to point to your PC’s IPv4 and backend port:
+1. Configure API base URL to point to your PC's IPv4 and backend port:
    - File: `AIVENTORYMOBILEV2/services/api.js`
    - baseURL: `http://YOUR_IPV4:5001/api`
    - Find your IPv4 using `ipconfig` (Windows) or `ifconfig`/`ip addr` (Linux/macOS).
@@ -86,7 +84,20 @@ Path: `AIVENTORYMOBILEV2`
    - Android: Scan the QR with Expo Go or launch an Android emulator.
    - iOS (on macOS): Press `i` to open in iOS Simulator.
 
-### 5) Quick Validation
+### 5) Web Frontend (Vite/React)
+Path: `aiventory-web`
+
+1. Install dependencies and run:
+   - cd aiventory-web
+   - npm install
+   - npm run dev
+
+2. For production deployment:
+   - Refer to `VERCEL_DEPLOYMENT_GUIDE.md` for Vercel deployment
+   - Refer to `RAILWAY_DEPLOYMENT_GUIDE.md` for Railway backend deployment
+   - Refer to `VERCEL_DEPLOYMENT.md` for the original deployment guide
+
+### 6) Quick Validation
 - Register a user in the app (Create Account). You should see activity in the server logs and a new row in `admin`/`staff` tables.
 - Add a product from the Scan flow (supply name and price) → verify it appears in inventory.
 - Adjust stock:
@@ -95,14 +106,15 @@ Path: `AIVENTORYMOBILEV2`
 - Check `notifications` table for any low-stock alerts when thresholds are crossed.
 
 ### Troubleshooting
-- Mobile can’t reach backend: ensure both are on the same network and Windows Defender Firewall allows Node (port 5001). Use `--tunnel` in Expo to simplify networking.
+- Mobile can't reach backend: ensure both are on the same network and Windows Defender Firewall allows Node (port 5001). Use `--tunnel` in Expo to simplify networking.
 - DB errors: verify DB credentials and that `aiventory` schema exists with `admin`, `staff`, `product`, etc.
-- ML unavailable: backend falls back to calculated predictions; it’s safe to ignore ML if you don’t need forecasts.
+- ML unavailable: backend falls back to calculated predictions; it's safe to ignore ML if you don't need forecasts.
+- Web frontend filter error: Refer to `FIX_FILTER_ERROR.md` for solutions to the "toLowerCase" error
 
 ### Useful Paths
 - Backend server: `aiventory-web/server/index.js`
 - DB schema: `aiventory-web/db/aiventory-1.sql`
 - Mobile screens: `AIVENTORYMOBILEV2/app`
 - Mobile inventory actions: `AIVENTORYMOBILEV2/app/(tabs)/inventory.tsx`
-
-
+- Web frontend: `aiventory-web/src`
+- Web inventory page: `aiventory-web/src/pages/Inventory.jsx`
