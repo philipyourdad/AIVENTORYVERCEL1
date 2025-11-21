@@ -12,7 +12,15 @@ const SECRET_KEY = process.env.JWT_SECRET || "aiventory_secret_fallback";
 
 // ------------------ INIT ------------------
 const app = express();
-app.use(cors());
+
+// Configure CORS to allow requests from Vercel frontend
+const corsOptions = {
+  origin: ['https://aiventory1vercel.vercel.app', 'https://aiventoryvercel1-production.up.railway.app', 'http://localhost:5173'],
+  credentials: true,
+  optionsSuccessStatus: 200
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 
 // Supabase connection
@@ -36,6 +44,68 @@ supabase.from('product').select('*').limit(1)
   });
 
 // ------------------ ROUTES ------------------
+
+// Registration route
+app.post("/api/register", async (req, res) => {
+  const { name, email, username, password, role } = req.body;
+  console.log("📥 Registration request:", { name, email, username, password, role });
+  
+  // Validate required fields
+  if (!name || !email || !username || !password || !role) {
+    return res.status(400).json({ error: "Missing required fields" });
+  }
+  
+  const table = role === 'Admin' ? 'admin' : 'staff';
+  const email_field = role === 'Admin' ? 'admin_email' : 'staff_email';
+  const password_field = role === 'Admin' ? 'admin_password' : 'staff_password';
+  const name_field = role === 'Admin' ? 'admin_name' : 'staff_name';
+  const username_field = role === 'Admin' ? 'admin_username' : 'staff_username';
+  
+  try {
+    // Check if user already exists
+    const { data: existingUsers, error: fetchError } = await supabase
+      .from(table)
+      .select('*')
+      .or(`${email_field}.eq.${email},${username_field}.eq.${username}`);
+    
+    if (fetchError) {
+      console.error("❌ Supabase fetch error:", fetchError.message);
+      return res.status(500).json({ error: "Database error" });
+    }
+    
+    if (existingUsers.length > 0) {
+      console.log("❌ User already exists:", email, username);
+      return res.status(409).json({ error: "User already exists" });
+    }
+    
+    // Hash password
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
+    
+    // Create new user
+    const { data, error } = await supabase
+      .from(table)
+      .insert({
+        [name_field]: name,
+        [email_field]: email,
+        [username_field]: username,
+        [password_field]: hashedPassword,
+        created_at: new Date().toISOString()
+      })
+      .select();
+    
+    if (error) {
+      console.error("❌ Supabase insert error:", error.message);
+      return res.status(500).json({ error: "Database error" });
+    }
+    
+    console.log("✅ Registration successful for:", name);
+    res.status(201).json({ message: "Registration successful" });
+  } catch (err) {
+    console.error("❌ Registration Error:", err);
+    return res.status(500).json({ error: "Registration error" });
+  }
+});
 
 // Login route
 app.post("/api/login", async (req, res) => {
