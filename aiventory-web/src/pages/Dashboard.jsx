@@ -337,7 +337,7 @@ const AlertCard = ({
         <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={2} sx={{ mb: 4 }}>
           <Box>
             <Typography variant="h4" fontWeight={800} sx={{ color: '#2E3A8C', mb: 0.5 }}>
-              Dashboard
+              Dashboards
             </Typography>
             <Typography color="text.secondary" variant="subtitle1">
             </Typography>
