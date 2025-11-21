@@ -15,12 +15,15 @@ const app = express();
 
 // Configure CORS to allow requests from Vercel frontend
 const corsOptions = {
-  origin: ['https://aiventory1vercel.vercel.app', 'https://aiventoryvercel1-production.up.railway.app', 'http://localhost:5173'],
+  origin: ['https://aiventory1vercel.vercel.app', 'http://localhost:5173'],
   credentials: true,
   optionsSuccessStatus: 200
 };
 
 app.use(cors(corsOptions));
+
+// Handle preflight requests for all routes
+app.options('*', cors(corsOptions));
 app.use(express.json());
 
 // Supabase connection
