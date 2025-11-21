@@ -139,15 +139,15 @@ export default function Inventory() {
       const res = await axios.get(`${API_BASE}/api/products`);
       
       const formatted = res.data.map(p => ({
-        id: p.Product_id,
-        name: p.Product_name,
-        sku: p.Product_sku,
-        category: p.Product_category,
-        stock: p.Product_stock,
-        threshold: p.reorder_level,
-        price: p.Product_price,
-        status: getProductStatus(p.Product_stock, p.reorder_level),
-        productStatus: p.Product_status || 'Active',
+        id: p.product_id || p.Product_id,
+        name: p.product_name || p.Product_name || '',
+        sku: p.product_sku || p.Product_sku || '',
+        category: p.product_category || p.Product_category || '',
+        stock: p.product_stock || p.Product_stock || 0,
+        threshold: p.reorder_level || 0,
+        price: p.product_price || p.Product_price || 0,
+        status: getProductStatus(p.product_stock || p.Product_stock || 0, p.reorder_level || 0),
+        productStatus: p.product_status || p.Product_status || 'Active',
         created_at: p.created_at,
         updated_at: p.updated_at
       }));
@@ -218,10 +218,10 @@ export default function Inventory() {
   );
 
   // Get unique categories for filter
-  const uniqueCategories = ['All', ...new Set(inventory.map(item => item.category))];
+  const uniqueCategories = ['All', ...new Set(inventory.map(item => item.category || ''))];
 
   // Get unique statuses for filter
-  const uniqueStatuses = ['All', ...new Set(inventory.map(item => item.status))];
+  const uniqueStatuses = ['All', ...new Set(inventory.map(item => item.status || ''))];
 
   const handleOpenModal = (item, idx) => {
     if (item) {
@@ -273,13 +273,13 @@ export default function Inventory() {
         await axios.put(`${API_BASE}/api/products/${id}`, newItem);
         const res = await axios.get(`${API_BASE}/api/products`);
         setInventory(res.data.map(p => ({
-          id: p.Product_id,
-          name: p.Product_name,
-          sku: p.Product_sku,
-          category: p.Product_category,
-          stock: p.Product_stock,
-          threshold: p.reorder_level,
-          status: p.Product_status || 'Active'
+          id: p.product_id || p.Product_id,
+          name: p.product_name || p.Product_name || '',
+          sku: p.product_sku || p.Product_sku || '',
+          category: p.product_category || p.Product_category || '',
+          stock: p.product_stock || p.Product_stock || 0,
+          threshold: p.reorder_level || 0,
+          status: p.product_status || p.Product_status || 'Active'
         })));
         setSnackbarMsg("Item updated successfully!");
       } else {
@@ -312,13 +312,13 @@ export default function Inventory() {
         await axios.delete(`${API_BASE}/api/products/${id}`);
         const res = await axios.get(`${API_BASE}/api/products`);
         setInventory(res.data.map(p => ({
-          id: p.Product_id,
-          name: p.Product_name,
-          sku: p.Product_sku,
-          category: p.Product_category,
-          stock: p.Product_stock,
-          threshold: p.reorder_level,
-          status: p.Product_status || 'Active'
+          id: p.product_id || p.Product_id,
+          name: p.product_name || p.Product_name || '',
+          sku: p.product_sku || p.Product_sku || '',
+          category: p.product_category || p.Product_category || '',
+          stock: p.product_stock || p.Product_stock || 0,
+          threshold: p.reorder_level || 0,
+          status: p.product_status || p.Product_status || 'Active'
         })));
         setSnackbarMsg("Item deleted successfully!");
       } catch (err) {
