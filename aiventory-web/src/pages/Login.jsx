@@ -187,7 +187,7 @@ const Login = () => {
             }} 
           />
           <Typography variant="h4" fontWeight={700} mb={1}>
-            AIVENTORY
+            AIVENTORYs
           </Typography>
           <Typography variant="h6" fontWeight={500} mb={1}>
             SMART INVENTORY MANAGEMENT
