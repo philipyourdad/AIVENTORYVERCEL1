@@ -498,6 +498,3 @@ const AlertCard = ({
 };
 
 export default Dashboard;
-
-/ /   T r i g g e r   d e p l o y m e n t   1 1 / 2 8 / 2 0 2 5   1 3 : 4 4 : 2 1  
- 
