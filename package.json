@@ -1,0 +1,21 @@
+{
+  "name": "aiventory",
+  "version": "1.0.0",
+  "description": "AIVentory - AI-Powered Inventory Management System",
+  "main": "index.js",
+  "scripts": {
+    "start": "cd aiventory-web/server && npm start",
+    "dev": "cd aiventory-web/server && npm run dev",
+    "postinstall": "cd aiventory-web/server && npm install"
+  },
+  "keywords": [
+    "inventory",
+    "management",
+    "ai",
+    "supabase",
+    "nodejs",
+    "express"
+  ],
+  "author": "AIVentory Team",
+  "license": "MIT"
+}

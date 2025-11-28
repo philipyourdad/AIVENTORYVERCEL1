@@ -1,0 +1,1 @@
+web: cd aiventory-web/server && npm start
