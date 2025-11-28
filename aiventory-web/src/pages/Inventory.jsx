@@ -373,13 +373,13 @@ export default function Inventory() {
     if (!form.name || !form.sku || !form.category || form.stock === '' || form.threshold === '') return;
 
     const newItem = {
-      Product_name: form.name,
-      Product_sku: form.sku,
-      Product_price: Number(form.price) || 0,
-      Product_category: form.category,
+      product_name: form.name,
+      product_sku: form.sku,
+      product_price: Number(form.price) || 0,
+      product_category: form.category,
       reorder_level: Number(form.threshold),
       supplier_id: 1, // Set default supplier_id to avoid null constraint
-      Product_status: 'Active' // Set default status
+      product_status: 'Active' // Set default status
     };
 
     try {
@@ -539,15 +539,15 @@ export default function Inventory() {
 
       console.log("Updating stock for item:", selectedItem.id, "New stock:", newStock);
       
-      // Prepare the data with all required fields
+      // Prepare the data with all required fields using correct Supabase field names
       const updateData = {
-        Product_name: selectedItem.name,
-        Product_sku: selectedItem.sku,
-        Product_category: selectedItem.category,
-        Product_stock: newStock,
-        Product_price: selectedItem.price,
+        product_name: selectedItem.name,
+        product_sku: selectedItem.sku,
+        product_category: selectedItem.category,
+        product_stock: newStock,
+        product_price: selectedItem.price,
         reorder_level: selectedItem.threshold,
-        Product_status: selectedItem.productStatus || 'Active'
+        product_status: selectedItem.productStatus || 'Active'
       };
 
       // Update in database
