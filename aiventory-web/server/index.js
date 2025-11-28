@@ -15,7 +15,25 @@ const app = express();
 
 // Configure CORS to allow requests from Vercel frontend
 const corsOptions = {
-  origin: ['https://aiventory1vercel.vercel.app', 'http://localhost:5173'],
+  origin: function (origin, callback) {
+    // Allow requests with no origin (like mobile apps, curl, etc.)
+    if (!origin) return callback(null, true);
+    
+    // List of allowed origins
+    const allowedOrigins = [
+      'https://aiventory1vercel.vercel.app',
+      'http://localhost:5173',
+      'http://localhost:4173',
+      'http://localhost:4174'
+    ];
+    
+    // Check if the origin is in our allowed list or is a Vercel preview URL
+    if (allowedOrigins.indexOf(origin) !== -1 || origin.includes('vercel.app')) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true,
   optionsSuccessStatus: 200
 };
