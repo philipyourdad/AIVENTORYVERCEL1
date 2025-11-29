@@ -265,20 +265,30 @@ app.get("/api/suppliers", async (req, res) => {
 // Add new product
 app.post("/api/products", async (req, res) => {
   try {
-    // Map frontend field names to Supabase field names (use lowercase to match database schema)
-    const productData = {
-      product_name: req.body.Product_name || req.body.product_name,
-      product_sku: req.body.Product_sku || req.body.product_sku,
-      product_price: req.body.Product_price || req.body.product_price,
-      product_stock: req.body.Product_stock !== undefined ? req.body.Product_stock : (req.body.product_stock !== undefined ? req.body.product_stock : 0),
-      product_status: req.body.Product_status || req.body.product_status || 'Active',
-      reorder_level: req.body.reorder_level || 10,
-      supplier_id: req.body.supplier_id || 1
+    // Extract values from request (handle both cases)
+    const name = req.body.Product_name || req.body.product_name;
+    const sku = req.body.Product_sku || req.body.product_sku;
+    const price = req.body.Product_price || req.body.product_price;
+    const stock = req.body.Product_stock !== undefined ? req.body.Product_stock : (req.body.product_stock !== undefined ? req.body.product_stock : 0);
+    const status = req.body.Product_status || req.body.product_status || 'Active';
+    const category = req.body.Product_category || req.body.product_category;
+    const reorderLevel = req.body.reorder_level || 10;
+    const supplierId = req.body.supplier_id || 1;
+    
+    // Try lowercase first (PostgreSQL default)
+    let productData = {
+      product_name: name,
+      product_sku: sku,
+      product_price: price,
+      product_stock: stock,
+      product_status: status,
+      reorder_level: reorderLevel,
+      supplier_id: supplierId
     };
     
     // Only include product_category if it's provided
-    if (req.body.Product_category !== undefined || req.body.product_category !== undefined) {
-      productData.product_category = req.body.Product_category || req.body.product_category;
+    if (category !== undefined && category !== null && category !== '') {
+      productData.product_category = category;
     }
     
     let data, error;
@@ -287,30 +297,62 @@ app.post("/api/products", async (req, res) => {
       .insert(productData)
       .select());
     
-    // If error is about product_category column not found, retry without it
-    if (error && (error.message?.includes('product_category') || error.message?.includes('Product_category') || error.message?.includes('schema cache'))) {
-      console.warn("⚠️ product_category column issue detected, retrying without it");
-      const productDataWithoutCategory = { ...productData };
-      delete productDataWithoutCategory.product_category;
+    // If lowercase fails, try capitalized column names
+    if (error && (error.message?.includes('column') || error.message?.includes('schema cache'))) {
+      console.warn("⚠️ Trying capitalized column names...");
+      const productDataCapitalized = {
+        Product_name: name,
+        Product_sku: sku,
+        Product_price: price,
+        Product_stock: stock,
+        Product_status: status,
+        reorder_level: reorderLevel,
+        supplier_id: supplierId
+      };
+      
+      if (category !== undefined && category !== null && category !== '') {
+        productDataCapitalized.Product_category = category;
+      }
       
       ({ data, error } = await supabase
         .from('product')
-        .insert(productDataWithoutCategory)
+        .insert(productDataCapitalized)
         .select());
+      
+      // If still fails and it's about category, retry without it
+      if (error && (error.message?.includes('category') || error.message?.includes('Category'))) {
+        console.warn("⚠️ Retrying without product_category column...");
+        delete productDataCapitalized.Product_category;
+        
+        ({ data, error } = await supabase
+          .from('product')
+          .insert(productDataCapitalized)
+          .select());
+      }
     }
     
     if (error) {
       console.error("❌ Add Product Error:", error.message);
-      console.error("❌ Product Data:", productData);
+      console.error("❌ Error Details:", error);
+      console.error("❌ Product Data Attempted:", productData);
       return res.status(500).json({ 
         error: "Database error", 
-        message: error.message
+        message: error.message,
+        details: error
+      });
+    }
+    
+    if (!data || data.length === 0) {
+      return res.status(500).json({ 
+        error: "Database error", 
+        message: "Product was not created"
       });
     }
     
     res.status(201).json(data[0]);
   } catch (err) {
     console.error("❌ Add Product Error:", err);
+    console.error("❌ Stack:", err.stack);
     return res.status(500).json({ 
       error: "Database error", 
       message: err.message
