@@ -265,25 +265,43 @@ app.get("/api/suppliers", async (req, res) => {
 // Add new product
 app.post("/api/products", async (req, res) => {
   try {
-    // Map frontend field names to Supabase field names
+    // Map frontend field names to Supabase field names (use lowercase to match database schema)
     const productData = {
-      Product_name: req.body.Product_name || req.body.product_name,
-      Product_sku: req.body.Product_sku || req.body.product_sku,
-      Product_price: req.body.Product_price || req.body.product_price,
-      Product_stock: req.body.Product_stock || req.body.product_stock,
-      Product_status: req.body.Product_status || req.body.product_status || 'Active',
-      Product_category: req.body.Product_category || req.body.product_category,
-      reorder_level: req.body.reorder_level || req.body.reorder_level,
-      supplier_id: req.body.supplier_id || req.body.supplier_id
+      product_name: req.body.Product_name || req.body.product_name,
+      product_sku: req.body.Product_sku || req.body.product_sku,
+      product_price: req.body.Product_price || req.body.product_price,
+      product_stock: req.body.Product_stock !== undefined ? req.body.Product_stock : (req.body.product_stock !== undefined ? req.body.product_stock : 0),
+      product_status: req.body.Product_status || req.body.product_status || 'Active',
+      reorder_level: req.body.reorder_level || 10,
+      supplier_id: req.body.supplier_id || 1
     };
     
-    const { data, error } = await supabase
+    // Only include product_category if it's provided
+    if (req.body.Product_category !== undefined || req.body.product_category !== undefined) {
+      productData.product_category = req.body.Product_category || req.body.product_category;
+    }
+    
+    let data, error;
+    ({ data, error } = await supabase
       .from('product')
       .insert(productData)
-      .select();
+      .select());
+    
+    // If error is about product_category column not found, retry without it
+    if (error && (error.message?.includes('product_category') || error.message?.includes('Product_category') || error.message?.includes('schema cache'))) {
+      console.warn("⚠️ product_category column issue detected, retrying without it");
+      const productDataWithoutCategory = { ...productData };
+      delete productDataWithoutCategory.product_category;
+      
+      ({ data, error } = await supabase
+        .from('product')
+        .insert(productDataWithoutCategory)
+        .select());
+    }
     
     if (error) {
       console.error("❌ Add Product Error:", error.message);
+      console.error("❌ Product Data:", productData);
       return res.status(500).json({ 
         error: "Database error", 
         message: error.message
@@ -305,33 +323,68 @@ app.put("/api/products/:id", async (req, res) => {
   try {
     const { id } = req.params;
     
-    // Map frontend field names to Supabase field names
-    const productData = {
-      Product_name: req.body.Product_name || req.body.product_name,
-      Product_sku: req.body.Product_sku || req.body.product_sku,
-      Product_price: req.body.Product_price || req.body.product_price,
-      Product_stock: req.body.Product_stock || req.body.product_stock,
-      Product_status: req.body.Product_status || req.body.product_status || 'Active',
-      Product_category: req.body.Product_category || req.body.product_category,
-      reorder_level: req.body.reorder_level || req.body.reorder_level,
-      supplier_id: req.body.supplier_id || req.body.supplier_id
-    };
+    // Map frontend field names to Supabase field names (use lowercase to match database schema)
+    // Only include fields that have values (not undefined/null)
+    const productData = {};
     
-    const { data, error } = await supabase
+    if (req.body.Product_name !== undefined || req.body.product_name !== undefined) {
+      productData.product_name = req.body.Product_name || req.body.product_name;
+    }
+    if (req.body.Product_sku !== undefined || req.body.product_sku !== undefined) {
+      productData.product_sku = req.body.Product_sku || req.body.product_sku;
+    }
+    if (req.body.Product_price !== undefined || req.body.product_price !== undefined) {
+      productData.product_price = req.body.Product_price || req.body.product_price;
+    }
+    if (req.body.Product_stock !== undefined || req.body.product_stock !== undefined) {
+      productData.product_stock = req.body.Product_stock !== undefined ? req.body.Product_stock : req.body.product_stock;
+    }
+    if (req.body.Product_status !== undefined || req.body.product_status !== undefined) {
+      productData.product_status = req.body.Product_status || req.body.product_status || 'Active';
+    }
+    if (req.body.Product_category !== undefined || req.body.product_category !== undefined) {
+      productData.product_category = req.body.Product_category || req.body.product_category;
+    }
+    if (req.body.reorder_level !== undefined) {
+      productData.reorder_level = req.body.reorder_level;
+    }
+    if (req.body.supplier_id !== undefined) {
+      productData.supplier_id = req.body.supplier_id;
+    }
+    
+    // Add updated_at timestamp
+    productData.updated_at = new Date().toISOString();
+    
+    let data, error;
+    ({ data, error } = await supabase
       .from('product')
       .update(productData)
       .eq('product_id', id)
-      .select();
+      .select());
+    
+    // If error is about product_category column not found, retry without it
+    if (error && (error.message?.includes('product_category') || error.message?.includes('Product_category') || error.message?.includes('schema cache'))) {
+      console.warn("⚠️ product_category column issue detected, retrying without it");
+      const productDataWithoutCategory = { ...productData };
+      delete productDataWithoutCategory.product_category;
+      
+      ({ data, error } = await supabase
+        .from('product')
+        .update(productDataWithoutCategory)
+        .eq('product_id', id)
+        .select());
+    }
     
     if (error) {
       console.error("❌ Update Product Error:", error.message);
+      console.error("❌ Product Data:", productData);
       return res.status(500).json({ 
         error: "Database error", 
         message: error.message
       });
     }
     
-    if (data.length === 0) {
+    if (!data || data.length === 0) {
       return res.status(404).json({ error: "Product not found" });
     }
     
@@ -362,7 +415,7 @@ app.delete("/api/products/:id", async (req, res) => {
       });
     }
     
-    if (data.length === 0) {
+    if (!data || data.length === 0) {
       return res.status(404).json({ error: "Product not found" });
     }
     
