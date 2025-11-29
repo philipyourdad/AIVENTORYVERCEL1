@@ -51,15 +51,17 @@ const formatCurrency = (amount) => {
 // Helper function to generate stock demand data using ML predictions
 const generateMLStockDemandData = async (product, days = 7) => {
   try {
+    // Get product ID with fallback to handle both lowercase and uppercase field names
+    const productId = product.product_id ?? product.Product_id ?? product.id;
     // Fetch ML predictions
-    const response = await fetch(`${ML_SERVICE_BASE}/api/predictions/${product.Product_id}`);
+    const response = await fetch(`${ML_SERVICE_BASE}/api/predictions/${productId}`);
     if (response.ok) {
       const predictionData = await response.json();
       
       // Process predictions for daily data
       const data = [];
       const currentDate = new Date();
-      const currentStock = product.Product_stock || 0;
+      const currentStock = product.product_stock ?? product.Product_stock ?? product.stock ?? 0;
       const threshold = product.reorder_level || Math.floor(currentStock * 0.2);
       
       for (let i = 0; i < days; i++) {
@@ -98,7 +100,7 @@ const generateMLStockDemandData = async (product, days = 7) => {
 const generateSimulatedStockDemandData = (product, days = 7) => {
   const data = [];
   const currentDate = new Date();
-  const currentStock = product.Product_stock || 0;
+  const currentStock = product.product_stock ?? product.Product_stock ?? product.stock ?? 0;
   const threshold = product.reorder_level || Math.floor(currentStock * 0.2);
   
   // Calculate average daily usage based on historical data or current stock
@@ -130,8 +132,10 @@ const generateSimulatedStockDemandData = (product, days = 7) => {
 // Generate monthly stock demand data using ML
 const generateMonthlyStockData = async (product) => {
   try {
+    // Get product ID with fallback to handle both lowercase and uppercase field names
+    const productId = product.product_id ?? product.Product_id ?? product.id;
     // Fetch ML predictions
-    const response = await fetch(`${ML_SERVICE_BASE}/api/predictions/${product.Product_id}`);
+    const response = await fetch(`${ML_SERVICE_BASE}/api/predictions/${productId}`);
     if (response.ok) {
       const predictionData = await response.json();
       
@@ -145,7 +149,7 @@ const generateMonthlyStockData = async (product) => {
         months.push(monthName);
       }
       
-      const currentStock = product.Product_stock || 0;
+      const currentStock = product.product_stock ?? product.Product_stock ?? product.stock ?? 0;
       const threshold = product.reorder_level || Math.floor(currentStock * 0.2);
       
       return months.map((month, index) => {
@@ -198,7 +202,7 @@ const generateSimulatedMonthlyStockData = (product) => {
     months.push(monthName);
   }
   
-  const currentStock = product.Product_stock || 0;
+  const currentStock = product.product_stock ?? product.Product_stock ?? product.stock ?? 0;
   const avgMonthlyUsage = Math.max(10, Math.floor(currentStock * 1.5));
   const threshold = product.reorder_level || Math.floor(currentStock * 0.2);
   
@@ -219,8 +223,10 @@ const generateSimulatedMonthlyStockData = (product) => {
 // Generate yearly stock demand data using ML
 const generateYearlyStockData = async (product) => {
   try {
+    // Get product ID with fallback to handle both lowercase and uppercase field names
+    const productId = product.product_id ?? product.Product_id ?? product.id;
     // Fetch ML predictions
-    const response = await fetch(`${ML_SERVICE_BASE}/api/predictions/${product.Product_id}`);
+    const response = await fetch(`${ML_SERVICE_BASE}/api/predictions/${productId}`);
     if (response.ok) {
       const predictionData = await response.json();
       
@@ -231,7 +237,7 @@ const generateYearlyStockData = async (product) => {
         years.push(currentYear + i);
       }
       
-      const currentStock = product.Product_stock || 0;
+      const currentStock = product.product_stock ?? product.Product_stock ?? product.stock ?? 0;
       const threshold = product.reorder_level || Math.floor(currentStock * 0.2);
       
       return years.map((year, index) => {
@@ -274,7 +280,7 @@ const generateSimulatedYearlyStockData = (product) => {
     years.push(currentYear + i);
   }
   
-  const currentStock = product.Product_stock || 0;
+  const currentStock = product.product_stock ?? product.Product_stock ?? product.stock ?? 0;
   const baseYearlyDemand = Math.max(200, Math.floor(currentStock * 12));
   const threshold = product.reorder_level || Math.floor(currentStock * 0.2);
   
@@ -344,14 +350,23 @@ export default function Analysis() {
         const response = await fetch(`${API_BASE}/api/products`);
         const products = await response.json();
         
-        const foundProduct = products.find(p => 
-          p.Product_sku === sku || p.Product_id === sku
-        );
+        // Check for product using both lowercase and uppercase field names
+        const foundProduct = products.find(p => {
+          if (!p) return false;
+          // Try all possible field name variations
+          const productSku = p.product_sku || p.Product_sku || p.sku;
+          const productId = p.product_id || p.Product_id || p.id;
+          return productSku === sku || String(productId) === String(sku);
+        });
         
         if (foundProduct) {
           setProduct(foundProduct);
         } else {
-          console.error('Product not found');
+          console.error('Product not found for SKU:', sku);
+          console.error('Available products:', products.map(p => ({
+            id: p.product_id || p.Product_id || p.id,
+            sku: p.product_sku || p.Product_sku || p.sku
+          })));
         }
       } catch (error) {
         console.error('Error fetching product:', error);
@@ -385,9 +400,9 @@ export default function Analysis() {
         }
         const raw = await response.json();
         const list = Array.isArray(raw) ? raw : [];
-        const productId = String(product.Product_id ?? product.ProductID ?? '');
-        const productSku = String(product.Product_sku ?? '').toLowerCase();
-        const productName = String(product.Product_name ?? '').toLowerCase();
+        const productId = String(product.product_id ?? product.Product_id ?? product.ProductID ?? product.id ?? '');
+        const productSku = String(product.product_sku ?? product.Product_sku ?? product.sku ?? '').toLowerCase();
+        const productName = String(product.product_name ?? product.Product_name ?? product.name ?? '').toLowerCase();
 
         const normalized = list
           .map((invoice) => {
@@ -478,7 +493,7 @@ export default function Analysis() {
   const calculateSummaryStats = () => {
     if (!product) return null;
     
-    const currentStock = product.Product_stock || 0;
+    const currentStock = product.product_stock ?? product.Product_stock ?? product.stock ?? 0;
     const threshold = product.reorder_level || Math.floor(currentStock * 0.2);
     const avgDailyUsage = Math.max(1, Math.ceil(currentStock / 30));
     const daysUntilRestock = currentStock > threshold ? Math.floor((currentStock - threshold) / avgDailyUsage) : 0;
@@ -623,7 +638,7 @@ export default function Analysis() {
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 3 }}>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
             <Typography variant="h5" fontWeight={800} color="#2E3A8C">
-              Stock Demand Analysis: {product.Product_name} (SKU: {product.Product_sku || product.Product_id})
+              Stock Demand Analysis: {product.product_name || product.Product_name || product.name || 'Unknown Product'} (SKU: {product.product_sku || product.Product_sku || product.sku || product.product_id || product.Product_id || product.id})
             </Typography>
             <Chip 
               label={mlStatus.connected ? "AI-Powered" : "Simulated"} 
