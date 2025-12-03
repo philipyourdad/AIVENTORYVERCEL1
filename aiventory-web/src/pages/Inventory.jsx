@@ -634,7 +634,7 @@ export default function Inventory() {
         <Box display="flex" justifyContent="space-between" alignItems="center" mb={3} flexWrap="wrap" gap={2}>
           <Box>
             <Typography variant="h4" fontWeight={800} sx={{ color: '#2E3A8C', mb: 0.5 }}>
-              Inventorys
+              Inventoryss
             </Typography>
             <Typography color="text.secondary">
 
