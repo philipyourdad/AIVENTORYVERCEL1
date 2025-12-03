@@ -28,35 +28,38 @@ const NotificationManager = () => {
         const alerts = [];
         
         products.forEach(product => {
-          const stock = Number(product.Product_stock || 0);
-          const threshold = Number(product.reorder_level || 0);
+          // Handle various field name conventions
+          const productId = product.product_id || product.Product_id || product.id || 'unknown';
+          const productName = product.product_name || product.Product_name || product.name || 'Unknown Product';
+          const stock = Number(product.product_stock || product.Product_stock || product.stock || 0);
+          const threshold = Number(product.reorder_level || product.threshold || 0);
           
           // Only create alerts for actual stock issues
           if (stock <= 0) {
             alerts.push({
-              id: `out_of_stock_${product.Product_id}`,
+              id: `out_of_stock_${productId}`,
               type: 'out_of_stock',
-              message: `${product.Product_name} is out of stock`,
-              productId: product.Product_id,
-              productName: product.Product_name,
+              message: `${productName} is out of stock`,
+              productId: productId,
+              productName: productName,
               stock: stock
             });
           } else if (stock <= threshold) {
             alerts.push({
-              id: `critical_${product.Product_id}`,
+              id: `critical_${productId}`,
               type: 'critical',
-              message: `${product.Product_name} is below reorder level (${stock}/${threshold})`,
-              productId: product.Product_id,
-              productName: product.Product_name,
+              message: `${productName} is below reorder level (${stock}/${threshold})`,
+              productId: productId,
+              productName: productName,
               stock: stock
             });
           } else if (stock <= threshold * 1.5) {
             alerts.push({
-              id: `low_stock_${product.Product_id}`,
+              id: `low_stock_${productId}`,
               type: 'low_stock',
-              message: `${product.Product_name} is running low (${stock}/${threshold})`,
-              productId: product.Product_id,
-              productName: product.Product_name,
+              message: `${productName} is running low (${stock}/${threshold})`,
+              productId: productId,
+              productName: productName,
               stock: stock
             });
           }

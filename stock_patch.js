@@ -77,8 +77,8 @@ app.patch("/api/items/:id/stock", async (req, res) => {
         .from('notifications')
         .insert({
           title: 'Low Stock Alert',
-          message: `${product.product_name} is running low (${newStock} units left). Threshold: ${product.reorder_level}`,
-          item_name: product.product_name,
+          message: `${product.product_name || product.Product_name || 'Product'} is running low (${newStock} units left). Threshold: ${product.reorder_level || product.threshold || 0}`,
+          item_name: product.product_name || product.Product_name || 'Product',
           action: 'low_stock',
           user_name: user_name || 'System',
           user_id: staffId
