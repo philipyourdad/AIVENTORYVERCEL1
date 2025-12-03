@@ -108,7 +108,7 @@ export default function Inventory() {
   const [categoryFilter, setCategoryFilter] = useState('All');
   const [statusFilter, setStatusFilter] = useState('All');
   const [page, setPage] = useState(1);
-  const itemsPerPage = 8;
+  const itemsPerPage = 100;
   const navigate = useNavigate();
 
   // Function to determine product status based on stock levels
@@ -634,7 +634,7 @@ export default function Inventory() {
         <Box display="flex" justifyContent="space-between" alignItems="center" mb={3} flexWrap="wrap" gap={2}>
           <Box>
             <Typography variant="h4" fontWeight={800} sx={{ color: '#2E3A8C', mb: 0.5 }}>
-              Inventoryss
+              Inventory
             </Typography>
             <Typography color="text.secondary">
 
