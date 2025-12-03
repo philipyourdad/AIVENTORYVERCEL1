@@ -215,9 +215,11 @@ app.post("/api/login", async (req, res) => {
 // Get all products
 app.get("/api/products", async (req, res) => {
   try {
+    // Fetch all products without the default 1000 row limit
     const { data, error } = await supabase
       .from('product')
-      .select('*');
+      .select('*')
+      .limit(10000); // Increase limit to accommodate larger inventories
     
     if (error) {
       console.error("❌ Fetch Products Error:", error.message);
