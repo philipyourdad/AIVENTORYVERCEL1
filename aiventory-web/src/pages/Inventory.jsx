@@ -108,7 +108,7 @@ export default function Inventory() {
   const [categoryFilter, setCategoryFilter] = useState('All');
   const [statusFilter, setStatusFilter] = useState('All');
   const [page, setPage] = useState(1);
-  const itemsPerPage = 100;
+  const itemsPerPage = 200;
   const navigate = useNavigate();
 
   // Function to determine product status based on stock levels
@@ -140,6 +140,7 @@ export default function Inventory() {
       const res = await axios.get(`${API_BASE}/api/products`);
       
       console.log('📥 Raw response from API:', res.data);
+      console.log(`📈 Received ${res.data.length} products from API`);
       
       // Enhanced data mapping to handle various field name conventions
       const formatted = res.data.map(p => {
@@ -185,6 +186,7 @@ export default function Inventory() {
       
       setInventory(formatted);
       setTotalItems(formatted.length);
+      console.log(`📊 Setting inventory state with ${formatted.length} items`);
       setFetchError(null);
       
       console.log(`✅ Successfully synced ${formatted.length} products from database`);
@@ -765,7 +767,7 @@ export default function Inventory() {
                 <Box display="flex" justifyContent="space-between">
                   <Box>
                     <Typography color="text.secondary" variant="body2">Total Items</Typography>
-                    <Typography variant="h4" fontWeight={700}>{inventory.length}</Typography>
+                    <Typography variant="h4" fontWeight={700}>{totalItems}</Typography>
                   </Box>
                   <Box sx={{ bgcolor: '#2E3A8C10', borderRadius: '100%', width: 48, height: 48, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     <InventoryIcon sx={{ color: '#2E3A8C' }} />

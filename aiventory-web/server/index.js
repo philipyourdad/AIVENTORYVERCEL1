@@ -215,21 +215,44 @@ app.post("/api/login", async (req, res) => {
 // Get all products
 app.get("/api/products", async (req, res) => {
   try {
-    // Fetch all products without any artificial limits
-    // Supabase by default returns all records when no range/limit is specified
-    const { data, error } = await supabase
-      .from('product')
-      .select('*');
+    // Fetch all products handling Supabase's default 1000 row limit
+    // We need to paginate through all records to get everything
+    let allProducts = [];
+    let currentPage = 0;
+    const pageSize = 1000; // Supabase default limit
+    let hasMore = true;
     
-    if (error) {
-      console.error("❌ Fetch Products Error:", error.message);
-      return res.status(500).json({ 
-        error: "Database error", 
-        message: error.message
-      });
+    while (hasMore) {
+      const { data, error } = await supabase
+        .from('product')
+        .select('*')
+        .range(currentPage * pageSize, (currentPage + 1) * pageSize - 1);
+      
+      if (error) {
+        console.error("❌ Fetch Products Error:", error.message);
+        return res.status(500).json({ 
+          error: "Database error", 
+          message: error.message
+        });
+      }
+      
+      // Add fetched products to our collection
+      allProducts = [...allProducts, ...data];
+      
+      console.log(`Fetched page ${currentPage}: ${data.length} products`);
+      
+      // Check if we've got fewer records than the page size
+      // which means we've reached the end
+      if (data.length < pageSize) {
+        hasMore = false;
+        console.log(`Reached end of products. Total fetched: ${allProducts.length}`);
+      } else {
+        currentPage++;
+      }
     }
     
-    res.json(data || []);
+    console.log(`Sending ${allProducts.length} products to frontend`);
+    res.json(allProducts);
   } catch (err) {
     console.error("❌ Fetch Products Error:", err);
     return res.status(500).json({ 
