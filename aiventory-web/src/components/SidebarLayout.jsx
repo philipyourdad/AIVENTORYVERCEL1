@@ -119,61 +119,92 @@ export default function SidebarLayout({ children }) {
             background: 'linear-gradient(180deg, #2E3A8C 0%, #1a246e 100%)',
             borderRight: 'none',
             color: '#fff',
-            transition: 'width 0.3s ease',
+            transition: 'width 0.3s ease, box-shadow 0.3s ease',
             overflowX: 'hidden',
+            boxShadow: '0 0 20px rgba(0,0,0,0.15)'
           },
         }}
       >
         <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
           {/* Logo Section */}
           <Box sx={{ 
-            p: { xs: 1, sm: 2 }, 
+            p: { xs: 1.5, sm: 2.5 }, 
             textAlign: 'center', 
-            borderBottom: '1px solid rgba(255,255,255,0.1)',
-            transition: 'padding 0.3s ease'
+            borderBottom: '1px solid rgba(255,255,255,0.15)',
+            transition: 'padding 0.3s ease',
+            position: 'relative'
           }}>
             <Box sx={{ 
               display: 'flex', 
               flexDirection: 'column', 
               alignItems: 'center', 
               justifyContent: 'center', 
-              gap: 1 
+              gap: 1.5 
             }}>
               <Avatar 
                 src="/assets/logo.jpg" 
                 alt="AIVENTORY Logo" 
                 sx={{ 
-                  width: isMobile || collapsed ? 40 : 50, 
-                  height: isMobile || collapsed ? 40 : 50,
-                  transition: 'all 0.3s ease'
+                  width: isMobile || collapsed ? 44 : 56, 
+                  height: isMobile || collapsed ? 44 : 56,
+                  transition: 'all 0.3s ease',
+                  boxShadow: '0 4px 12px rgba(0,0,0,0.2)',
+                  border: '2px solid rgba(255,255,255,0.2)'
                 }} 
               />
               {!collapsed && (
-                
                 <Box sx={{ textAlign: 'center' }}>
-                  <Typography variant="h6" sx={{ color: '#fff', fontWeight: 700, lineHeight: 1 }}>
+                  <Typography variant="h5" sx={{ color: '#fff', fontWeight: 800, lineHeight: 1, letterSpacing: 0.5 }}>
                     AIVENTORY
                   </Typography>
-                  <Typography variant="caption" sx={{ color: 'rgba(255,255,255,0.7)', fontSize: 10 }}>
-                    Inventory Management
+                  <Typography variant="caption" sx={{ color: 'rgba(255,255,255,0.8)', fontSize: 11, fontWeight: 500 }}>
+                    SMART INVENTORY
                   </Typography>
                 </Box>
               )}
             </Box>
+            
+            {/* Collapse Button */}
+            <IconButton
+              onClick={toggleCollapse}
+              sx={{
+                position: 'absolute',
+                right: -12,
+                top: '50%',
+                transform: 'translateY(-50%)',
+                bgcolor: '#fff',
+                color: '#2E3A8C',
+                width: 24,
+                height: 24,
+                borderRadius: '50%',
+                boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
+                '&:hover': {
+                  bgcolor: '#f0f0f0',
+                  transform: 'translateY(-50%) scale(1.1)'
+                },
+                transition: 'all 0.2s ease'
+              }}
+            >
+              {collapsed ? <ExpandIcon sx={{ fontSize: 16 }} /> : <CollapseIcon sx={{ fontSize: 16 }} />}
+            </IconButton>
           </Box>
 
           {/* Time Display */}
           <Box sx={{ 
-            p: { xs: 1, sm: 1.5 }, 
-            textAlign: 'center', 
-
+            p: { xs: 1.5, sm: 2 }, 
+            textAlign: 'center',
+            background: 'rgba(255,255,255,0.05)',
+            mb: 2,
+            borderRadius: '0 0 12px 12px',
+            mx: 1.5
           }}>
             <Typography 
               variant={{ xs: 'h6', sm: 'h5' }} 
               sx={{ 
                 color: '#fff' , 
-                fontWeight: 600,
-                display: 'block'
+                fontWeight: 700,
+                display: 'block',
+                textShadow: '0 1px 2px rgba(0,0,0,0.2)'
               }}
             >
               {formatTime(time)}
@@ -181,9 +212,10 @@ export default function SidebarLayout({ children }) {
             <Typography 
               variant="caption" 
               sx={{ 
-                color: '#fff', 
+                color: 'rgba(255,255,255,0.9)', 
                 display: 'block',
-                mt: 0.5
+                mt: 0.5,
+                fontWeight: 500
               }}
             >
               {formatDate(time)}
@@ -191,7 +223,7 @@ export default function SidebarLayout({ children }) {
           </Box>
 
           {/* Navigation Links */}
-          <List sx={{ flex: 1, py: 2 }}>
+          <List sx={{ flex: 1, py: 1, px: 1 }}>
             {navLinks.map(link => (
               <ListItem key={link.to} disablePadding sx={{ mb: 0.5 }}>
                 <Tooltip title={collapsed ? link.text : ''} placement="right">
@@ -200,35 +232,51 @@ export default function SidebarLayout({ children }) {
                     to={link.to}
                     selected={location.pathname === link.to}
                     sx={{
-                      minHeight: { xs: 40, sm: 48 },
-                      justifyContent: isMobile || collapsed ? 'center' : 'initial',
-                      px: { xs: 1.5, sm: 2.5 },
-                      mx: { xs: 0.5, sm: 1 },
+                      minHeight: 48,
                       borderRadius: 2,
-                      color: location.pathname === link.to ? '#fff' : 'rgba(255,255,255,0.7)',
-                      backgroundColor: location.pathname === link.to ? 'rgba(255,255,255,0.1)' : 'transparent',
+                      mb: 0.5,
+                      mx: 0.5,
+                      color: location.pathname === link.to ? '#fff' : 'rgba(255,255,255,0.8)',
+                      backgroundColor: location.pathname === link.to ? 'rgba(255,255,255,0.15)' : 'transparent',
                       '&:hover': {
-                        backgroundColor: 'rgba(255,255,255,0.15)',
+                        backgroundColor: location.pathname === link.to ? 'rgba(255,255,255,0.2)' : 'rgba(255,255,255,0.1)',
+                        color: '#fff',
+                        transform: 'translateX(2px)',
                       },
                       transition: 'all 0.2s ease',
+                      justifyContent: collapsed ? 'center' : 'initial',
+                      px: collapsed ? 2 : 2.5,
+                      py: 1.5
                     }}
                   >
                     <ListItemIcon 
                       sx={{ 
                         minWidth: 0, 
-                        mr: collapsed ? 0 : 3, 
+                        mr: collapsed ? 0 : 2, 
                         justifyContent: 'center',
-                        color: location.pathname === link.to ? '#fff' : 'rgba(255,255,255,0.7)',
+                        color: 'inherit',
+                        transition: 'margin 0.3s ease'
                       }}
                     >
                       {link.icon}
                     </ListItemIcon>
-                    {!collapsed && (
-                      <ListItemText 
-                        primary={link.text}
+                    <ListItemText 
+                      primary={link.text} 
+                      sx={{ 
+                        opacity: collapsed ? 0 : 1, 
+                        transition: 'opacity 0.3s ease',
+                        fontWeight: location.pathname === link.to ? 600 : 400
+                      }} 
+                    />
+                    {link.badge && (
+                      <Badge 
+                        badgeContent={link.badge} 
+                        color="error"
                         sx={{ 
-                          opacity: collapsed ? 0 : 1,
-                          transition: 'opacity 0.3s ease'
+                          '& .MuiBadge-badge': { 
+                            right: collapsed ? 'auto' : 0,
+                            top: collapsed ? 'auto' : 12
+                          }
                         }}
                       />
                     )}
@@ -238,15 +286,18 @@ export default function SidebarLayout({ children }) {
             ))}
           </List>
 
-          <Divider sx={{ bgcolor: 'rgba(255,255,255,0.1)', mx: 2 }} />
-
-          {/* Profile Section */}
-          <Box sx={{ p: { xs: 1, sm: 2 } }}>
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+          {/* User Profile Section */}
+          <Box sx={{ p: 2, borderTop: '1px solid rgba(255,255,255,0.1)' }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
               <Avatar 
                 src={getProfilePicture()} 
                 alt={userName} 
-                sx={{ width: 40, height: 40 }} 
+                sx={{ 
+                  width: collapsed ? 36 : 40, 
+                  height: collapsed ? 36 : 40,
+                  transition: 'all 0.3s ease',
+                  border: '2px solid rgba(255,255,255,0.2)'
+                }} 
               />
               {!collapsed && (
                 <Box sx={{ flex: 1, minWidth: 0 }}>
@@ -262,97 +313,54 @@ export default function SidebarLayout({ children }) {
                   >
                     {userName}
                   </Typography>
-                  <Typography 
-                    variant="caption" 
+                  <Chip 
+                    label={userRole} 
+                    size="small" 
                     sx={{ 
-                      color: 'rgba(255,255,255,0.7)',
-                      display: 'block'
-                    }}
-                  >
-                    {userRole}
-                  </Typography>
+                      bgcolor: 'rgba(255,255,255,0.15)', 
+                      color: '#fff',
+                      fontWeight: 500,
+                      height: 20,
+                      fontSize: 10
+                    }} 
+                  />
                 </Box>
               )}
               <IconButton 
-                onClick={toggleCollapse}
+                component={Link}
+                to="/login"
                 sx={{ 
-                  color: 'rgba(255,255,255,0.7)',
+                  color: 'rgba(255,255,255,0.8)',
+                  p: 0.5,
                   '&:hover': {
-                    color: '#fff',
-                    bgcolor: 'rgba(255,255,255,0.1)'
+                    bgcolor: 'rgba(255,255,255,0.1)',
+                    color: '#fff'
                   }
                 }}
               >
-                {collapsed ? <ExpandIcon /> : <CollapseIcon />}
+                <LogoutIcon sx={{ fontSize: 20 }} />
               </IconButton>
             </Box>
-            
-            {/* Logout Button */}
-            {!collapsed && (
-              <Box sx={{ mt: 2 }}>
-                <ListItemButton
-                  component={Link}
-                  to="/"
-                  onClick={() => {
-                    localStorage.removeItem('token');
-                    localStorage.removeItem('role');
-                    localStorage.removeItem('user');
-                  }}
-                  sx={{
-                    minHeight: { xs: 36, sm: 40 },
-                    justifyContent: 'center',
-                    px: { xs: 1, sm: 2 },
-                    borderRadius: 2,
-                    color: 'rgba(255,255,255,0.9)',
-                    backgroundColor: 'rgba(255,65,65,0.15)',
-                    '&:hover': {
-                      backgroundColor: 'rgba(255,65,65,0.25)',
-                    },
-                  }}
-                >
-                  <ListItemIcon sx={{ 
-                    minWidth: 0, 
-                    mr: 1.5, 
-                    justifyContent: 'center',
-                    color: 'rgba(255,255,255,0.9)',
-                  }}>
-                    <LogoutIcon />
-                  </ListItemIcon>
-                  <ListItemText primary="Logout" />
-                  <Chip 
-                    label="NEW" 
-                    size="small" 
-                    sx={{ 
-                      height: { xs: 16, sm: 18 }, 
-                      fontSize: { xs: 8, sm: 10 },
-                      bgcolor: 'rgba(255,255,255,0.15)',
-                      color: 'rgba(255,255,255,0.9)',
-                      '& .MuiChip-label': {
-                        px: 0.5
-                      }
-                    }} 
-                  />
-                </ListItemButton>
-              </Box>
-            )}
           </Box>
         </Box>
       </Drawer>
-
+      
+      {/* Main Content Area */}
       <Box
         component="main"
         sx={{
           flexGrow: 1,
-          bgcolor: 'var(--page-bg)',
           minHeight: '100vh',
-          px: { xs: 1, sm: 2, md: 3 },
-          pt: { xs: 2, md: 4 },
-          pb: { xs: 2, md: 4 },
+          background: 'linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%)',
+          p: 0,
+          transition: 'margin 0.3s ease',
+          ml: isMobile ? 0 : (collapsed ? `${collapsedWidth}px` : `${drawerWidth}px`),
         }}
       >
         {children}
-        <NotificationManager />
       </Box>
+      
+      <NotificationManager />
     </Box>
   );
 }

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Snackbar, Alert, IconButton, Slide } from '@mui/material';
+import { Snackbar, Alert, IconButton, Slide, Typography } from '@mui/material';
 import { Close as CloseIcon, Error as ErrorIcon, Warning as WarningIcon, Info as InfoIcon } from '@mui/icons-material';
 
 const NotificationToast = ({ notification, onClose }) => {
@@ -66,29 +66,69 @@ const NotificationToast = ({ notification, onClose }) => {
     }
   };
 
+  const getColorScheme = () => {
+    switch (notification.type) {
+      case 'out_of_stock':
+      case 'critical':
+        return {
+          bg: '#FF6B6B',
+          border: '#FF5252',
+          text: '#FFFFFF'
+        };
+      case 'warning':
+      case 'low_stock':
+        return {
+          bg: '#F4A261',
+          border: '#E76F51',
+          text: '#FFFFFF'
+        };
+      default:
+        return {
+          bg: '#2E3A8C',
+          border: '#1a246e',
+          text: '#FFFFFF'
+        };
+    }
+  };
+
+  const colorScheme = getColorScheme();
+
   return (
     <Snackbar
       open={open}
-      autoHideDuration={6000}
+      autoHideDuration={8000}
       onClose={handleClose}
       anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
       TransitionComponent={Slide}
-      sx={{ mb: 2 }}
+      sx={{ 
+        mb: 3,
+        mr: 3
+      }}
     >
       <Alert
         icon={getIcon()}
         onClose={handleClose}
         severity={getSeverity()}
-        variant="filled"
+        variant="standard"
         sx={{ 
           width: '100%', 
-          minWidth: 350,
-          maxWidth: 400,
-          borderRadius: 1, // Square corners like Microsoft
-          boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.15)',
+          minWidth: 380,
+          maxWidth: 420,
+          borderRadius: 2,
+          boxShadow: '0 8px 24px rgba(0, 0, 0, 0.15)',
+          border: `1px solid ${colorScheme.border}`,
+          background: `linear-gradient(135deg, ${colorScheme.bg} 0%, ${colorScheme.bg}DD 100%)`,
+          color: colorScheme.text,
+          backdropFilter: 'blur(10px)',
+          '& .MuiAlert-icon': {
+            color: colorScheme.text,
+            fontSize: 28
+          },
           '& .MuiAlert-message': {
             width: '100%',
-            paddingRight: 2
+            paddingRight: 4,
+            paddingTop: 1,
+            paddingBottom: 1
           }
         }}
         action={
@@ -99,18 +139,38 @@ const NotificationToast = ({ notification, onClose }) => {
             onClick={handleClose}
             sx={{ 
               position: 'absolute',
-              top: 8,
-              right: 8,
-              padding: 0.5
+              top: 12,
+              right: 12,
+              padding: 0.5,
+              color: colorScheme.text,
+              '&:hover': {
+                backgroundColor: 'rgba(255,255,255,0.1)'
+              }
             }}
           >
             <CloseIcon fontSize="small" />
           </IconButton>
         }
       >
-        <strong>{getTitle()}</strong>
-        <br />
-        {notification.message}
+        <Typography 
+          variant="subtitle1" 
+          fontWeight={700}
+          sx={{ 
+            mb: 0.5,
+            color: colorScheme.text
+          }}
+        >
+          {getTitle()}
+        </Typography>
+        <Typography 
+          variant="body2" 
+          sx={{ 
+            color: colorScheme.text,
+            opacity: 0.9
+          }}
+        >
+          {notification.message}
+        </Typography>
       </Alert>
     </Snackbar>
   );
