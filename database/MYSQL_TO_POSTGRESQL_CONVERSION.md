@@ -54,3 +54,4 @@ This document explains how to convert the MySQL dump file (`aiventory-1 (1).sql`
 - Review all AUTO_INCREMENT columns and convert to SERIAL
 - Test the conversion on a small subset first
 
+

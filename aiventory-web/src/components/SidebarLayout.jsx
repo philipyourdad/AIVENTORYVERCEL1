@@ -106,22 +106,25 @@ export default function SidebarLayout({ children }) {
     return date.toLocaleDateString([], { weekday: 'short', month: 'short', day: 'numeric' });
   };
 
+  const sidebarWidth = isMobile ? collapsedWidth : (collapsed ? collapsedWidth : drawerWidth);
+  
   return (
-    <Box sx={{ display: 'flex' }}>
+    <Box sx={{ display: 'flex', width: '100%', overflowX: 'hidden', position: 'relative' }}>
       <Drawer
         variant="permanent"
         sx={{
-          width: isMobile ? collapsedWidth : (collapsed ? collapsedWidth : drawerWidth),
+          width: sidebarWidth,
           flexShrink: 0,
           '& .MuiDrawer-paper': {
-            width: isMobile ? collapsedWidth : (collapsed ? collapsedWidth : drawerWidth),
+            width: sidebarWidth,
             boxSizing: 'border-box',
             background: 'linear-gradient(180deg, #2E3A8C 0%, #1a246e 100%)',
             borderRight: 'none',
             color: '#fff',
             transition: 'width 0.3s ease, box-shadow 0.3s ease',
             overflowX: 'hidden',
-            boxShadow: '0 0 20px rgba(0,0,0,0.15)'
+            boxShadow: '0 0 20px rgba(0,0,0,0.15)',
+            position: 'relative'
           },
         }}
       >
@@ -345,21 +348,23 @@ export default function SidebarLayout({ children }) {
         </Box>
       </Drawer>
       
-      {/* Main Content Area - Fixed centering issue */}
+      {/* Main Content Area - Fixed overlap issues */}
       <Box
         component="main"
         sx={{
-          flexGrow: 1,
+          flex: '1 1 auto',
           minHeight: '100vh',
           background: 'linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%)',
           p: 0,
-          transition: 'margin 0.3s ease',
-          ml: isMobile ? 0 : (collapsed ? `${collapsedWidth}px` : `${drawerWidth}px`),
+          width: 0, // Force flex to calculate width properly
+          minWidth: 0, // Allow flex item to shrink below content size
+          transition: 'all 0.3s ease',
           display: 'flex',
           flexDirection: 'column',
-          alignItems: 'center', // Center content horizontally
-          justifyContent: 'flex-start', // Align content to top
-          width: '100%'
+          alignItems: 'center',
+          justifyContent: 'flex-start',
+          overflowX: 'hidden',
+          boxSizing: 'border-box'
         }}
       >
         <Box
@@ -371,7 +376,8 @@ export default function SidebarLayout({ children }) {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            justifyContent: 'flex-start'
+            justifyContent: 'flex-start',
+            boxSizing: 'border-box'
           }}
         >
           {children}

@@ -67,3 +67,4 @@ print("2. Add PRIMARY KEY constraints if missing")
 print("3. Verify SERIAL types for auto-increment columns")
 print("4. Test in Supabase SQL Editor")
 
+

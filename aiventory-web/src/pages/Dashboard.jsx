@@ -490,7 +490,6 @@ const AlertCard = ({
               Dashboard
             </Typography>
             <Typography color="text.secondary" variant="subtitle1">
-              Welcome back! Here's what's happening with your inventory today.
             </Typography>
           </Box>
           <Button 
