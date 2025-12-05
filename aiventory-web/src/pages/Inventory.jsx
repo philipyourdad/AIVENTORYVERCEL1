@@ -939,7 +939,7 @@ export default function Inventory() {
                                 sx={{
                                   backgroundColor: statusColors[item.status] 
                                     ? `${statusColors[item.status]}20` 
-                                    : '#ccc20',
+                                    : '#cccc20',
                                   color: statusColors[item.status] || '#ccc',
                                   fontWeight: 600,
                                   minWidth: 100
@@ -1110,7 +1110,7 @@ export default function Inventory() {
                                 sx={{
                                   backgroundColor: statusColors[item.status] 
                                     ? `${statusColors[item.status]}20` 
-                                    : '#ccc20',
+                                    : '#cccc20',
                                   color: statusColors[item.status] || '#ccc',
                                   fontWeight: 600
                                 }}
@@ -1223,9 +1223,9 @@ export default function Inventory() {
                   page={page} 
                   onChange={(e, value) => setPage(value)}
                   color="primary"
-                  siblingCount={{ xs: 0, sm: 1 }}
-                  boundaryCount={{ xs: 1, sm: 1 }}
-                  size={{ xs: 'small', sm: 'medium' }}
+                  siblingCount={1}
+                  boundaryCount={1}
+                  size="medium"
                 />
               </Box>
             )}
@@ -1298,7 +1298,7 @@ export default function Inventory() {
                       sx={{
                         backgroundColor: statusColors[selectedItem?.status] 
                           ? `${statusColors[selectedItem?.status]}20` 
-                          : '#ccc20',
+                          : '#cccc20',
                         color: statusColors[selectedItem?.status] || '#ccc',
                         fontWeight: 600
                       }}
