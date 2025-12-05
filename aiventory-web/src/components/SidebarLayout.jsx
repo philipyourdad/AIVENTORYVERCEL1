@@ -124,7 +124,7 @@ export default function SidebarLayout({ children }) {
             transition: 'width 0.3s ease, box-shadow 0.3s ease',
             overflowX: 'hidden',
             boxShadow: '0 0 20px rgba(0,0,0,0.15)',
-            position: 'relative'
+            position: 'fixed'
           },
         }}
       >
