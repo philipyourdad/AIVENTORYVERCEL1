@@ -541,8 +541,7 @@ const handleCreateOpen = () => {
 
   return (
     <SidebarLayout>
-      <Box sx={{ maxWidth: 1400, margin: '0 auto', px: { xs: 1, md: 2 } }}>
-        {/* Header with search and actions */}
+      <Box sx={{ width: '100%', px: { xs: 1, md: 2 } }}>        {/* Header with search and actions */}
         <Stack
           direction={{ xs: 'column', md: 'row' }}
           justifyContent="space-between"

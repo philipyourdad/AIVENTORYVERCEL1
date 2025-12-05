@@ -472,7 +472,7 @@ const AlertCard = ({
 
   return (
     <SidebarLayout>
-      <Box sx={{ maxWidth: 1400, mx: 'auto', py: { xs: 2, md: 3 }, px: { xs: 1.5, sm: 2, md: 3 } }}>
+      <Box sx={{ width: '100%', py: { xs: 2, md: 3 } }}>
         <Stack direction={{ xs: 'column', sm: 'row' }} alignItems={{ xs: 'flex-start', sm: 'center' }} justifyContent="space-between" spacing={{ xs: 2, sm: 3 }} sx={{ mb: 4 }}>
           <Box>
             <Typography 

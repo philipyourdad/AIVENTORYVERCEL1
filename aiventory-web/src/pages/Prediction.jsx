@@ -9,6 +9,7 @@ import {
   Button,
   Paper,
   Stack,
+  CircularProgress,
 } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import NotificationImportantIcon from '@mui/icons-material/NotificationImportant';
@@ -215,7 +216,7 @@ export default function Prediction() {
     if (loading) {
       return (
         <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-          <Typography>Loading AI predictions...</Typography>
+          <CircularProgress />
         </Box>
       );
     }
@@ -229,7 +230,7 @@ export default function Prediction() {
     }
 
     return (
-      <Box sx={{ maxWidth: 1200, mx: 'auto' }}>
+      <Box sx={{ width: '100%' }}>
           {/* Header */}
           <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 4 }}>
             <Typography variant="h4" fontWeight={700} sx={{ color: '#2E3A8C' }}>

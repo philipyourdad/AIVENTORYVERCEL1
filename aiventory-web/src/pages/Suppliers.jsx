@@ -194,8 +194,8 @@ export default function Suppliers() {
   };
 
   return (
-    <SidebarLayout >
-      <Box sx={{ minHeight: '100vh', background: '#f7f7f9', py: 3, px: 2 }}>
+    <SidebarLayout>
+      <Box sx={{ width: '100%', py: 3, px: 2 }}>
         {/* Header with enhanced actions */}
         <Box display="flex" justifyContent="space-between" alignItems="center" mb={3} flexWrap="wrap" gap={2}>
           <Box>

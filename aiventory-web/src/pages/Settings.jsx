@@ -296,7 +296,7 @@ export default function Settings() {
 
   return (
     <SidebarLayout>
-      <Box sx={{ p: { xs: 1, md: 3 }, width: '100%', display: 'flex', flexDirection: 'column' }}>
+      <Box sx={{ width: '100%', p: { xs: 1, md: 3 }, display: 'flex', flexDirection: 'column' }}>
         <Typography variant="h4" fontWeight={700} color="primary.main" mb={3}>
           Settings
         </Typography>

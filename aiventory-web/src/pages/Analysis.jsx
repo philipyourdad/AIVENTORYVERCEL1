@@ -633,8 +633,7 @@ export default function Analysis() {
 
   return (
     <SidebarLayout>
-      <Box sx={{ maxWidth: 1200, mx: 'auto', mt: 3, mb: 4 }}>
-        {/* Header */}
+      <Box sx={{ width: '100%', mt: 3, mb: 4 }}>        {/* Header */}
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 3 }}>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
             <Typography variant="h5" fontWeight={800} color="#2E3A8C">

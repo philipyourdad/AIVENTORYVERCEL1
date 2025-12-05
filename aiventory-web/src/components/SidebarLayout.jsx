@@ -345,7 +345,7 @@ export default function SidebarLayout({ children }) {
         </Box>
       </Drawer>
       
-      {/* Main Content Area */}
+      {/* Main Content Area - Fixed centering issue */}
       <Box
         component="main"
         sx={{
@@ -355,9 +355,27 @@ export default function SidebarLayout({ children }) {
           p: 0,
           transition: 'margin 0.3s ease',
           ml: isMobile ? 0 : (collapsed ? `${collapsedWidth}px` : `${drawerWidth}px`),
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center', // Center content horizontally
+          justifyContent: 'flex-start', // Align content to top
+          width: '100%'
         }}
       >
-        {children}
+        <Box
+          sx={{
+            width: '100%',
+            maxWidth: 1400,
+            px: { xs: 2, sm: 3, md: 4 },
+            py: { xs: 2, sm: 3, md: 4 },
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'flex-start'
+          }}
+        >
+          {children}
+        </Box>
       </Box>
       
       <NotificationManager />

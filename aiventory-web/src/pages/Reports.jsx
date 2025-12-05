@@ -1180,7 +1180,7 @@ const Reports = () => {
 
   return (
     <SidebarLayout>
-      <Box sx={{ maxWidth: 1400, mx: 'auto', px: { xs: 1, md: 2 }, py: 3 }}>
+      <Box sx={{ width: '100%', px: { xs: 1, md: 2 }, py: 3 }}>
         <Stack
           direction={{ xs: 'column', md: 'row' }}
           justifyContent="space-between"

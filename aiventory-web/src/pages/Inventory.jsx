@@ -631,7 +631,7 @@ export default function Inventory() {
 
   return (
     <SidebarLayout>
-      <Box sx={{ minHeight: '100vh', background: '#f7f7f9', py: { xs: 2, sm: 3 }, px: { xs: 1, sm: 2 } }}>
+      <Box sx={{ width: '100%', py: { xs: 2, sm: 3 } }}>
         {/* Header with enhanced actions */}
         <Box display="flex" justifyContent="space-between" alignItems={{ xs: 'flex-start', sm: 'center' }} mb={3} flexWrap="wrap" gap={2} flexDirection={{ xs: 'column', sm: 'row' }}>
           <Box>

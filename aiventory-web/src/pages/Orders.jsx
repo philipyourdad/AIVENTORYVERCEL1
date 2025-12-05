@@ -103,8 +103,7 @@ export default function Orders() {
 
   return (
     <SidebarLayout>
-      <Box p={3}>
-        <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
+      <Box sx={{ width: '100%', p: 3 }}>        <Box display="flex" justifyContent="space-between" alignItems="center" mb={3}>
           <Typography variant="h4" fontWeight="bold">Orders</Typography>
           <Button startIcon={<AddIcon />} variant="contained" onClick={() => handleOpen()}>Add Order</Button>
         </Box>

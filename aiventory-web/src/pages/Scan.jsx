@@ -72,7 +72,7 @@ export default function Scan() {
 
   return (
     <SidebarLayout>
-      <Box sx={{ p: { xs: 1, md: 3 } }}>
+      <Box sx={{ width: '100%', p: { xs: 1, md: 3 } }}>
         <Box display="flex" alignItems="center" justifyContent="space-between" mb={3}>
           <Typography variant="h4" fontWeight={700} color="primary.main">
             Barcode Scanner
