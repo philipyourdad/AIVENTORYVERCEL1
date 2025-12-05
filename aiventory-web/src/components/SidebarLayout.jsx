@@ -109,7 +109,7 @@ export default function SidebarLayout({ children }) {
   return (
     <Box sx={{ display: 'flex' }}>
       <Drawer
-        variant="temporary"
+        variant="permanent"
         sx={{
           width: isMobile ? collapsedWidth : (collapsed ? collapsedWidth : drawerWidth),
           flexShrink: 0,
