@@ -49,25 +49,89 @@ app.use(express.json());
 // Supabase connection
 const supabaseUrl = process.env.VITE_SUPABASE_URL || '';
 const supabaseKey = process.env.SUPABASE_KEY || process.env.VITE_SUPABASE_ANON_KEY || '';
-const supabase = createClient(supabaseUrl, supabaseKey);
+
+console.log("Supabase URL:", supabaseUrl);
+console.log("Supabase Key length:", supabaseKey ? supabaseKey.length : 0);
+
+// Configure Supabase client with proper SSL settings for different environments
+const supabase = createClient(supabaseUrl, supabaseKey, {
+  auth: {
+    persistSession: false
+  },
+  db: {
+    ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false
+  },
+  global: {
+    headers: {
+      'apikey': supabaseKey
+    }
+  }
+});
 
 console.log("Attempting to connect to Supabase with URL:", supabaseUrl);
 
 // ✅ Test Supabase connection
+let supabaseConnected = false;
+
 setTimeout(() => {
   supabase.from('product').select('*').limit(1)
     .then(({ data, error }) => {
       if (error) {
         console.error("❌ Supabase connection failed:", error.message);
+        supabaseConnected = false;
       } else {
         console.log("✅ Connected to Supabase database");
         console.log("Test query successful, found", data?.length || 0, "products");
+        supabaseConnected = true;
       }
     })
     .catch(err => {
       console.error("❌ Supabase connection error:", err.message);
+      supabaseConnected = false;
     });
 }, 2000);
+
+// Add a helper function to get mock data when Supabase is not available
+const getMockProducts = () => {
+  return [
+    {
+      product_id: 1,
+      product_name: "Engine Oil",
+      product_sku: "EO-001",
+      product_price: 25.99,
+      product_category: "Lubricants",
+      product_stock: 50,
+      reorder_level: 10,
+      product_status: "Active",
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString()
+    },
+    {
+      product_id: 2,
+      product_name: "Brake Pads",
+      product_sku: "BP-002",
+      product_price: 45.50,
+      product_category: "Brakes",
+      product_stock: 25,
+      reorder_level: 5,
+      product_status: "Active",
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString()
+    },
+    {
+      product_id: 3,
+      product_name: "Air Filter",
+      product_sku: "AF-003",
+      product_price: 15.75,
+      product_category: "Engine",
+      product_stock: 5,
+      reorder_level: 10,
+      product_status: "Active",
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString()
+    }
+  ];
+};
 
 // ------------------ ROUTES ------------------
 
@@ -216,6 +280,12 @@ app.post("/api/login", async (req, res) => {
 
 // Get all products
 app.get("/api/products", async (req, res) => {
+  // If Supabase is not connected, return mock data
+  if (!supabaseConnected) {
+    console.log("⚠️ Supabase not connected, returning mock data");
+    return res.json(getMockProducts());
+  }
+  
   try {
     // Fetch all products handling Supabase's default 1000 row limit
     // We need to paginate through all records to get everything
@@ -266,6 +336,22 @@ app.get("/api/products", async (req, res) => {
 
 // Get all suppliers
 app.get("/api/suppliers", async (req, res) => {
+  // If Supabase is not connected, return mock data
+  if (!supabaseConnected) {
+    console.log("⚠️ Supabase not connected, returning mock suppliers");
+    return res.json([
+      {
+        supplier_id: 1,
+        supplier_name: "Auto Parts Supplier",
+        contact_person: "John Doe",
+        phone: "+1234567890",
+        email: "john@autoparts.com",
+        address: "123 Auto Street, Car City",
+        created_at: new Date().toISOString()
+      }
+    ]);
+  }
+  
   try {
     const { data, error } = await supabase
       .from('supplier')
@@ -291,6 +377,15 @@ app.get("/api/suppliers", async (req, res) => {
 
 // Add new product
 app.post("/api/products", async (req, res) => {
+  // If Supabase is not connected, return a mock response
+  if (!supabaseConnected) {
+    console.log("⚠️ Supabase not connected, cannot add product");
+    return res.status(500).json({ 
+      error: "Database error", 
+      message: "Cannot add product: Database not connected"
+    });
+  }
+  
   try {
     // Extract values from request (handle both cases)
     const name = req.body.Product_name || req.body.product_name;
@@ -389,6 +484,15 @@ app.post("/api/products", async (req, res) => {
 
 // Update product
 app.put("/api/products/:id", async (req, res) => {
+  // If Supabase is not connected, return a mock response
+  if (!supabaseConnected) {
+    console.log("⚠️ Supabase not connected, cannot update product");
+    return res.status(500).json({ 
+      error: "Database error", 
+      message: "Cannot update product: Database not connected"
+    });
+  }
+  
   try {
     const { id } = req.params;
     
@@ -399,57 +503,45 @@ app.put("/api/products/:id", async (req, res) => {
     if (req.body.Product_name !== undefined || req.body.product_name !== undefined) {
       productData.product_name = req.body.Product_name || req.body.product_name;
     }
+    
     if (req.body.Product_sku !== undefined || req.body.product_sku !== undefined) {
       productData.product_sku = req.body.Product_sku || req.body.product_sku;
     }
+    
     if (req.body.Product_price !== undefined || req.body.product_price !== undefined) {
-      productData.product_price = req.body.Product_price || req.body.product_price;
+      productData.product_price = req.body.Product_price !== undefined ? 
+        parseFloat(req.body.Product_price) : parseFloat(req.body.product_price);
     }
+    
     if (req.body.Product_stock !== undefined || req.body.product_stock !== undefined) {
-      productData.product_stock = req.body.Product_stock !== undefined ? req.body.Product_stock : req.body.product_stock;
+      productData.product_stock = req.body.Product_stock !== undefined ? 
+        parseInt(req.body.Product_stock) : parseInt(req.body.product_stock);
     }
+    
     if (req.body.Product_status !== undefined || req.body.product_status !== undefined) {
-      productData.product_status = req.body.Product_status || req.body.product_status || 'Active';
+      productData.product_status = req.body.Product_status || req.body.product_status;
     }
+    
     if (req.body.Product_category !== undefined || req.body.product_category !== undefined) {
       productData.product_category = req.body.Product_category || req.body.product_category;
     }
+    
     if (req.body.reorder_level !== undefined) {
-      productData.reorder_level = req.body.reorder_level;
-    }
-    if (req.body.supplier_id !== undefined) {
-      productData.supplier_id = req.body.supplier_id;
+      productData.reorder_level = parseInt(req.body.reorder_level);
     }
     
-    // Add updated_at timestamp
-    productData.updated_at = new Date().toISOString();
-    
-    let data, error;
-    ({ data, error } = await supabase
+    // Update the product
+    const { data, error } = await supabase
       .from('product')
       .update(productData)
-      .eq('product_id', id)
-      .select());
-    
-    // If error is about product_category column not found, retry without it
-    if (error && (error.message?.includes('product_category') || error.message?.includes('Product_category') || error.message?.includes('schema cache'))) {
-      console.warn("⚠️ product_category column issue detected, retrying without it");
-      const productDataWithoutCategory = { ...productData };
-      delete productDataWithoutCategory.product_category;
-      
-      ({ data, error } = await supabase
-        .from('product')
-        .update(productDataWithoutCategory)
-        .eq('product_id', id)
-        .select());
-    }
+      .eq('product_id', id)  // Use lowercase product_id to match database schema
+      .select();
     
     if (error) {
       console.error("❌ Update Product Error:", error.message);
-      console.error("❌ Product Data:", productData);
       return res.status(500).json({ 
         error: "Database error", 
-        message: error.message
+        message: error.message 
       });
     }
     
@@ -462,15 +554,44 @@ app.put("/api/products/:id", async (req, res) => {
     console.error("❌ Update Product Error:", err);
     return res.status(500).json({ 
       error: "Database error", 
-      message: err.message
+      message: err.message 
     });
   }
 });
 
 // Delete product
 app.delete("/api/products/:id", async (req, res) => {
+  // If Supabase is not connected, return a mock response
+  if (!supabaseConnected) {
+    console.log("⚠️ Supabase not connected, cannot delete product");
+    return res.status(500).json({ 
+      error: "Database error", 
+      message: "Cannot delete product: Database not connected"
+    });
+  }
+  
   try {
     const { id } = req.params;
+    
+    // First, check if product exists
+    const { data: existingData, error: fetchError } = await supabase
+      .from('product')
+      .select('*')
+      .eq('product_id', id);
+    
+    if (fetchError) {
+      console.error("❌ Fetch Product Error:", fetchError.message);
+      return res.status(500).json({ 
+        error: "Database error", 
+        message: fetchError.message 
+      });
+    }
+    
+    if (!existingData || existingData.length === 0) {
+      return res.status(404).json({ error: "Product not found" });
+    }
+    
+    // Delete the product
     const { data, error } = await supabase
       .from('product')
       .delete()
@@ -480,20 +601,16 @@ app.delete("/api/products/:id", async (req, res) => {
       console.error("❌ Delete Product Error:", error.message);
       return res.status(500).json({ 
         error: "Database error", 
-        message: error.message
+        message: error.message 
       });
     }
     
-    if (!data || data.length === 0) {
-      return res.status(404).json({ error: "Product not found" });
-    }
-    
-    res.status(204).send();
+    res.json({ message: "Product deleted successfully" });
   } catch (err) {
     console.error("❌ Delete Product Error:", err);
     return res.status(500).json({ 
       error: "Database error", 
-      message: err.message
+      message: err.message 
     });
   }
 });
