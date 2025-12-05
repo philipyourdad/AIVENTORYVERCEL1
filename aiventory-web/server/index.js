@@ -24,11 +24,13 @@ const corsOptions = {
       'https://aiventory1vercel.vercel.app',
       'http://localhost:5173',
       'http://localhost:4173',
-      'http://localhost:4174'
+      'http://localhost:4174',
+      'http://localhost:8080'
     ];
     
     // Check if the origin is in our allowed list or is a Vercel preview URL
-    if (allowedOrigins.indexOf(origin) !== -1 || origin.includes('vercel.app')) {
+    // Also allow any localhost origin for development
+    if (allowedOrigins.indexOf(origin) !== -1 || origin.includes('vercel.app') || (origin && origin.startsWith('http://localhost:'))) {
       callback(null, true);
     } else {
       callback(new Error('Not allowed by CORS'));
