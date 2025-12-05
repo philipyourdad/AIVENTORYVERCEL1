@@ -154,7 +154,7 @@ const Login = () => {
         display: 'flex', 
         alignItems: 'center', 
         justifyContent: 'center',
-        padding: 2
+        padding: { xs: 1, sm: 2 }
       }}
     >
       <Paper 
@@ -162,7 +162,7 @@ const Login = () => {
         sx={{ 
           maxWidth: 500, 
           width: '100%', 
-          borderRadius: 3,
+          borderRadius: { xs: 2, sm: 3 },
           overflow: 'hidden'
         }}
       >
@@ -171,23 +171,27 @@ const Login = () => {
             background: 'linear-gradient(180deg, #2E3A8C 0%, #1a246e 100%)',
             color: 'white',
             textAlign: 'center',
-            py: 4,
-            px: 2
+            py: { xs: 3, sm: 4 },
+            px: { xs: 1, sm: 2 }
           }}
         >
           <img 
             src="/src/assets/logo copy.jpg" 
             alt="AIVENTORY Logo" 
             style={{ 
-              width: 100, 
-              height: 100, 
+              width: '80px',
+              height: '80px',
               marginBottom: 16,
               borderRadius: '50%',
-              border: '3px solid rgba(255,255,255,0.2)'
+              border: '3px solid rgba(255,255,255,0.2)',
+              '@media (min-width: 600px)': {
+                width: '100px',
+                height: '100px'
+              }
             }} 
           />
           <Typography variant="h4" fontWeight={700} mb={1}>
-            AIVENTORYss
+            AIVENTORY
           </Typography>
           <Typography variant="h6" fontWeight={500} mb={1}>
             SMART INVENTORY MANAGEMENT
@@ -197,7 +201,7 @@ const Login = () => {
           </Typography>
         </Box>
         
-        <Box sx={{ p: 3 }}>
+        <Box sx={{ p: { xs: 2, sm: 3 } }}>
           {error && (
             <Alert 
               severity="error" 
@@ -263,10 +267,10 @@ const Login = () => {
                 display: 'flex', 
                 mt: 3, 
                 mb: 2, 
-                gap: 1,
+                gap: { xs: 0.5, sm: 1 },
                 background: '#f5f7ff',
-                borderRadius: 2,
-                p: 0.5
+                borderRadius: { xs: 1.5, sm: 2 },
+                p: { xs: 0.25, sm: 0.5 }
               }}>
                 <Button
                   fullWidth
@@ -274,8 +278,8 @@ const Login = () => {
                   onClick={() => handleRoleClick('Admin')}
                   startIcon={<AdminPanelSettings />}
                   sx={{
-                    py: 1.5,
-                    borderRadius: 2,
+                    py: { xs: 1, sm: 1.5 },
+                    borderRadius: { xs: 1.5, sm: 2 },
                     textTransform: 'none',
                     fontWeight: 600,
                     ...(role === 'Admin' ? {
@@ -318,12 +322,12 @@ const Login = () => {
                 variant="contained"
                 disabled={loading}
                 sx={{
-                  py: 1.5,
+                  py: { xs: 1, sm: 1.5 },
                   mt: 1,
                   mb: 2,
                   bgcolor: '#2E3A8C',
                   '&:hover': { bgcolor: '#1a246e' },
-                  borderRadius: 2,
+                  borderRadius: { xs: 1.5, sm: 2 },
                   fontWeight: 600,
                   textTransform: 'none'
                 }}
@@ -433,10 +437,10 @@ const Login = () => {
                 display: 'flex', 
                 mt: 3, 
                 mb: 2, 
-                gap: 1,
+                gap: { xs: 0.5, sm: 1 },
                 background: '#f5f7ff',
-                borderRadius: 2,
-                p: 0.5
+                borderRadius: { xs: 1.5, sm: 2 },
+                p: { xs: 0.25, sm: 0.5 }
               }}>
                 <Button
                   fullWidth
@@ -444,8 +448,8 @@ const Login = () => {
                   onClick={() => handleNewRoleClick('Admin')}
                   startIcon={<AdminPanelSettings />}
                   sx={{
-                    py: 1.5,
-                    borderRadius: 2,
+                    py: { xs: 1, sm: 1.5 },
+                    borderRadius: { xs: 1.5, sm: 2 },
                     textTransform: 'none',
                     fontWeight: 600,
                     ...(newRole === 'Admin' ? {
@@ -465,8 +469,8 @@ const Login = () => {
                   onClick={() => handleNewRoleClick('Staff')}
                   startIcon={<SupervisorAccount />}
                   sx={{
-                    py: 1.5,
-                    borderRadius: 2,
+                    py: { xs: 1, sm: 1.5 },
+                    borderRadius: { xs: 1.5, sm: 2 },
                     textTransform: 'none',
                     fontWeight: 600,
                     ...(newRole === 'Staff' ? {
@@ -488,12 +492,12 @@ const Login = () => {
                 variant="contained"
                 disabled={loading}
                 sx={{
-                  py: 1.5,
+                  py: { xs: 1, sm: 1.5 },
                   mt: 1,
                   mb: 2,
                   bgcolor: '#2E3A8C',
                   '&:hover': { bgcolor: '#1a246e' },
-                  borderRadius: 2,
+                  borderRadius: { xs: 1.5, sm: 2 },
                   fontWeight: 600,
                   textTransform: 'none'
                 }}

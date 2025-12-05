@@ -631,9 +631,9 @@ export default function Inventory() {
 
   return (
     <SidebarLayout>
-      <Box sx={{ minHeight: '100vh', background: '#f7f7f9', py: 3, px: 2 }}>
+      <Box sx={{ minHeight: '100vh', background: '#f7f7f9', py: { xs: 2, sm: 3 }, px: { xs: 1, sm: 2 } }}>
         {/* Header with enhanced actions */}
-        <Box display="flex" justifyContent="space-between" alignItems="center" mb={3} flexWrap="wrap" gap={2}>
+        <Box display="flex" justifyContent="space-between" alignItems={{ xs: 'flex-start', sm: 'center' }} mb={3} flexWrap="wrap" gap={2} flexDirection={{ xs: 'column', sm: 'row' }}>
           <Box>
             <Typography variant="h4" fontWeight={800} sx={{ color: '#2E3A8C', mb: 0.5 }}>
               Inventory
@@ -642,7 +642,7 @@ export default function Inventory() {
 
             </Typography>
           </Box>
-          <Box display="flex" gap={2} flexWrap="wrap">
+          <Box display="flex" gap={2} flexWrap="wrap" width={{ xs: '100%', sm: 'auto' }} justifyContent={{ xs: 'stretch', sm: 'flex-end' }} sx={{ width: { xs: '100%', sm: 'auto' } }}>
             <TextField
               placeholder="Search by name or SKU..."
               size="small"
@@ -661,19 +661,22 @@ export default function Inventory() {
               sx={{ 
                 background: '#fff', 
                 borderRadius: 2,
-                minWidth: 250
+                minWidth: { xs: 0, sm: 250 },
+                width: { xs: '100%', sm: 'auto' }
               }}
             />
             <Button
               variant="contained"
               startIcon={<AddIcon />}
               onClick={() => handleOpenModal(null, null)}
+              fullWidth={{ xs: true, sm: false }}
               sx={{ 
                 borderRadius: 2, 
                 background: '#6c63ff', 
                 fontWeight: 600, 
                 textTransform: 'none',
-                px: 3
+                px: { xs: 2, sm: 3 },
+                width: { xs: '100%', sm: 'auto' }
               }}
             >
               Add New Item
@@ -684,7 +687,7 @@ export default function Inventory() {
         {/* Filters and View Options */}
         <Card sx={{ mb: 3, borderRadius: 3, border: '1px solid #e5e7eb' }}>
           <CardContent>
-            <Box display="flex" justifyContent="space-between" alignItems="center" mb={2} flexWrap="wrap" gap={2}>
+            <Box display="flex" justifyContent="space-between" alignItems="center" mb={2} flexWrap="wrap" gap={2} flexDirection={{ xs: 'column', sm: 'row' }} width={{ xs: '100%', sm: 'auto' }}>
               <Box>
                 <Typography variant="h6" fontWeight={600}>
                   Filter Inventory
@@ -708,8 +711,8 @@ export default function Inventory() {
               </Box>
             </Box>
             
-            <Box display="flex" gap={2} flexWrap="wrap">
-              <FormControl size="small" sx={{ minWidth: 150 }}>
+            <Box display="flex" gap={2} flexWrap="wrap" width={{ xs: '100%', sm: 'auto' }} justifyContent={{ xs: 'center', sm: 'flex-start' }}>
+              <FormControl size="small" sx={{ minWidth: { xs: 120, sm: 150 }, width: { xs: '100%', sm: 'auto' } }}>
                 <InputLabel>Category</InputLabel>
                 <Select
                   value={categoryFilter}
@@ -718,6 +721,7 @@ export default function Inventory() {
                     setCategoryFilter(e.target.value);
                     setPage(1);
                   }}
+                  fullWidth={{ xs: true, sm: false }}
                 >
                   {uniqueCategories.map(category => (
                     <MenuItem key={category} value={category}>{category}</MenuItem>
@@ -725,7 +729,7 @@ export default function Inventory() {
                 </Select>
               </FormControl>
               
-              <FormControl size="small" sx={{ minWidth: 150 }}>
+              <FormControl size="small" sx={{ minWidth: { xs: 120, sm: 150 }, width: { xs: '100%', sm: 'auto' } }}>
                 <InputLabel>Status</InputLabel>
                 <Select
                   value={statusFilter}
@@ -734,6 +738,7 @@ export default function Inventory() {
                     setStatusFilter(e.target.value);
                     setPage(1);
                   }}
+                  fullWidth={{ xs: true, sm: false }}
                 >
                   {uniqueStatuses.map(status => (
                     <MenuItem key={status} value={status}>{status}</MenuItem>
@@ -751,7 +756,8 @@ export default function Inventory() {
                 }}
                 variant="outlined"
                 size="small"
-                sx={{ height: 40 }}
+                fullWidth={{ xs: true, sm: false }}
+                sx={{ height: 40, width: { xs: '100%', sm: 'auto' } }}
               >
                 Reset Filters
               </Button>
@@ -760,7 +766,7 @@ export default function Inventory() {
         </Card>
 
         {/* Stats Summary */}
-        <Grid container spacing={3} mb={3} sx={{ display: 'flex', justifyContent: 'center' }}>
+        <Grid container spacing={{ xs: 2, sm: 3 }} mb={3} sx={{ display: 'flex', justifyContent: 'center' }}>
           <Grid item xs={12} sm={6} md={3}>
             <Card sx={{ borderRadius: 3, border: '1px solid #e5e7eb', height: '100%' }}>
               <CardContent>
@@ -840,18 +846,18 @@ export default function Inventory() {
           <>
             {viewMode === 'table' ? (
               // Table View
-              <Card sx={{ borderRadius: 3, border: '1px solid #e5e7eb' }}>
-                <TableContainer>
+              <Card sx={{ borderRadius: { xs: 2, sm: 3 }, border: '1px solid #e5e7eb' }}>
+                <TableContainer sx={{ overflowX: 'auto' }}>
                   <Table>
                     <TableHead>
                       <TableRow sx={{ bgcolor: '#f5f7ff' }}>
-                        <TableCell sx={{ fontWeight: 600 }}>Item Name</TableCell>
-                        <TableCell sx={{ fontWeight: 600 }}>SKU</TableCell>
-                        <TableCell sx={{ fontWeight: 600 }}>Category</TableCell>
-                        <TableCell sx={{ fontWeight: 600 }}>Current Stock</TableCell>
-                        <TableCell sx={{ fontWeight: 600 }}>Threshold</TableCell>
-                        <TableCell sx={{ fontWeight: 600 }}>Status</TableCell>
-                        <TableCell sx={{ fontWeight: 600 }}>Actions</TableCell>
+                        <TableCell sx={{ fontWeight: 600, whiteSpace: 'nowrap' }}>Item Name</TableCell>
+                        <TableCell sx={{ fontWeight: 600, whiteSpace: 'nowrap' }}>SKU</TableCell>
+                        <TableCell sx={{ fontWeight: 600, whiteSpace: 'nowrap' }}>Category</TableCell>
+                        <TableCell sx={{ fontWeight: 600, whiteSpace: 'nowrap' }}>Current Stock</TableCell>
+                        <TableCell sx={{ fontWeight: 600, whiteSpace: 'nowrap' }}>Threshold</TableCell>
+                        <TableCell sx={{ fontWeight: 600, whiteSpace: 'nowrap' }}>Status</TableCell>
+                        <TableCell sx={{ fontWeight: 600, whiteSpace: 'nowrap' }}>Actions</TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>
@@ -1066,10 +1072,10 @@ export default function Inventory() {
                 ) : (
                   <Grid container spacing={3}>
                     {paginatedInventory.map((item, idx) => (
-                      <Grid item xs={12} sm={6} md={4} lg={3} key={item.id}>
+                      <Grid item xs={12} sm={6} md={4} lg={3} key={item.id} sx={{ display: 'flex' }}>
                         <Card 
                           sx={{ 
-                            borderRadius: 3, 
+                            borderRadius: { xs: 2, sm: 3 }, 
                             border: '1px solid #e5e7eb',
                             height: '100%',
                             display: 'flex',
@@ -1211,14 +1217,15 @@ export default function Inventory() {
 
             {/* Pagination */}
             {totalPages > 1 && (
-              <Box display="flex" justifyContent="center" mt={3}>
+              <Box display="flex" justifyContent="center" mt={{ xs: 2, sm: 3 }}>
                 <Pagination 
                   count={totalPages} 
                   page={page} 
                   onChange={(e, value) => setPage(value)}
                   color="primary"
-                  siblingCount={1}
-                  boundaryCount={1}
+                  siblingCount={{ xs: 0, sm: 1 }}
+                  boundaryCount={{ xs: 1, sm: 1 }}
+                  size={{ xs: 'small', sm: 'medium' }}
                 />
               </Box>
             )}

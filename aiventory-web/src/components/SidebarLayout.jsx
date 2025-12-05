@@ -14,7 +14,8 @@ import {
   Tooltip,
   IconButton,
   Badge,
-  Chip
+  Chip,
+  useMediaQuery
 } from '@mui/material';
 
 import {
@@ -53,6 +54,14 @@ export default function SidebarLayout({ children }) {
   const location = useLocation();
   const [collapsed, setCollapsed] = useState(false);
   const [time, setTime] = useState(new Date());
+  const isMobile = useMediaQuery('(max-width:768px)');
+  
+  // Auto-collapse sidebar on mobile
+  useEffect(() => {
+    if (isMobile) {
+      setCollapsed(true);
+    }
+  }, [isMobile]);
   
   // Get user data from localStorage
   const userData = JSON.parse(localStorage.getItem('user') || '{}');
@@ -71,6 +80,10 @@ export default function SidebarLayout({ children }) {
   };
 
   const toggleCollapse = () => {
+    // Don't allow expanding on mobile devices
+    if (isMobile && !collapsed) {
+      return;
+    }
     setCollapsed(!collapsed);
   };
 
@@ -98,10 +111,10 @@ export default function SidebarLayout({ children }) {
       <Drawer
         variant="permanent"
         sx={{
-          width: collapsed ? collapsedWidth : drawerWidth,
+          width: isMobile ? collapsedWidth : (collapsed ? collapsedWidth : drawerWidth),
           flexShrink: 0,
           '& .MuiDrawer-paper': {
-            width: collapsed ? collapsedWidth : drawerWidth,
+            width: isMobile ? collapsedWidth : (collapsed ? collapsedWidth : drawerWidth),
             boxSizing: 'border-box',
             background: 'linear-gradient(180deg, #2E3A8C 0%, #1a246e 100%)',
             borderRight: 'none',
@@ -114,7 +127,7 @@ export default function SidebarLayout({ children }) {
         <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
           {/* Logo Section */}
           <Box sx={{ 
-            p: 2, 
+            p: { xs: 1, sm: 2 }, 
             textAlign: 'center', 
             borderBottom: '1px solid rgba(255,255,255,0.1)',
             transition: 'padding 0.3s ease'
@@ -130,8 +143,8 @@ export default function SidebarLayout({ children }) {
                 src="/assets/logo.jpg" 
                 alt="AIVENTORY Logo" 
                 sx={{ 
-                  width: collapsed ? 40 : 50, 
-                  height: collapsed ? 40 : 50,
+                  width: isMobile || collapsed ? 40 : 50, 
+                  height: isMobile || collapsed ? 40 : 50,
                   transition: 'all 0.3s ease'
                 }} 
               />
@@ -151,12 +164,12 @@ export default function SidebarLayout({ children }) {
 
           {/* Time Display */}
           <Box sx={{ 
-            p: 1.5, 
+            p: { xs: 1, sm: 1.5 }, 
             textAlign: 'center', 
 
           }}>
             <Typography 
-              variant="h5" 
+              variant={{ xs: 'h6', sm: 'h5' }} 
               sx={{ 
                 color: '#fff' , 
                 fontWeight: 600,
@@ -187,10 +200,10 @@ export default function SidebarLayout({ children }) {
                     to={link.to}
                     selected={location.pathname === link.to}
                     sx={{
-                      minHeight: 48,
-                      justifyContent: collapsed ? 'center' : 'initial',
-                      px: 2.5,
-                      mx: 1,
+                      minHeight: { xs: 40, sm: 48 },
+                      justifyContent: isMobile || collapsed ? 'center' : 'initial',
+                      px: { xs: 1.5, sm: 2.5 },
+                      mx: { xs: 0.5, sm: 1 },
                       borderRadius: 2,
                       color: location.pathname === link.to ? '#fff' : 'rgba(255,255,255,0.7)',
                       backgroundColor: location.pathname === link.to ? 'rgba(255,255,255,0.1)' : 'transparent',
@@ -228,7 +241,7 @@ export default function SidebarLayout({ children }) {
           <Divider sx={{ bgcolor: 'rgba(255,255,255,0.1)', mx: 2 }} />
 
           {/* Profile Section */}
-          <Box sx={{ p: 2 }}>
+          <Box sx={{ p: { xs: 1, sm: 2 } }}>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
               <Avatar 
                 src={getProfilePicture()} 
@@ -286,9 +299,9 @@ export default function SidebarLayout({ children }) {
                     localStorage.removeItem('user');
                   }}
                   sx={{
-                    minHeight: 40,
+                    minHeight: { xs: 36, sm: 40 },
                     justifyContent: 'center',
-                    px: 2,
+                    px: { xs: 1, sm: 2 },
                     borderRadius: 2,
                     color: 'rgba(255,255,255,0.9)',
                     backgroundColor: 'rgba(255,65,65,0.15)',
@@ -310,8 +323,8 @@ export default function SidebarLayout({ children }) {
                     label="NEW" 
                     size="small" 
                     sx={{ 
-                      height: 18, 
-                      fontSize: 10,
+                      height: { xs: 16, sm: 18 }, 
+                      fontSize: { xs: 8, sm: 10 },
                       bgcolor: 'rgba(255,255,255,0.15)',
                       color: 'rgba(255,255,255,0.9)',
                       '& .MuiChip-label': {
@@ -332,9 +345,9 @@ export default function SidebarLayout({ children }) {
           flexGrow: 1,
           bgcolor: 'var(--page-bg)',
           minHeight: '100vh',
-          px: 3,
-          pt: 4,
-          pb: 4,
+          px: { xs: 1, sm: 2, md: 3 },
+          pt: { xs: 2, md: 4 },
+          pb: { xs: 2, md: 4 },
         }}
       >
         {children}

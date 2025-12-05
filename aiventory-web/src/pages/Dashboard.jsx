@@ -254,14 +254,14 @@ const AlertCard = ({
     sx={{
       border: '1px solid #e7e9ef',
       borderRadius: 3,
-      p: 2.5,
+      p: { xs: 2, md: 2.5 },
       display: 'flex',
-      flexDirection: { xs: 'column', md: 'row' },
-      gap: 2,
-      alignItems: { xs: 'flex-start', md: 'center' },
+      flexDirection: { xs: 'column', sm: 'row' },
+      gap: { xs: 1.5, sm: 2 },
+      alignItems: { xs: 'flex-start', sm: 'center' },
       background: '#fff',
       height: '100%',
-      width: '100%' // Ensure consistent height
+      width: '100%'
     }}
   >
     <Avatar sx={{ bgcolor: `${accent}1F`, color: accent, width: 52, height: 52, flexShrink: 0 }}>
@@ -304,12 +304,13 @@ const AlertCard = ({
         sx={{ mt: 2, height: 6, borderRadius: 3, bgcolor: '#f1f3f9', '& .MuiLinearProgress-bar': { bgcolor: accent } }}
       />
     </Box>
-    <Stack direction={{ xs: 'row', md: 'column' }} spacing={1} sx={{ flexShrink: 0 }}>
+    <Stack direction={{ xs: 'row', sm: 'column' }} spacing={{ xs: 1, sm: 1.5 }} sx={{ flexShrink: 0, width: { xs: '100%', sm: 'auto' } }}>
       <Button 
         variant="contained" 
         color="error" 
         disableElevation 
-        sx={{ minWidth: 140 }}
+        fullWidth={{ xs: true, sm: false }}
+        sx={{ minWidth: { xs: 0, sm: 140 } }}
         onClick={() => {
           // Navigate to inventory page to manage stock for this item
           navigate('/inventory', { state: { highlightSku: alert.sku, highlightId: alert.id } });
@@ -319,7 +320,8 @@ const AlertCard = ({
       </Button>
       <Button 
         variant="outlined" 
-        sx={{ minWidth: 140 }}
+        fullWidth={{ xs: true, sm: false }}
+        sx={{ minWidth: { xs: 0, sm: 140 } }}
         onClick={() => {
           // Navigate to prediction page with product ID
           navigate(`/prediction/${alert.id}`);
@@ -333,11 +335,11 @@ const AlertCard = ({
 
   return (
     <SidebarLayout>
-      <Box sx={{ maxWidth: 1400, mx: 'auto', py: 3, px: { xs: 1, md: 2 } }}>
-        <Stack direction="row" alignItems="center" justifyContent="space-between" spacing={2} sx={{ mb: 4 }}>
+      <Box sx={{ maxWidth: 1400, mx: 'auto', py: { xs: 1, md: 2 }, px: { xs: 1, sm: 2, md: 3 } }}>
+        <Stack direction={{ xs: 'column', sm: 'row' }} alignItems={{ xs: 'flex-start', sm: 'center' }} justifyContent="space-between" spacing={{ xs: 1, sm: 2 }} sx={{ mb: 4 }}>
           <Box>
             <Typography variant="h4" fontWeight={800} sx={{ color: '#2E3A8C', mb: 0.5 }}>
-              Dashboardss
+              Dashboard
             </Typography>
             <Typography color="text.secondary" variant="subtitle1">
             </Typography>
@@ -377,7 +379,7 @@ const AlertCard = ({
               <Typography variant="h5" fontWeight={700} sx={{ mb: 3, color: '#2E3A8C' }}>
                 Inventory Overview
               </Typography>
-              <Grid container spacing={3} justifyContent="center">
+              <Grid container spacing={{ xs: 2, md: 3 }} justifyContent="center">
                 <Grid item xs={12} sm={6} md={3} sx={{ display: 'flex' }}>
                   <SummaryCard
                     icon={<InventoryIcon />}
@@ -414,7 +416,6 @@ const AlertCard = ({
                     color="#6C63FF"
                   />
                 </Grid>
-
               </Grid>
             </Box>
 
