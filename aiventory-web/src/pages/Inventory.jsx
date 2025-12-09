@@ -64,11 +64,11 @@ import {
 import { useNavigate } from 'react-router-dom';
 
 const statusColors = {
-  'Good': '#06D6A0',
-  'Warning': '#FFD166',
-  'Critical': '#FF4D4F',
-  'Active': '#4CAF50',
-  'Inactive': '#9E9E9E',
+  'Good': 'var(--success)',
+  'Warning': 'var(--warning)',
+  'Critical': 'var(--error)',
+  'Active': 'var(--success)',
+  'Inactive': 'var(--text-secondary)',
 };
 
 const categories = [
@@ -635,7 +635,7 @@ export default function Inventory() {
         {/* Header with enhanced actions */}
         <Box display="flex" justifyContent="space-between" alignItems={{ xs: 'flex-start', sm: 'center' }} mb={3} flexWrap="wrap" gap={2} flexDirection={{ xs: 'column', sm: 'row' }}>
           <Box>
-            <Typography variant="h4" fontWeight={800} sx={{ color: '#2E3A8C', mb: 0.5 }}>
+            <Typography variant="h4" fontWeight={800} sx={{ color: 'var(--text-primary)', mb: 0.5 }}>
               Inventory
             </Typography>
             <Typography color="text.secondary">
@@ -691,14 +691,14 @@ export default function Inventory() {
               fullWidth={{ xs: true, sm: false }}
               sx={{ 
                 borderRadius: 2, 
-                background: '#6c63ff', 
+                background: 'var(--text-primary)', 
                 fontWeight: 600, 
                 textTransform: 'none',
                 px: { xs: 2, sm: 3 },
                 width: { xs: '100%', sm: 'auto' },
-                color: 'white',
+                color: 'var(--surface)',
                 '&:hover': {
-                  background: '#5a52e0'
+                  background: 'rgba(46, 58, 140, 0.8)'
                 }
               }}
             >
@@ -879,7 +879,7 @@ export default function Inventory() {
               <CardContent>
                 <Box display="flex" alignItems="center">
                   <Box sx={{ bgcolor: 'rgba(46, 58, 140, 0.1)', borderRadius: '100%', width: 48, height: 48, display: 'flex', alignItems: 'center', justifyContent: 'center', mr: 2 }}>
-                    <InventoryIcon sx={{ color: '#2E3A8C' }} />
+                    <InventoryIcon sx={{ color: 'var(--text-primary)' }} />
                   </Box>
                   <Box>
                     <Typography color="text.secondary" variant="body2">Total Items</Typography>
@@ -894,7 +894,7 @@ export default function Inventory() {
               <CardContent>
                 <Box display="flex" alignItems="center">
                   <Box sx={{ bgcolor: 'rgba(255, 209, 102, 0.1)', borderRadius: '50%', width: 48, height: 48, display: 'flex', alignItems: 'center', justifyContent: 'center', mr: 2 }}>
-                    <WarningIcon sx={{ color: '#FFD166' }} />
+                    <WarningIcon sx={{ color: 'var(--warning)' }} />
                   </Box>
                   <Box>
                     <Typography color="text.secondary" variant="body2">Warning Items</Typography>
@@ -911,7 +911,7 @@ export default function Inventory() {
               <CardContent>
                 <Box display="flex" alignItems="center">
                   <Box sx={{ bgcolor: 'rgba(255, 77, 79, 0.1)', borderRadius: '50%', width: 48, height: 48, display: 'flex', alignItems: 'center', justifyContent: 'center', mr: 2 }}>
-                    <ErrorOutlineIcon sx={{ color: '#FF4D4F' }} />
+                    <ErrorOutlineIcon sx={{ color: 'var(--error)' }} />
                   </Box>
                   <Box>
                     <Typography color="text.secondary" variant="body2">Critical Items</Typography>
@@ -928,7 +928,7 @@ export default function Inventory() {
               <CardContent>
                 <Box display="flex" alignItems="center">
                   <Box sx={{ bgcolor: 'rgba(108, 99, 255, 0.1)', borderRadius: '50%', width: 48, height: 48, display: 'flex', alignItems: 'center', justifyContent: 'center', mr: 2 }}>
-                    <CategoryIcon sx={{ color: '#6C63FF' }} />
+                    <CategoryIcon sx={{ color: 'var(--text-primary)' }} />
                   </Box>
                   <Box>
                     <Typography color="text.secondary" variant="body2">Categories</Typography>
@@ -972,7 +972,7 @@ export default function Inventory() {
                         <TableRow>
                           <TableCell colSpan={7} align="center" sx={{ py: 8 }}>
                             <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                              <InventoryIcon sx={{ fontSize: 48, color: '#ccc', mb: 2 }} />
+                              <InventoryIcon sx={{ fontSize: 48, color: 'var(--text-secondary)', mb: 2 }} />
                               <Typography variant="h6" color="text.secondary">
                                 No products found
                               </Typography>
@@ -1047,7 +1047,7 @@ export default function Inventory() {
                                   backgroundColor: statusColors[item.status] 
                                     ? `${statusColors[item.status]}20` 
                                     : 'rgba(204, 204, 32, 0.2)',
-                                  color: statusColors[item.status] || '#ccc',
+                                  color: statusColors[item.status] || 'var(--text-secondary)',
                                   fontWeight: 600,
                                   minWidth: 100
                                 }}
@@ -1160,7 +1160,7 @@ export default function Inventory() {
                 {paginatedInventory.length === 0 ? (
                   <Card sx={{ borderRadius: 3, border: '1px solid var(--border-color)', py: 8, background: 'var(--surface)' }}>
                     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                      <InventoryIcon sx={{ fontSize: 48, color: '#ccc', mb: 2 }} />
+                      <InventoryIcon sx={{ fontSize: 48, color: 'var(--text-secondary)', mb: 2 }} />
                       <Typography variant="h6" color="text.secondary">
                         No products found
                       </Typography>
@@ -1219,7 +1219,7 @@ export default function Inventory() {
                                   backgroundColor: statusColors[item.status] 
                                     ? `${statusColors[item.status]}20` 
                                     : 'rgba(204, 204, 32, 0.2)',
-                                  color: statusColors[item.status] || '#ccc',
+                                  color: statusColors[item.status] || 'var(--text-secondary)',
                                   fontWeight: 600
                                 }}
                               />
@@ -1235,7 +1235,7 @@ export default function Inventory() {
                                 size="small" 
                                 sx={{ 
                                   bgcolor: 'rgba(108, 99, 255, 0.1)', 
-                                  color: '#6c63ff',
+                                  color: 'var(--text-primary)',
                                   fontWeight: 500,
                                   mr: 1
                                 }} 
@@ -1272,7 +1272,7 @@ export default function Inventory() {
                                 borderRadius: 4, 
                                 bgcolor: 'var(--surface)',
                                 '& .MuiLinearProgress-bar': { 
-                                  bgcolor: statusColors[item.status] || '#2E3A8C' 
+                                  bgcolor: statusColors[item.status] || 'var(--text-primary)' 
                                 },
                                 mb: 2
                               }} 
@@ -1334,6 +1334,20 @@ export default function Inventory() {
                   siblingCount={1}
                   boundaryCount={1}
                   size="medium"
+                  sx={{
+                    '& .MuiPaginationItem-root': {
+                      color: 'var(--text-primary)',
+                      borderColor: 'var(--border-color)',
+                    },
+                    '& .Mui-selected': {
+                      backgroundColor: 'var(--text-primary)',
+                      color: 'var(--surface)',
+                      borderColor: 'var(--text-primary)',
+                    },
+                    '& .MuiPaginationItem-ellipsis': {
+                      color: 'var(--text-secondary)',
+                    }
+                  }}
                 />
               </Box>
             )}
@@ -1377,7 +1391,7 @@ export default function Inventory() {
                       label={selectedItem?.sku} 
                       sx={{ 
                         bgcolor: 'rgba(108, 99, 255, 0.1)', 
-                        color: '#6c63ff',
+                        color: 'var(--text-primary)',
                         fontWeight: 500,
                         mt: 0.5
                       }} 
@@ -1406,8 +1420,8 @@ export default function Inventory() {
                       sx={{
                         backgroundColor: statusColors[selectedItem?.status] 
                           ? `${statusColors[selectedItem?.status]}20` 
-                          : '#cccc20',
-                        color: statusColors[selectedItem?.status] || '#ccc',
+                          : 'rgba(204, 204, 32, 0.2)',
+                        color: statusColors[selectedItem?.status] || 'var(--text-secondary)',
                         fontWeight: 600
                       }}
                     />
@@ -1429,7 +1443,7 @@ export default function Inventory() {
                       }}
                       sx={{ 
                         flexGrow: 1,
-                        bgcolor: '#06D6A0',
+                        bgcolor: 'var(--success)',
                         '&:hover': { bgcolor: 'rgba(6, 214, 160, 0.8)' }
                       }}
                       variant="contained"
@@ -1444,7 +1458,7 @@ export default function Inventory() {
                       }}
                       sx={{ 
                         flexGrow: 1,
-                        bgcolor: '#FF6B6B',
+                        bgcolor: 'var(--warning)',
                         '&:hover': { bgcolor: 'rgba(255, 107, 107, 0.8)' }
                       }}
                       variant="contained"
@@ -1459,7 +1473,7 @@ export default function Inventory() {
                       }}
                       sx={{ 
                         flexGrow: 1,
-                        bgcolor: '#2E3A8C',
+                        bgcolor: 'var(--text-primary)',
                         '&:hover': { bgcolor: 'rgba(46, 58, 140, 0.8)' }
                       }}
                       variant="contained"
@@ -1502,7 +1516,7 @@ export default function Inventory() {
                   
                   <Box>
                     <Typography color="text.secondary" variant="body2">New Stock Level</Typography>
-                    <Typography variant="h4" fontWeight={700} color={adjustmentType === 'add' ? '#06D6A0' : '#FF6B6B'}>
+                    <Typography variant="h4" fontWeight={700} sx={{ color: adjustmentType === 'add' ? 'var(--success)' : 'var(--warning)' }}>
                       {selectedItem ? 
                         (adjustmentType === 'add' 
                           ? Number(selectedItem.stock) + Number(adjustmentQuantity) 
@@ -1518,7 +1532,7 @@ export default function Inventory() {
                     type="submit" 
                     variant="contained"
                     sx={{ 
-                      bgcolor: adjustmentType === 'add' ? '#06D6A0' : '#FF6B6B',
+                      bgcolor: adjustmentType === 'add' ? 'var(--success)' : 'var(--warning)',
                       '&:hover': { 
                         bgcolor: adjustmentType === 'add' ? 'rgba(6, 214, 160, 0.8)' : 'rgba(255, 107, 107, 0.8)'
                       }
@@ -1614,7 +1628,7 @@ export default function Inventory() {
               </Stack>
               <DialogActions sx={{ mt: 2 }}>
                 <Button onClick={handleCloseModal}>Cancel</Button>
-                <Button type="submit" variant="contained" sx={{ bgcolor: '#6c63ff' }}>
+                <Button type="submit" variant="contained" sx={{ bgcolor: 'var(--text-primary)' }}>
                   {editIndex !== null ? 'Update Item' : 'Add Item'}
                 </Button>
               </DialogActions>

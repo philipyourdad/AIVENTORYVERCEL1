@@ -446,7 +446,7 @@ const AlertCard = ({
         }}
       />
     </Box>
-    <Stack direction={{ xs: 'row', sm: 'column' }} spacing={{ xs: 1, sm: 1.5 }} sx={{ flexShrink: 0, width: { xs: '100%', sm: 'auto' } }}>
+    <Stack direction={{ xs: 'row', sm: 'column' }} spacing={1.5} sx={{ flexShrink: 0, width: { xs: '100%', sm: 'auto' } }}>
       <Button 
         variant="contained" 
         color="error" 
@@ -588,7 +588,7 @@ const AlertCard = ({
                 <InventoryIcon sx={{ fontSize: 28 }} />
                 Inventory Overview
               </Typography>
-              <Grid container spacing={{ xs: 2, md: 3 }} justifyContent="center" >
+              <Grid container spacing={2} justifyContent="center" >
                 <Grid item xs={12} sm={6} md={6} sx={{ display: 'flex' }} >
                   <Box sx={{ animation: 'fadeInUp 0.6s ease-out forwards', opacity: 0, animationDelay: '0.1s' }} >
                     <SummaryCard

@@ -358,7 +358,7 @@ const Reports = () => {
       label: month.month,
       value: month.value,
       type: 'historical',
-      fill: '#2E3A8C'
+      fill: 'var(--text-primary)'
     }));
     
     // Add LSTM predictions to chart if available (as separate data points)
@@ -371,7 +371,7 @@ const Reports = () => {
           value: pred.value,
           type: 'prediction',
           confidence: pred.confidence,
-          fill: '#06D6A0'
+          fill: 'var(--success)'
         });
       });
     }
@@ -700,7 +700,7 @@ const Reports = () => {
       return (
         <Stack alignItems="center" spacing={2} sx={{ py: 8 }}>
           <CircularProgress />
-          <Typography color="text.secondary">Loading analytics…</Typography>
+          <Typography sx={{ color: 'var(--text-secondary)' }}>Loading analytics…</Typography>
         </Stack>
       );
     }
@@ -710,7 +710,7 @@ const Reports = () => {
     return (
         <Stack alignItems="center" spacing={2} sx={{ py: 8 }}>
           <CircularProgress />
-          <Typography color="text.secondary">Loading metrics…</Typography>
+          <Typography sx={{ color: 'var(--text-secondary)' }}>Loading metrics…</Typography>
             </Stack>
       );
     }
@@ -766,7 +766,26 @@ const Reports = () => {
                         }
                       }}
                       InputProps={{
-                        startAdornment: <SearchIcon sx={{ color: 'text.secondary', mr: 1 }} />
+                        startAdornment: <SearchIcon sx={{ color: 'var(--text-secondary)', mr: 1 }} />
+                      }}
+                      sx={{
+                        '& .MuiOutlinedInput-root': {
+                          '& fieldset': {
+                            borderColor: 'var(--border-color)',
+                          },
+                          '&:hover fieldset': {
+                            borderColor: 'var(--border-color)',
+                          },
+                          '&.Mui-focused fieldset': {
+                            borderColor: 'var(--border-color)',
+                          },
+                          '& input': {
+                            color: 'var(--text-primary)',
+                          },
+                        },
+                        '& .MuiInputBase-root': {
+                          background: 'var(--surface)',
+                        }
                       }}
                     />
                     <Popper
@@ -775,7 +794,7 @@ const Reports = () => {
                       placement="bottom-start"
                       style={{ zIndex: 1300, width: searchAnchorEl?.offsetWidth }}
                     >
-                      <Paper sx={{ maxHeight: 300, overflow: 'auto', width: '100%' }}>
+                      <Paper sx={{ maxHeight: 300, overflow: 'auto', width: '100%', background: 'var(--surface)', border: '1px solid var(--border-color)' }}>
                         <ClickAwayListener onClickAway={() => setSearchAnchorEl(null)}>
                           <MenuList>
                             <MuiMenuItem
@@ -785,8 +804,9 @@ const Reports = () => {
                                 setSearchAnchorEl(null);
                               }}
                               selected={selectedProduct === 'all'}
+                              sx={{ color: 'var(--text-primary)', background: 'var(--surface)', '&:hover': { background: 'rgba(46, 58, 140, 0.1)' } }}
                             >
-                              <strong>All Products</strong>
+                              <Typography sx={{ color: 'var(--text-primary)', fontWeight: 600 }}>All Products</Typography>
                             </MuiMenuItem>
                             {(metrics?.availableProducts || []).slice(0, 20).map((product) => (
                               <MuiMenuItem
@@ -797,27 +817,28 @@ const Reports = () => {
                                   setSearchAnchorEl(null);
                                 }}
                                 selected={String(selectedProduct) === String(product.id)}
+                                sx={{ color: 'var(--text-primary)', background: 'var(--surface)', '&:hover': { background: 'rgba(46, 58, 140, 0.1)' } }}
                               >
                                 <Box>
-                                  <Typography variant="body2" fontWeight={500}>
+                                  <Typography variant="body2" fontWeight={500} sx={{ color: 'var(--text-primary)' }}>
                                     {product.name || `Product ${product.id}`}
                                   </Typography>
-                                  <Typography variant="caption" color="text.secondary">
+                                  <Typography variant="caption" sx={{ color: 'var(--text-secondary)' }}>
                                     ID: {product.id}
                                   </Typography>
                                 </Box>
                               </MuiMenuItem>
                             ))}
                             {metrics?.availableProducts && metrics.availableProducts.length > 20 && (
-                              <MuiMenuItem disabled>
-                                <Typography variant="caption" color="text.secondary">
+                              <MuiMenuItem disabled sx={{ color: 'var(--text-primary)', background: 'var(--surface)' }}>
+                                <Typography variant="caption" sx={{ color: 'var(--text-secondary)' }}>
                                   ... and {metrics.availableProducts.length - 20} more (use dropdown to see all)
                                 </Typography>
                               </MuiMenuItem>
                             )}
                             {(!metrics?.availableProducts || metrics.availableProducts.length === 0) && (
-                              <MuiMenuItem disabled>
-                                <Typography variant="body2" color="text.secondary">
+                              <MuiMenuItem disabled sx={{ color: 'var(--text-primary)', background: 'var(--surface)' }}>
+                                <Typography variant="body2" sx={{ color: 'var(--text-secondary)' }}>
                                   No products found
                                 </Typography>
                               </MuiMenuItem>
@@ -828,7 +849,7 @@ const Reports = () => {
                     </Popper>
                   </Box>
                   <FormControl size="small" sx={{ minWidth: 250 }}>
-                    <InputLabel>Select Product</InputLabel>
+                    <InputLabel sx={{ color: 'var(--text-secondary)' }}>Select Product</InputLabel>
                     <Select
                       value={selectedProduct}
                       label="Select Product"
@@ -844,10 +865,31 @@ const Reports = () => {
                         }
                         setSearchAnchorEl(null);
                       }}
+                      sx={{
+                        '& .MuiOutlinedInput-root': {
+                          '& fieldset': {
+                            borderColor: 'var(--border-color)',
+                          },
+                          '&:hover fieldset': {
+                            borderColor: 'var(--border-color)',
+                          },
+                          '&.Mui-focused fieldset': {
+                            borderColor: 'var(--border-color)',
+                          },
+                          '& input': {
+                            color: 'var(--text-primary)',
+                          },
+                          background: 'var(--surface)',
+                          color: 'var(--text-primary)'
+                        },
+                        '& .MuiSvgIcon-root': {
+                          color: 'var(--text-primary)'
+                        }
+                      }}
                     >
-                      <MenuItem value="all">All Products</MenuItem>
+                      <MenuItem value="all" sx={{ color: 'var(--text-primary)', background: 'var(--surface)' }}><Typography sx={{ color: 'var(--text-primary)' }}>All Products</Typography></MenuItem>
                       {(metrics?.availableProducts || []).map((product) => (
-                        <MenuItem key={product.id} value={product.id}>
+                        <MenuItem key={product.id} value={product.id} sx={{ color: 'var(--text-primary)', background: 'var(--surface)', '&:hover': { background: 'rgba(46, 58, 140, 0.1)' } }}>
                           {product.name || `Product ${product.id}`}
                         </MenuItem>
                       ))}
@@ -857,7 +899,7 @@ const Reports = () => {
               </Box>
               {productSearch && (
                 <Box>
-                  <Typography variant="body2" color="text.secondary">
+                  <Typography variant="body2" sx={{ color: 'var(--text-secondary)' }}>
                     {metrics?.availableProducts?.length || 0} product{metrics?.availableProducts?.length !== 1 ? 's' : ''} found
                     {metrics?.availableProducts?.length > 0 && metrics.availableProducts.length <= 5 && (
                       <span> - {metrics.availableProducts.map(p => p.name).join(', ')}</span>
@@ -876,7 +918,7 @@ const Reports = () => {
               <CardContent>
                 <Box display="flex" justifyContent="space-between" alignItems="center">
                   <Box>
-                    <Typography color="text.secondary" variant="body2">
+                    <Typography sx={{ color: 'var(--text-secondary)' }} variant="body2">
                       {selectedProduct === 'all' ? 'Total Products' : 'Product Stock'}
                     </Typography>
                     <Typography variant="h4" fontWeight={700} sx={{ color: 'var(--text-primary)' }}>
@@ -896,7 +938,7 @@ const Reports = () => {
               <CardContent>
                 <Box display="flex" justifyContent="space-between" alignItems="center">
                   <Box>
-                    <Typography color="text.secondary" variant="body2">
+                    <Typography sx={{ color: 'var(--text-secondary)' }} variant="body2">
                       {selectedProduct === 'all' ? 'Items in Stock' : 'Current Stock'}
                     </Typography>
                     <Typography variant="h4" fontWeight={700} sx={{ color: 'var(--success)' }}>
@@ -916,7 +958,7 @@ const Reports = () => {
               <CardContent>
                 <Box display="flex" justifyContent="space-between" alignItems="center">
                   <Box>
-                    <Typography color="text.secondary" variant="body2">
+                    <Typography sx={{ color: 'var(--text-secondary)' }} variant="body2">
                       {selectedProduct === 'all' ? 'Low Stock Items' : 'Stock Status'}
                     </Typography>
                     <Typography variant="h4" fontWeight={700} sx={{ color: 'var(--warning)' }}>
@@ -936,7 +978,7 @@ const Reports = () => {
               <CardContent>
                 <Box display="flex" justifyContent="space-between" alignItems="center">
                   <Box>
-                    <Typography color="text.secondary" variant="body2">
+                    <Typography sx={{ color: 'var(--text-secondary)' }} variant="body2">
                       {selectedProduct === 'all' ? 'Product Total Sales' : 'Product Revenue'}
                     </Typography>
                     <Typography variant="h4" fontWeight={700} sx={{ color: 'var(--text-primary)' }}>
@@ -977,13 +1019,39 @@ const Reports = () => {
                     InputLabelProps={{
                       shrink: true,
                     }}
-                    sx={{ minWidth: 180 }}
+                    sx={{ 
+                      minWidth: 180,
+                      '& .MuiOutlinedInput-root': {
+                        '& fieldset': {
+                          borderColor: 'var(--border-color)',
+                        },
+                        '&:hover fieldset': {
+                          borderColor: 'var(--border-color)',
+                        },
+                        '&.Mui-focused fieldset': {
+                          borderColor: 'var(--border-color)',
+                        },
+                        '& input': {
+                          color: 'var(--text-primary)',
+                          background: 'var(--surface)'
+                        },
+                        '& input::-webkit-calendar-picker-indicator': {
+                          filter: 'invert(1)',
+                        }
+                      },
+                      '& .MuiInputLabel-root': {
+                        color: 'var(--text-secondary)',
+                      },
+                      '& .MuiInputLabel-root.Mui-focused': {
+                        color: 'var(--text-primary)',
+                      }
+                    }}
                   />
                 </Box>
                 
                 {/* Sales Trend Chart */}
                 <Box sx={{ width: '100%', height: 300, mt: 2, mb: 4 }}>
-                  <Typography variant="subtitle2" color="text.secondary" mb={1}>
+                  <Typography variant="subtitle2" sx={{ color: 'var(--text-secondary)' }} mb={1}>
                     {selectedProduct === 'all' 
                       ? `Monthly Sales Trend (${salesFilter})`
                       : `${metrics?.availableProducts?.find(p => String(p.id) === String(selectedProduct))?.name || 'Product'} - Monthly Sales Trend (${salesFilter})`
@@ -1041,14 +1109,14 @@ const Reports = () => {
                   </Box>
 
                 {/* Product Sales Details Table */}
-                <Divider sx={{ my: 3 }} />
-                <Typography variant="h6" fontWeight={600} mb={2}>
+                <Divider sx={{ my: 3, borderColor: 'var(--border-color)' }} />
+                <Typography variant="h6" fontWeight={600} mb={2} sx={{ color: 'var(--text-primary)' }}>
                   Product Sales Breakdown
                 </Typography>
                 {(!metrics?.productDetailsList || metrics.productDetailsList.length === 0) ? (
                   <Box sx={{ py: 4, textAlign: 'center' }}>
                     <InventoryIcon sx={{ fontSize: 48, color: 'var(--text-secondary)', mb: 1 }} />
-                    <Typography color="text.secondary">
+                    <Typography sx={{ color: 'var(--text-secondary)' }}>
                       No sales data available
                     </Typography>
                   </Box>
@@ -1093,7 +1161,7 @@ const Reports = () => {
                               </Typography>
                             </TableCell>
                             <TableCell align="right">
-                              <Typography color="text.secondary">
+                              <Typography sx={{ color: 'var(--text-secondary)' }}>
                                 {product.orderCount}
                               </Typography>
                             </TableCell>
@@ -1126,7 +1194,7 @@ const Reports = () => {
                 {(!metrics?.top5Products || metrics.top5Products.length === 0) ? (
                   <Box sx={{ py: 4, textAlign: 'center' }}>
                     <InventoryIcon sx={{ fontSize: 48, color: 'var(--text-secondary)', mb: 1 }} />
-                    <Typography color="text.secondary">
+                    <Typography sx={{ color: 'var(--text-secondary)' }}>
                       No sales data available
                     </Typography>
                   </Box>
@@ -1151,8 +1219,8 @@ const Reports = () => {
                                 label={`#${index + 1}`}
                                 size="small"
                                 sx={{ 
-                                  bgcolor: index === 0 ? '#FFD700' : index === 1 ? '#C0C0C0' : index === 2 ? '#CD7F32' : 'rgba(108, 99, 255, 0.1)',
-                                  color: index < 3 ? '#fff' : 'var(--text-primary)',
+                                  bgcolor: index === 0 ? 'var(--warning)' : index === 1 ? 'var(--text-secondary)' : index === 2 ? 'var(--warning)' : 'rgba(108, 99, 255, 0.1)',
+                                  color: index < 3 ? 'var(--surface)' : 'var(--text-primary)',
                                   fontWeight: 600
                                 }}
                               />
@@ -1195,13 +1263,14 @@ const Reports = () => {
             <Typography variant="h4" fontWeight={800} sx={{ color: 'var(--text-primary)', mb: 0.5 }}>
               Reports & Analytics
             </Typography>
-            <Typography color="text.secondary">
+            <Typography sx={{ color: 'var(--text-secondary)' }}>
+              Detailed sales insights and inventory analytics
             </Typography>
           </Box>
 
           <Stack direction="row" spacing={1}>
             {lastUpdated && (
-              <Typography variant="body2" color="text.secondary" sx={{ alignSelf: 'center' }}>
+              <Typography variant="body2" sx={{ color: 'var(--text-secondary)', alignSelf: 'center' }}>
                 Updated {formatDate(lastUpdated)}
               </Typography>
             )}
