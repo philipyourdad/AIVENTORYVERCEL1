@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState, useRef } from 'react';
 import {
   Alert,
   Avatar,
@@ -240,105 +240,132 @@ const Dashboard = () => {
     return '#2E3A8C';
   };
 
-const SummaryCard = ({ icon, title, value, helper, color = '#2E3A8C', trend = null }) => (
-  <Card
-    elevation={0}
-    sx={{
-      borderRadius: 4,
-      border: '1px solid #e7e9ef',
-      background: 'linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%)',
-      height: '100%',
-      transition: 'all 0.3s ease',
-      '&:hover': {
-        transform: 'translateY(-4px)',
-        boxShadow: '0 10px 20px rgba(0,0,0,0.08)',
-        border: '1px solid #d0d7de'
-      }
-    }}
-  >
-    <CardContent
+const SummaryCard = ({ icon, title, value, helper, color = '#2E3A8C', trend = null }) => {
+  const [displayValue, setDisplayValue] = useState(0);
+  const prevValue = useRef(value);
+  
+  useEffect(() => {
+    if (prevValue.current !== value) {
+      let start = prevValue.current;
+      const end = value;
+      const duration = 1000; // 1 second
+      const increment = (end - start) / (duration / 16); // ~60fps
+      
+      const animate = () => {
+        start += increment;
+        if ((increment > 0 && start >= end) || (increment < 0 && start <= end)) {
+          setDisplayValue(end);
+          prevValue.current = end;
+        } else {
+          setDisplayValue(Math.floor(start));
+          requestAnimationFrame(animate);
+        }
+      };
+      
+      animate();
+    } else {
+      setDisplayValue(value);
+    }
+  }, [value]);
+  
+  return (
+    <Card
+      elevation={0}
       sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        textAlign: 'center',
-        gap: 1.5,
-        py: 3,
-        px: 2
+        borderRadius: 4,
+        border: '1px solid #e7e9ef',
+        background: 'var(--surface-glass)',
+        height: '100%',
+        transition: 'all 0.3s ease',
+        '&:hover': {
+          transform: 'translateY(-8px) scale(1.02)',
+          boxShadow: '0 16px 32px rgba(0, 0, 0, 0.15)',
+          border: '1px solid rgba(46, 58, 140, 0.3)'
+        }
       }}
     >
-      <Avatar 
-        sx={{ 
-          bgcolor: `${color}15`, 
-          color, 
-          width: 64, 
-          height: 64,
-          mb: 1,
-          boxShadow: `0 4px 12px ${color}20`
+      <CardContent
+        sx={{
+          display: 'flex',
+          flexDirection: 'row',
+          alignItems: 'center',
+          textAlign: 'left',
+          gap: 2,
+          py: 2,
+          px: 2
         }}
       >
-        {icon}
-      </Avatar>
-      <Box>
-        <Typography 
-          color="text.secondary" 
-          variant="body2" 
+        <Avatar 
           sx={{ 
-            textTransform: 'uppercase', 
-            letterSpacing: 1,
-            fontWeight: 600,
-            fontSize: '0.75rem'
+            bgcolor: `${color}15`, 
+            color, 
+            width: 56, 
+            height: 56,
+            flexShrink: 0,
+            boxShadow: `0 4px 12px ${color}20`
           }}
         >
-          {title}
-        </Typography>
-        <Typography 
-          variant="h3" 
-          fontWeight={800} 
-          sx={{ 
-            lineHeight: 1.2,
-            background: `linear-gradient(90deg, ${color}, ${color}CC)`,
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            backgroundClip: 'text',
-            mt: 0.5
-          }}
-        >
-          {value}
-        </Typography>
-        {helper && (
+          {icon}
+        </Avatar>
+        <Box sx={{ flex: 1, minWidth: 0 }}>
           <Typography 
             color="text.secondary" 
             variant="body2" 
             sx={{ 
-              mt: 0.5,
-              fontSize: '0.8rem'
+              textTransform: 'uppercase', 
+              letterSpacing: 1,
+              fontWeight: 600,
+              fontSize: '0.75rem'
             }}
           >
-            {helper}
+            {title}
           </Typography>
-        )}
-        {trend && (
-          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', mt: 1 }}>
+          <Typography 
+            variant="h4" 
+            fontWeight={800} 
+            sx={{ 
+              lineHeight: 1.2,
+              background: 'var(--primary-gradient)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+              my: 0.5
+            }}
+          >
+            {displayValue}
+          </Typography>
+          {helper && (
             <Typography 
+              color="text.secondary" 
               variant="body2" 
               sx={{ 
-                color: trend > 0 ? '#06D6A0' : '#FF6B6B',
-                fontWeight: 600,
-                display: 'flex',
-                alignItems: 'center',
-                gap: 0.5
+                fontSize: '0.8rem'
               }}
             >
-              {trend > 0 ? '↑' : '↓'} {Math.abs(trend)}%
+              {helper}
             </Typography>
-          </Box>
-        )}
-      </Box>
-    </CardContent>
-  </Card>
-);
+          )}
+          {trend && (
+            <Box sx={{ display: 'flex', alignItems: 'center', mt: 1 }}>
+              <Typography 
+                variant="body2" 
+                sx={{ 
+                  color: trend > 0 ? 'var(--success)' : 'var(--danger)',
+                  fontWeight: 600,
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 0.5
+                }}
+              >
+                {trend > 0 ? '↑' : '↓'} {Math.abs(trend)}%
+              </Typography>
+            </Box>
+          )}
+        </Box>
+      </CardContent>
+    </Card>
+  );
+};
 
 const AlertCard = ({
   alert,
@@ -346,21 +373,21 @@ const AlertCard = ({
 }) => (
   <Box
     sx={{
-      border: '1px solid #e7e9ef',
+      border: '1px solid var(--border-color)',
       borderRadius: 4,
       p: { xs: 2, md: 3 },
       display: 'flex',
       flexDirection: { xs: 'column', sm: 'row' },
       gap: { xs: 2, sm: 3 },
       alignItems: { xs: 'flex-start', sm: 'center' },
-      background: 'linear-gradient(135deg, #ffffff 0%, #fafbff 100%)',
+      background: 'var(--surface-glass)',
       height: '100%',
       width: '100%',
       transition: 'all 0.3s ease',
       '&:hover': {
-        transform: 'translateY(-2px)',
-        boxShadow: '0 6px 16px rgba(0,0,0,0.08)',
-        border: '1px solid #d0d7de'
+        transform: 'translateY(-1px) scale(1)',
+        boxShadow: '0 6px 12px rgba(0, 0, 0, 0.25)',
+        border: '1px solid rgba(46, 58, 140, 0.3)'
       }
     }}
   >
@@ -376,7 +403,7 @@ const AlertCard = ({
           textOverflow: 'ellipsis',
           whiteSpace: 'nowrap',
           width: '100%',
-          color: '#1a1a1a'
+          color: 'var(--text-primary)'
         }}
       >
         {alert.name}
@@ -411,7 +438,7 @@ const AlertCard = ({
         sx={{ 
           height: 8, 
           borderRadius: 4, 
-          bgcolor: '#f1f3f9',
+          bgcolor: 'rgba(100, 116, 139, 0.3)',
           '& .MuiLinearProgress-bar': { 
             bgcolor: accent,
             borderRadius: 4
@@ -433,7 +460,8 @@ const AlertCard = ({
           textTransform: 'none',
           boxShadow: '0 4px 12px rgba(255, 107, 107, 0.2)',
           '&:hover': {
-            boxShadow: '0 6px 16px rgba(255, 107, 107, 0.3)'
+            boxShadow: '0 8px 20px rgba(255, 107, 107, 0.4)',
+            transform: 'translateY(-2px) scale(1.02)'
           }
         }}
         onClick={() => {
@@ -452,11 +480,13 @@ const AlertCard = ({
           py: 1,
           fontWeight: 600,
           textTransform: 'none',
-          borderColor: '#d0d7de',
-          color: '#454545',
+          borderColor: 'var(--border-color)',
+          color: 'var(--text-primary)',
           '&:hover': {
-            borderColor: '#b0b8c1',
-            backgroundColor: '#f6f8fa'
+            borderColor: 'var(--text-secondary)',
+            backgroundColor: 'var(--surface)',
+            transform: 'translateY(-2px) scale(1.02)',
+            boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)'
           }
         }}
         onClick={() => {
@@ -472,16 +502,16 @@ const AlertCard = ({
 
   return (
     <SidebarLayout>
-      <Box sx={{ width: '100%', py: { xs: 2, md: 3 } }}>
+      <Box sx={{ width: '100%', py: { xs: 2, md: 3 }, background: 'transparent' }}>
         <Stack direction={{ xs: 'column', sm: 'row' }} alignItems={{ xs: 'flex-start', sm: 'center' }} justifyContent="space-between" spacing={{ xs: 2, sm: 3 }} sx={{ mb: 4 }}>
           <Box>
             <Typography 
-              variant="h3" 
+              variant="h4" 
               fontWeight={800} 
               sx={{ 
                 color: '#2E3A8C',
                 mb: 0.5,
-                background: 'linear-gradient(90deg, #2E3A8C, #6C63FF)',
+                background: 'var(--primary-gradient)',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
                 backgroundClip: 'text'
@@ -507,8 +537,9 @@ const AlertCard = ({
               textTransform: 'none',
               boxShadow: '0 4px 12px rgba(46, 58, 140, 0.25)',
               '&:hover': {
-                boxShadow: '0 6px 16px rgba(46, 58, 140, 0.35)',
-                bgcolor: '#1a246e'
+                boxShadow: '0 8px 20px rgba(46, 58, 140, 0.45)',
+                bgcolor: '#1a246e',
+                transform: 'translateY(-2px) scale(1.02)'
               }
             }}
           >
@@ -544,7 +575,7 @@ const AlertCard = ({
             {/* Key Metrics Section */}
             <Box>
               <Typography 
-                variant="h4" 
+                variant="h5" 
                 fontWeight={700} 
                 sx={{ 
                   mb: 3, 
@@ -557,46 +588,55 @@ const AlertCard = ({
                 <InventoryIcon sx={{ fontSize: 28 }} />
                 Inventory Overview
               </Typography>
-              <Grid container spacing={{ xs: 2, md: 3 }} justifyContent="center">
-                <Grid item xs={12} sm={6} md={3} sx={{ display: 'flex' }}>
-                  <SummaryCard
-                    icon={<InventoryIcon />}
-                    title="Total Items"
-                    value={analytics.totalItems}
-                    helper="Active products in inventory"
-                    color="#2E3A8C"
-                    trend={2.5} // Mock trend data
-                  />
+              <Grid container spacing={{ xs: 2, md: 3 }} justifyContent="center" >
+                <Grid item xs={12} sm={6} md={6} sx={{ display: 'flex' }} >
+                  <Box sx={{ animation: 'fadeInUp 0.6s ease-out forwards', opacity: 0, animationDelay: '0.1s' }} >
+                    <SummaryCard
+            
+                      icon={<InventoryIcon />}
+                      title="Total Items"
+                      value={analytics.totalItems}
+                      helper="Active products in inventory"
+                      color="#2E3A8C"
+                      
+                    />
+                  </Box>
                 </Grid>
-                <Grid item xs={12} sm={6} md={3} sx={{ display: 'flex' }}>
-                  <SummaryCard
-                    icon={<WarningIcon />}
-                    title="Low-Stock Alerts"
-                    value={settings.lowStock ? analytics.lowStockCount : 0}
-                    helper="Items below reorder threshold"
-                    color="#F4A261"
-                    trend={-1.2} // Mock trend data
-                  />
+                <Grid item xs={12} sm={6} md={6} sx={{ display: 'flex' }}>
+                  <Box sx={{ animation: 'fadeInUp 0.6s ease-out forwards', opacity: 0, animationDelay: '0.2s' }}>
+                    <SummaryCard
+                      icon={<WarningIcon />}
+                      title="Low-Stock Alerts"
+                      value={settings.lowStock ? analytics.lowStockCount : 0}
+                      helper="Items below reorder threshold"
+                      color="#F4A261"
+              
+                    />
+                  </Box>
                 </Grid>
-                <Grid item xs={12} sm={6} md={3} sx={{ display: 'flex' }}>
-                  <SummaryCard
-                    icon={<ErrorOutlineIcon />}
-                    title="Critical Items"
-                    value={settings.lowStock ? analytics.criticalCount : 0}
-                    helper="Urgent restock required"
-                    color="#FF6B6B"
-                    trend={-3.7} // Mock trend data
-                  />
+                <Grid item xs={12} sm={6} md={6} sx={{ display: 'flex' }}>
+                  <Box sx={{ animation: 'fadeInUp 0.6s ease-out forwards', opacity: 0, animationDelay: '0.3s' }}>
+                    <SummaryCard
+                      icon={<ErrorOutlineIcon />}
+                      title="Critical Items"
+                      value={settings.lowStock ? analytics.criticalCount : 0}
+                      helper="Urgent restock required"
+                      color="#FF6B6B"
+
+                    />
+                  </Box>
                 </Grid>
-                <Grid item xs={12} sm={6} md={3} sx={{ display: 'flex' }}>
-                  <SummaryCard
-                    icon={<FiberManualRecordIcon />}
-                    title="Active Alerts"
-                    value={settings.lowStock ? analytics.alerts.length : 0}
-                    helper="AI-powered notifications"
-                    color="#6C63FF"
-                    trend={0} // Mock trend data
-                  />
+                <Grid item xs={12} sm={6} md={6} sx={{ display: 'flex' }}>
+                  <Box sx={{ animation: 'fadeInUp 0.6s ease-out forwards', opacity: 0, animationDelay: '0.4s'  }}>
+                    <SummaryCard
+                      icon={<FiberManualRecordIcon />}
+                      title="Active Alerts"
+                      value={settings.lowStock ? analytics.alerts.length : 0}
+                      helper="AI-powered notifications"
+                      color="#6C63FF"
+
+                    />
+                  </Box>
                 </Grid>
               </Grid>
             </Box>
@@ -614,18 +654,18 @@ const AlertCard = ({
                     gap: 1.5
                   }}
                 >
-                  <ErrorOutlineIcon sx={{ fontSize: 28 }} />
+                  <ErrorOutlineIcon sx={{ fontSize: 24 }} />
                   AI-Powered Alerts
                 </Typography>
                 <Typography 
-                  variant="subtitle2" 
+                  variant="subtitle3" 
                   sx={{ 
                     bgcolor: '#2E3A8C10', 
                     px: 2.5, 
                     py: 0.75, 
                     borderRadius: 2,
                     color: '#2E3A8C',
-                    fontWeight: 600,
+                    fontWeight: 500,
                     display: 'flex',
                     alignItems: 'center',
                     gap: 0.5
@@ -636,8 +676,7 @@ const AlertCard = ({
                 </Typography>
               </Box>
               
-              <Card elevation={0} sx={{ borderRadius: 4, border: '1px solid #e5e7eb', boxShadow: '0 4px 12px rgba(0,0,0,0.03)' }}>
-                <CardContent>
+              <>
                   {!settings.lowStock ? (
                     <Alert 
                       severity="info" 
@@ -645,7 +684,7 @@ const AlertCard = ({
                       sx={{ 
                         mb: 3, 
                         borderRadius: 2,
-                        boxShadow: '0 2px 8px rgba(0,0,0,0.05)'
+                        boxShadow: '0 2px 8px rgba(255, 0, 0, 0.05)'
                       }}
                     >
                       <Typography variant="subtitle1" fontWeight={600}>
@@ -690,8 +729,7 @@ const AlertCard = ({
                       )}
                     </>
                   )}
-                </CardContent>
-              </Card>
+                </>
             </Box>
 
             

@@ -636,7 +636,7 @@ export default function Analysis() {
       <Box sx={{ width: '100%', mt: 3, mb: 4 }}>        {/* Header */}
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 3 }}>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-            <Typography variant="h5" fontWeight={800} color="#2E3A8C">
+            <Typography variant="h5" fontWeight={800} sx={{ color: 'var(--text-primary)' }}>
               Stock Demand Analysis: {product.product_name || product.Product_name || product.name || 'Unknown Product'} (SKU: {product.product_sku || product.Product_sku || product.sku || product.product_id || product.Product_id || product.id})
             </Typography>
             <Chip 
@@ -673,9 +673,9 @@ export default function Analysis() {
         </Box>
 
         {/* Analysis Summary */}
-        <Paper elevation={3} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', mb: 4, p: 3, borderRadius: 3, background: 'linear-gradient(135deg, #f5f7fa 0%, #e4e7f1 100%)' }}>
+        <Paper elevation={3} sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', mb: 4, p: 3, borderRadius: 3, background: 'var(--surface)' }}>
           <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', mb: 3 }}>
-            <Typography variant="h6" fontWeight={700} sx={{ color: '#2E3A8C' }}>
+            <Typography variant="h6" fontWeight={700} sx={{ color: 'var(--text-primary)' }}>
               Stock Demand Prediction Summary
             </Typography>
             {!mlStatus.connected && mlStatus.checked && (
@@ -699,23 +699,24 @@ export default function Analysis() {
                     display: 'flex',
                     flexDirection: 'column',
                     justifyContent: 'center',
-                    background: 'white'
+                    background: 'var(--surface)',
+                    color: 'var(--text-primary)'
                   }}
                 >
                   <Typography
                     variant="h4"
                     fontWeight={800}
                     sx={{
-                      color: stat.color || '#2E3A8C',
+                      color: stat.color || 'var(--text-primary)',
                       mb: 0.5,
                     }}
                   >
                     {stat.value}
                   </Typography>
-                  <Typography color="#555" fontWeight={600} fontSize={14} sx={{ mb: 0.5 }}>
+                  <Typography sx={{ color: 'var(--text-primary)', fontWeight: 600, fontSize: 14, mb: 0.5 }}>
                     {stat.label}
                   </Typography>
-                  <Typography color="#888" variant="caption">
+                  <Typography sx={{ color: 'var(--text-secondary)', variant: "caption" }}>
                     {stat.description}
                   </Typography>
                 </Paper>
@@ -749,7 +750,7 @@ export default function Analysis() {
         {tab === 0 && (
           <Box>
             <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-              <Typography variant="h6" fontWeight={800} sx={{ color: '#2E3A8C' }}>
+              <Typography variant="h6" fontWeight={800} sx={{ color: 'var(--text-primary)' }}>
                 Daily Stock Demand Prediction
               </Typography>
               <Chip 
@@ -759,7 +760,7 @@ export default function Analysis() {
                 color={mlStatus.connected ? "success" : "warning"}
               />
             </Box>
-            <Paper elevation={2} sx={{ p: 2, mb: 3, borderRadius: 3, background: 'white' }}>
+            <Paper elevation={2} sx={{ p: 2, mb: 3, borderRadius: 3, background: 'var(--surface)' }}>
               <Box sx={{ width: '100%', height: 300 }}>
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={chartData.dailyData} margin={{ top: 20, right: 30, left: 20, bottom: 30 }}>
@@ -782,15 +783,17 @@ export default function Analysis() {
                     <RechartsTooltip 
                       contentStyle={{ 
                         borderRadius: 8, 
-                        border: '1px solid #e0e0e0',
-                        boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
+                        border: '1px solid var(--border-color)',
+                        boxShadow: 'var(--card-shadow)',
+                        background: 'var(--surface)',
+                        color: 'var(--text-primary)'
                       }}
                       formatter={(value, name) => {
                         if (name === 'predictedStock') return [value, 'Predicted Stock'];
                         if (name === 'predictedDemand') return [value, 'Demand Forecast'];
                         return [value, name];
                       }}
-                      labelStyle={{ fontWeight: 600 }}
+                      labelStyle={{ fontWeight: 600, color: 'var(--text-primary)' }}
                     />
                     <Legend 
                       wrapperStyle={{ paddingTop: 10 }}
@@ -816,15 +819,15 @@ export default function Analysis() {
                 </ResponsiveContainer>
               </Box>
             </Paper>
-            <TableContainer component={Paper} elevation={2} sx={{ borderRadius: 3, background: 'white' }}>
+            <TableContainer component={Paper} elevation={2} sx={{ borderRadius: 3, background: 'var(--surface)' }}>
               <Table>
                 <TableHead>
-                  <TableRow sx={{ background: '#f5f7ff' }}>
-                    <TableCell sx={{ fontWeight: 700, color: '#2E3A8C' }}>Date</TableCell>
-                    <TableCell sx={{ fontWeight: 700, color: '#2E3A8C' }}>Predicted Stock</TableCell>
-                    <TableCell sx={{ fontWeight: 700, color: '#2E3A8C' }}>Demand Forecast</TableCell>
-                    <TableCell sx={{ fontWeight: 700, color: '#2E3A8C' }}>Status</TableCell>
-                    <TableCell sx={{ fontWeight: 700, color: '#2E3A8C' }}>Time Until Restock</TableCell>
+                  <TableRow sx={{ background: 'var(--surface)' }}>
+                    <TableCell sx={{ fontWeight: 700, color: 'var(--text-primary)' }}>Date</TableCell>
+                    <TableCell sx={{ fontWeight: 700, color: 'var(--text-primary)' }}>Predicted Stock</TableCell>
+                    <TableCell sx={{ fontWeight: 700, color: 'var(--text-primary)' }}>Demand Forecast</TableCell>
+                    <TableCell sx={{ fontWeight: 700, color: 'var(--text-primary)' }}>Status</TableCell>
+                    <TableCell sx={{ fontWeight: 700, color: 'var(--text-primary)' }}>Time Until Restock</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -832,8 +835,8 @@ export default function Analysis() {
                     <TableRow 
                       key={i} 
                       sx={{ 
-                        '&:nth-of-type(odd)': { background: '#fafbff' },
-                        '&:hover': { background: '#f0f2ff' }
+                        '&:nth-of-type(odd)': { background: 'var(--surface)' },
+                        '&:hover': { background: 'rgba(46, 58, 140, 0.1)' }
                       }}
                     >
                       <TableCell sx={{ fontWeight: 500 }}>{row[0]}</TableCell>
@@ -887,7 +890,7 @@ export default function Analysis() {
         {tab === 1 && (
           <Box>
             <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-              <Typography variant="h6" fontWeight={800} sx={{ color: '#2E3A8C' }}>
+              <Typography variant="h6" fontWeight={800} sx={{ color: 'var(--text-primary)' }}>
                 Monthly Stock Demand Trends
               </Typography>
               <Chip 
@@ -897,38 +900,42 @@ export default function Analysis() {
                 color={mlStatus.connected ? "success" : "warning"}
               />
             </Box>
-            <Paper elevation={2} sx={{ p: 2, mb: 3, borderRadius: 3, background: 'white' }}>
+            <Paper elevation={2} sx={{ p: 2, mb: 3, borderRadius: 3, background: 'var(--surface)' }}>
               <Box sx={{ width: '100%', height: 300 }}>
                 <ResponsiveContainer width="100%" height="100%">
                   <LineChart data={chartData.monthlyData} margin={{ top: 20, right: 30, left: 20, bottom: 30 }}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+                    <CartesianGrid strokeDasharray="3 3" stroke="var(--border-color)" />
                     <XAxis 
                       dataKey="month" 
                       angle={-45} 
                       textAnchor="end" 
                       height={60}
-                      tick={{ fontSize: 12 }}
+                      tick={{ fontSize: 12, fill: 'var(--text-primary)' }}
                     />
                     <YAxis 
                       label={{ 
                         value: 'Units', 
                         angle: -90, 
                         position: 'insideLeft',
-                        fontWeight: 600
+                        fontWeight: 600,
+                        fill: 'var(--text-primary)'
                       }} 
+                      tick={{ fill: 'var(--text-primary)' }}
                     />
                     <RechartsTooltip 
                       contentStyle={{ 
                         borderRadius: 8, 
-                        border: '1px solid #e0e0e0',
-                        boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
+                        border: '1px solid var(--border-color)',
+                        boxShadow: 'var(--card-shadow)',
+                        background: 'var(--surface)',
+                        color: 'var(--text-primary)'
                       }}
                       formatter={(value, name) => {
                         if (name === 'demand') return [value, 'Demand Forecast'];
                         if (name === 'predictedStock') return [value, 'Predicted Stock'];
                         return [value, name];
                       }}
-                      labelStyle={{ fontWeight: 600 }}
+                      labelStyle={{ fontWeight: 600, color: 'var(--text-primary)' }}
                     />
                     <Legend 
                       wrapperStyle={{ paddingTop: 10 }}
@@ -960,15 +967,15 @@ export default function Analysis() {
                 </ResponsiveContainer>
               </Box>
             </Paper>
-            <TableContainer component={Paper} elevation={2} sx={{ borderRadius: 3, background: 'white' }}>
+            <TableContainer component={Paper} elevation={2} sx={{ borderRadius: 3, background: 'var(--surface)' }}>
               <Table>
                 <TableHead>
-                  <TableRow sx={{ background: '#f5f7ff' }}>
-                    <TableCell sx={{ fontWeight: 700, color: '#2E3A8C' }}>Month</TableCell>
-                    <TableCell sx={{ fontWeight: 700, color: '#2E3A8C' }}>Predicted Stock</TableCell>
-                    <TableCell sx={{ fontWeight: 700, color: '#2E3A8C' }}>Demand Forecast</TableCell>
-                    <TableCell sx={{ fontWeight: 700, color: '#2E3A8C' }}>Status</TableCell>
-                    <TableCell sx={{ fontWeight: 700, color: '#2E3A8C' }}>Action</TableCell>
+                  <TableRow sx={{ background: 'var(--surface)' }}>
+                    <TableCell sx={{ fontWeight: 700, color: 'var(--text-primary)' }}>Month</TableCell>
+                    <TableCell sx={{ fontWeight: 700, color: 'var(--text-primary)' }}>Predicted Stock</TableCell>
+                    <TableCell sx={{ fontWeight: 700, color: 'var(--text-primary)' }}>Demand Forecast</TableCell>
+                    <TableCell sx={{ fontWeight: 700, color: 'var(--text-primary)' }}>Status</TableCell>
+                    <TableCell sx={{ fontWeight: 700, color: 'var(--text-primary)' }}>Action</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -976,8 +983,8 @@ export default function Analysis() {
                     <TableRow 
                       key={i} 
                       sx={{ 
-                        '&:nth-of-type(odd)': { background: '#fafbff' },
-                        '&:hover': { background: '#f0f2ff' }
+                        '&:nth-of-type(odd)': { background: 'var(--surface)' },
+                        '&:hover': { background: 'rgba(46, 58, 140, 0.1)' }
                       }}
                     >
                       <TableCell sx={{ fontWeight: 500 }}>{row[0]}</TableCell>
@@ -1038,7 +1045,7 @@ export default function Analysis() {
         {tab === 2 && (
           <Box>
             <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-              <Typography variant="h6" fontWeight={800} sx={{ color: '#2E3A8C' }}>
+              <Typography variant="h6" fontWeight={800} sx={{ color: 'var(--text-primary)' }}>
                 Yearly Stock Demand Performance
               </Typography>
               <Chip 
@@ -1048,35 +1055,39 @@ export default function Analysis() {
                 color={mlStatus.connected ? "success" : "warning"}
               />
             </Box>
-            <Paper elevation={2} sx={{ p: 2, mb: 3, borderRadius: 3, background: 'white' }}>
+            <Paper elevation={2} sx={{ p: 2, mb: 3, borderRadius: 3, background: 'var(--surface)' }}>
               <Box sx={{ width: '100%', height: 300 }}>
                 <ResponsiveContainer width="100%" height="100%">
                   <BarChart data={chartData.yearlyData} margin={{ top: 20, right: 30, left: 20, bottom: 30 }}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+                    <CartesianGrid strokeDasharray="3 3" stroke="var(--border-color)" />
                     <XAxis 
                       dataKey="year" 
-                      tick={{ fontSize: 12 }}
+                      tick={{ fontSize: 12, fill: 'var(--text-primary)' }}
                     />
                     <YAxis 
                       label={{ 
                         value: 'Units', 
                         angle: -90, 
                         position: 'insideLeft',
-                        fontWeight: 600
+                        fontWeight: 600,
+                        fill: 'var(--text-primary)'
                       }} 
+                      tick={{ fill: 'var(--text-primary)' }}
                     />
                     <RechartsTooltip 
                       contentStyle={{ 
                         borderRadius: 8, 
-                        border: '1px solid #e0e0e0',
-                        boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
+                        border: '1px solid var(--border-color)',
+                        boxShadow: 'var(--card-shadow)',
+                        background: 'var(--surface)',
+                        color: 'var(--text-primary)'
                       }}
                       formatter={(value, name) => {
                         if (name === 'demand') return [value, 'Demand Forecast'];
                         if (name === 'predictedStock') return [value, 'Predicted Stock'];
                         return [value, name];
                       }}
-                      labelStyle={{ fontWeight: 600 }}
+                      labelStyle={{ fontWeight: 600, color: 'var(--text-primary)' }}
                     />
                     <Legend 
                       wrapperStyle={{ paddingTop: 10 }}
@@ -1102,15 +1113,15 @@ export default function Analysis() {
                 </ResponsiveContainer>
               </Box>
             </Paper>
-            <TableContainer component={Paper} elevation={2} sx={{ borderRadius: 3, background: 'white' }}>
+            <TableContainer component={Paper} elevation={2} sx={{ borderRadius: 3, background: 'var(--surface)' }}>
               <Table>
                 <TableHead>
-                  <TableRow sx={{ background: '#f5f7ff' }}>
-                    <TableCell sx={{ fontWeight: 700, color: '#2E3A8C' }}>Year</TableCell>
-                    <TableCell sx={{ fontWeight: 700, color: '#2E3A8C' }}>Predicted Stock</TableCell>
-                    <TableCell sx={{ fontWeight: 700, color: '#2E3A8C' }}>Demand Forecast</TableCell>
-                    <TableCell sx={{ fontWeight: 700, color: '#2E3A8C' }}>Status</TableCell>
-                    <TableCell sx={{ fontWeight: 700, color: '#2E3A8C' }}>Action</TableCell>
+                  <TableRow sx={{ background: 'var(--surface)' }}>
+                    <TableCell sx={{ fontWeight: 700, color: 'var(--text-primary)' }}>Year</TableCell>
+                    <TableCell sx={{ fontWeight: 700, color: 'var(--text-primary)' }}>Predicted Stock</TableCell>
+                    <TableCell sx={{ fontWeight: 700, color: 'var(--text-primary)' }}>Demand Forecast</TableCell>
+                    <TableCell sx={{ fontWeight: 700, color: 'var(--text-primary)' }}>Status</TableCell>
+                    <TableCell sx={{ fontWeight: 700, color: 'var(--text-primary)' }}>Action</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -1118,8 +1129,8 @@ export default function Analysis() {
                     <TableRow 
                       key={i} 
                       sx={{ 
-                        '&:nth-of-type(odd)': { background: '#fafbff' },
-                        '&:hover': { background: '#f0f2ff' }
+                        '&:nth-of-type(odd)': { background: 'var(--surface)' },
+                        '&:hover': { background: 'rgba(46, 58, 140, 0.1)' }
                       }}
                     >
                       <TableCell sx={{ fontWeight: 500 }}>{row[0]}</TableCell>
@@ -1179,10 +1190,10 @@ export default function Analysis() {
         )}
         {tab === 3 && (
           <Box>
-            <Typography variant="h6" fontWeight={800} sx={{ mb: 2, color: '#2E3A8C' }}>
+            <Typography variant="h6" fontWeight={800} sx={{ mb: 2, color: 'var(--text-primary)' }}>
               Restock History
             </Typography>
-            <Paper elevation={2} sx={{ p: 2, mb: 3, borderRadius: 3, background: 'white' }}>
+            <Paper elevation={2} sx={{ p: 2, mb: 3, borderRadius: 3, background: 'var(--surface)' }}>
               <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} alignItems="center" justifyContent="space-between">
                 <TextField
                   variant="outlined"
@@ -1193,11 +1204,32 @@ export default function Analysis() {
                   InputProps={{
                     startAdornment: (
                       <InputAdornment position="start">
-                        <SearchIcon />
+                        <SearchIcon sx={{ color: 'var(--text-primary)' }} />
                       </InputAdornment>
                     ),
                   }}
-                  sx={{ minWidth: 220 }}
+                  sx={{ 
+                    minWidth: 220,
+                    background: 'var(--surface)',
+                    '& .MuiOutlinedInput-root': {
+                      '& fieldset': {
+                        borderColor: 'var(--border-color)',
+                      },
+                      '&:hover fieldset': {
+                        borderColor: 'var(--border-color)',
+                      },
+                      '&.Mui-focused fieldset': {
+                        borderColor: 'var(--border-color)',
+                      },
+                      '& input': {
+                        color: 'var(--text-primary)',
+                      },
+                    },
+                    '& .MuiInputBase-input::placeholder': {
+                      color: 'var(--text-secondary)',
+                      opacity: 1,
+                    },
+                  }}
                 />
                 <Stack direction="row" spacing={1} alignItems="center">
                   <Typography>Date Range:</Typography>
@@ -1206,12 +1238,46 @@ export default function Analysis() {
                     size="small"
                     value={dateRange.start}
                     onChange={e => setDateRange({ ...dateRange, start: e.target.value })}
+                    sx={{
+                      background: 'var(--surface)',
+                      '& .MuiOutlinedInput-root': {
+                        '& fieldset': {
+                          borderColor: 'var(--border-color)',
+                        },
+                        '&:hover fieldset': {
+                          borderColor: 'var(--border-color)',
+                        },
+                        '&.Mui-focused fieldset': {
+                          borderColor: 'var(--border-color)',
+                        },
+                        '& input': {
+                          color: 'var(--text-primary)',
+                        },
+                      },
+                    }}
                   />
                   <TextField
                     type="date"
                     size="small"
                     value={dateRange.end}
                     onChange={e => setDateRange({ ...dateRange, end: e.target.value })}
+                    sx={{
+                      background: 'var(--surface)',
+                      '& .MuiOutlinedInput-root': {
+                        '& fieldset': {
+                          borderColor: 'var(--border-color)',
+                        },
+                        '&:hover fieldset': {
+                          borderColor: 'var(--border-color)',
+                        },
+                        '&.Mui-focused fieldset': {
+                          borderColor: 'var(--border-color)',
+                        },
+                        '& input': {
+                          color: 'var(--text-primary)',
+                        },
+                      },
+                    }}
                   />
                   <Button 
                     variant="contained" 
@@ -1220,6 +1286,7 @@ export default function Analysis() {
                       borderRadius: 2, 
                       fontWeight: 600,
                       background: '#2E3A8C',
+                      color: 'white',
                       '&:hover': { background: '#1a246e' }
                     }}
                   >
@@ -1228,17 +1295,17 @@ export default function Analysis() {
                 </Stack>
               </Stack>
             </Paper>
-            <TableContainer component={Paper} elevation={2} sx={{ borderRadius: 3, background: 'white' }}>
+            <TableContainer component={Paper} elevation={2} sx={{ borderRadius: 3, background: 'var(--surface)' }}>
               <Table>
                 <TableHead>
-                  <TableRow sx={{ background: '#f5f7ff' }}>
-                    <TableCell sx={{ fontWeight: 700, color: '#2E3A8C' }}>Invoice ID</TableCell>
-                    <TableCell sx={{ fontWeight: 700, color: '#2E3A8C' }}>Date</TableCell>
-                    <TableCell sx={{ fontWeight: 700, color: '#2E3A8C' }}>Customer</TableCell>
-                    <TableCell sx={{ fontWeight: 700, color: '#2E3A8C' }}>Units</TableCell>
-                    <TableCell sx={{ fontWeight: 700, color: '#2E3A8C' }}>Total</TableCell>
-                    <TableCell sx={{ fontWeight: 700, color: '#2E3A8C' }}>Status</TableCell>
-                    <TableCell sx={{ fontWeight: 700, color: '#2E3A8C' }}>Actions</TableCell>
+                  <TableRow sx={{ background: 'var(--surface)' }}>
+                    <TableCell sx={{ fontWeight: 700, color: 'var(--text-primary)' }}>Invoice ID</TableCell>
+                    <TableCell sx={{ fontWeight: 700, color: 'var(--text-primary)' }}>Date</TableCell>
+                    <TableCell sx={{ fontWeight: 700, color: 'var(--text-primary)' }}>Customer</TableCell>
+                    <TableCell sx={{ fontWeight: 700, color: 'var(--text-primary)' }}>Units</TableCell>
+                    <TableCell sx={{ fontWeight: 700, color: 'var(--text-primary)' }}>Total</TableCell>
+                    <TableCell sx={{ fontWeight: 700, color: 'var(--text-primary)' }}>Status</TableCell>
+                    <TableCell sx={{ fontWeight: 700, color: 'var(--text-primary)' }}>Actions</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -1274,8 +1341,8 @@ export default function Analysis() {
                         <TableRow 
                           key={row.invoiceId}
                           sx={{ 
-                            '&:nth-of-type(odd)': { background: '#fafbff' },
-                            '&:hover': { background: '#f0f2ff' }
+                            '&:nth-of-type(odd)': { background: 'var(--surface)' },
+                            '&:hover': { background: 'rgba(46, 58, 140, 0.1)' }
                           }}
                         >
                           <TableCell sx={{ fontWeight: 500 }}>{row.invoiceNumber}</TableCell>

@@ -71,22 +71,22 @@ const NotificationToast = ({ notification, onClose }) => {
       case 'out_of_stock':
       case 'critical':
         return {
-          bg: '#FF6B6B',
-          border: '#FF5252',
-          text: '#FFFFFF'
+          bg: 'var(--danger)',
+          border: 'var(--danger)',
+          text: 'var(--text-primary)'
         };
       case 'warning':
       case 'low_stock':
         return {
-          bg: '#F4A261',
-          border: '#E76F51',
-          text: '#FFFFFF'
+          bg: 'var(--warning)',
+          border: 'var(--warning)',
+          text: 'var(--text-primary)'
         };
       default:
         return {
-          bg: '#2E3A8C',
-          border: '#1a246e',
-          text: '#FFFFFF'
+          bg: 'var(--primary-gradient)',
+          border: 'var(--primary-gradient)',
+          text: 'var(--text-primary)'
         };
     }
   };
@@ -99,7 +99,7 @@ const NotificationToast = ({ notification, onClose }) => {
       autoHideDuration={8000}
       onClose={handleClose}
       anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
-      TransitionComponent={Slide}
+      TransitionComponent={(props) => <Slide {...props} direction="left" />}
       sx={{ 
         mb: 3,
         mr: 3
@@ -114,12 +114,27 @@ const NotificationToast = ({ notification, onClose }) => {
           width: '100%', 
           minWidth: 380,
           maxWidth: 420,
-          borderRadius: 2,
-          boxShadow: '0 8px 24px rgba(0, 0, 0, 0.15)',
+          borderRadius: 3,
+          boxShadow: '0 12px 32px rgba(0, 0, 0, 0.2)',
           border: `1px solid ${colorScheme.border}`,
           background: `linear-gradient(135deg, ${colorScheme.bg} 0%, ${colorScheme.bg}DD 100%)`,
           color: colorScheme.text,
-          backdropFilter: 'blur(10px)',
+          backdropFilter: 'blur(12px)',
+          animation: 'pulse 2s infinite',
+          '@keyframes pulse': {
+            '0%': {
+              transform: 'scale(1)',
+              boxShadow: '0 12px 32px rgba(0, 0, 0, 0.2)'
+            },
+            '50%': {
+              transform: 'scale(1.02)',
+              boxShadow: '0 16px 40px rgba(0, 0, 0, 0.25)'
+            },
+            '100%': {
+              transform: 'scale(1)',
+              boxShadow: '0 12px 32px rgba(0, 0, 0, 0.2)'
+            }
+          },
           '& .MuiAlert-icon': {
             color: colorScheme.text,
             fontSize: 28

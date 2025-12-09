@@ -718,11 +718,11 @@ const Reports = () => {
     return (
       <Stack spacing={4}>
         {/* Product Selector */}
-        <Card elevation={0} sx={{ borderRadius: 3, border: '1px solid #e5e7eb' }}>
+        <Card elevation={0} sx={{ borderRadius: 3, border: '1px solid var(--border-color)', background: 'var(--surface)' }}>
           <CardContent>
               <Box display="flex" flexDirection="column" gap={2}>
               <Box display="flex" justifyContent="space-between" alignItems="center" flexWrap="wrap" gap={2}>
-                <Typography variant="h6" fontWeight={600}>
+                <Typography variant="h6" fontWeight={600} sx={{ color: 'var(--text-primary)' }}>
                   {selectedProduct === 'all' ? 'All Products Overview' : `Product: ${metrics?.availableProducts?.find(p => String(p.id) === String(selectedProduct))?.name || 'Selected Product'}`}
                 </Typography>
                 <Box display="flex" gap={2} alignItems="center" flexWrap="wrap" position="relative">
@@ -872,19 +872,19 @@ const Reports = () => {
         {/* Key Metrics */}
         <Grid container spacing={3} width="100%" sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
           <Grid item xs={12} sm={6} md={3}>
-            <Card elevation={0} sx={{ borderRadius: 3, border: '1px solid #e5e7eb', height: '100%' }}>
+            <Card elevation={0} sx={{ borderRadius: 3, border: '1px solid var(--border-color)', height: '100%', background: 'var(--surface)' }}>
               <CardContent>
                 <Box display="flex" justifyContent="space-between" alignItems="center">
                   <Box>
                     <Typography color="text.secondary" variant="body2">
                       {selectedProduct === 'all' ? 'Total Products' : 'Product Stock'}
                     </Typography>
-                    <Typography variant="h4" fontWeight={700} sx={{ color: '#2E3A8C' }}>
+                    <Typography variant="h4" fontWeight={700} sx={{ color: 'var(--text-primary)' }}>
                       {selectedProduct === 'all' ? metrics.totalProducts : metrics.totalStock}
                     </Typography>
                   </Box>
-                  <Box sx={{ bgcolor: '#2E3A8C10', borderRadius: '50%', width: 48, height: 48, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <InventoryIcon sx={{ color: '#2E3A8C' }} />
+                  <Box sx={{ bgcolor: 'rgba(46, 58, 140, 0.1)', borderRadius: '50%', width: 48, height: 48, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <InventoryIcon sx={{ color: 'var(--text-primary)' }} />
                   </Box>
                 </Box>
               </CardContent>
@@ -892,19 +892,19 @@ const Reports = () => {
           </Grid>
           
           <Grid item xs={12} sm={6} md={3}>
-            <Card elevation={0} sx={{ borderRadius: 3, border: '1px solid #e5e7eb', height: '100%' }}>
+            <Card elevation={0} sx={{ borderRadius: 3, border: '1px solid var(--border-color)', height: '100%', background: 'var(--surface)' }}>
               <CardContent>
                 <Box display="flex" justifyContent="space-between" alignItems="center">
                   <Box>
                     <Typography color="text.secondary" variant="body2">
                       {selectedProduct === 'all' ? 'Items in Stock' : 'Current Stock'}
                     </Typography>
-                    <Typography variant="h4" fontWeight={700} sx={{ color: '#06D6A0' }}>
+                    <Typography variant="h4" fontWeight={700} sx={{ color: 'var(--success)' }}>
                       {metrics.totalStock}
                     </Typography>
                   </Box>
-                  <Box sx={{ bgcolor: '#06D6A010', borderRadius: '50%', width: 48, height: 48, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <InventoryIcon sx={{ color: '#06D6A0' }} />
+                  <Box sx={{ bgcolor: 'rgba(6, 214, 160, 0.1)', borderRadius: '50%', width: 48, height: 48, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <InventoryIcon sx={{ color: 'var(--success)' }} />
                   </Box>
                 </Box>
               </CardContent>
@@ -912,19 +912,19 @@ const Reports = () => {
           </Grid>
           
           <Grid item xs={12} sm={6} md={3}>
-            <Card elevation={0} sx={{ borderRadius: 3, border: '1px solid #e5e7eb', height: '100%' }}>
+            <Card elevation={0} sx={{ borderRadius: 3, border: '1px solid var(--border-color)', height: '100%', background: 'var(--surface)' }}>
               <CardContent>
                 <Box display="flex" justifyContent="space-between" alignItems="center">
                   <Box>
                     <Typography color="text.secondary" variant="body2">
                       {selectedProduct === 'all' ? 'Low Stock Items' : 'Stock Status'}
                     </Typography>
-                    <Typography variant="h4" fontWeight={700} sx={{ color: '#FFD166' }}>
+                    <Typography variant="h4" fontWeight={700} sx={{ color: 'var(--warning)' }}>
                       {selectedProduct === 'all' ? metrics.lowStockCount : (metrics.lowStockCount > 0 ? 'Low' : 'OK')}
                     </Typography>
                   </Box>
-                  <Box sx={{ bgcolor: '#FFD16610', borderRadius: '50%', width: 48, height: 48, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <WarningIcon sx={{ color: '#FFD166' }} />
+                  <Box sx={{ bgcolor: 'rgba(255, 209, 102, 0.1)', borderRadius: '50%', width: 48, height: 48, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <WarningIcon sx={{ color: 'var(--warning)' }} />
                   </Box>
                 </Box>
               </CardContent>
@@ -932,19 +932,19 @@ const Reports = () => {
           </Grid>
           
           <Grid item xs={12} sm={6} md={3}>
-            <Card elevation={0} sx={{ borderRadius: 3, border: '1px solid #e5e7eb', height: '100%' }}>
+            <Card elevation={0} sx={{ borderRadius: 3, border: '1px solid var(--border-color)', height: '100%', background: 'var(--surface)' }}>
               <CardContent>
                 <Box display="flex" justifyContent="space-between" alignItems="center">
                   <Box>
                     <Typography color="text.secondary" variant="body2">
                       {selectedProduct === 'all' ? 'Product Total Sales' : 'Product Revenue'}
                     </Typography>
-                    <Typography variant="h4" fontWeight={700} sx={{ color: '#6C63FF' }}>
+                    <Typography variant="h4" fontWeight={700} sx={{ color: 'var(--text-primary)' }}>
                       {formatCurrency(metrics.totalProductSales ?? 0)}
                     </Typography>
                   </Box>
-                  <Box sx={{ bgcolor: '#6C63FF10', borderRadius: '50%', width: 48, height: 48, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <ReceiptIcon sx={{ color: '#6C63FF' }} />
+                  <Box sx={{ bgcolor: 'rgba(108, 99, 255, 0.1)', borderRadius: '50%', width: 48, height: 48, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <ReceiptIcon sx={{ color: 'var(--text-primary)' }} />
                   </Box>
                 </Box>
               </CardContent>
@@ -956,10 +956,10 @@ const Reports = () => {
         <Grid container spacing={3}>
           {/* Product Sales Details & Trends */}
           <Grid item xs={12} width="100%">
-            <Card elevation={0} sx={{ borderRadius: 3, border: '1px solid #e5e7eb', height: '100%' }}>
+            <Card elevation={0} sx={{ borderRadius: 3, border: '1px solid var(--border-color)', height: '100%', background: 'var(--surface)' }}>
               <CardContent>
                 <Box display="flex" justifyContent="space-between" alignItems="center" mb={3} flexWrap="wrap" gap={2}>
-                  <Typography variant="h6" fontWeight={600}>
+                  <Typography variant="h6" fontWeight={600} sx={{ color: 'var(--text-primary)' }}>
                     Product Sales Details
                   </Typography>
                   <TextField
@@ -994,13 +994,13 @@ const Reports = () => {
                       data={metrics?.productTrendsData || []} 
                         margin={{ top: 20, right: 30, left: 20, bottom: 30 }}
                       >
-                        <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+                        <CartesianGrid strokeDasharray="3 3" stroke="var(--border-color)" />
                         <XAxis 
                         dataKey="date" 
                           angle={-45} 
                           textAnchor="end" 
                           height={80}
-                        tick={{ fontSize: 11 }}
+                        tick={{ fontSize: 11, fill: 'var(--text-primary)' }}
                         interval="preserveStartEnd"
                         />
                         <YAxis 
@@ -1008,18 +1008,21 @@ const Reports = () => {
                             value: 'Units Sold', 
                             angle: -90, 
                             position: 'insideLeft',
-                            fontWeight: 600
+                            fontWeight: 600,
+                            fill: 'var(--text-primary)'
                           }} 
-                          tick={{ fontSize: 12 }}
+                          tick={{ fontSize: 12, fill: 'var(--text-primary)' }}
                         />
                         <RechartsTooltip 
                           contentStyle={{ 
                             borderRadius: 8, 
-                            border: '1px solid #e0e0e0',
-                            boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
+                            border: '1px solid var(--border-color)',
+                            boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+                            background: 'var(--surface)',
+                            color: 'var(--text-primary)'
                           }}
                           formatter={(value) => [formatStockValue(value), 'Units Sold']}
-                          labelStyle={{ fontWeight: 600 }}
+                          labelStyle={{ fontWeight: 600, color: 'var(--text-primary)' }}
                         />
                         <Legend 
                           wrapperStyle={{ paddingTop: 10 }}
@@ -1027,7 +1030,7 @@ const Reports = () => {
                       <Line 
                         type="monotone" 
                         dataKey="sales" 
-                        stroke="#2E3A8C" 
+                        stroke="var(--text-primary)" 
                         strokeWidth={2}
                         dot={{ r: 3 }}
                         activeDot={{ r: 5 }}
@@ -1044,7 +1047,7 @@ const Reports = () => {
                 </Typography>
                 {(!metrics?.productDetailsList || metrics.productDetailsList.length === 0) ? (
                   <Box sx={{ py: 4, textAlign: 'center' }}>
-                    <InventoryIcon sx={{ fontSize: 48, color: '#ccc', mb: 1 }} />
+                    <InventoryIcon sx={{ fontSize: 48, color: 'var(--text-secondary)', mb: 1 }} />
                     <Typography color="text.secondary">
                       No sales data available
                     </Typography>
@@ -1053,12 +1056,12 @@ const Reports = () => {
                   <TableContainer>
                     <Table size="small">
                       <TableHead>
-                        <TableRow sx={{ bgcolor: '#f5f7ff' }}>
-                          <TableCell>Product Name</TableCell>
-                          <TableCell>Product ID</TableCell>
-                          <TableCell align="right">Units Sold</TableCell>
-                          <TableCell align="right">Total Revenue</TableCell>
-                          <TableCell align="right">Orders</TableCell>
+                        <TableRow sx={{ background: 'var(--surface)' }}>
+                          <TableCell sx={{ color: 'var(--text-primary)', fontWeight: 600 }}>Product Name</TableCell>
+                          <TableCell sx={{ color: 'var(--text-primary)', fontWeight: 600 }}>Product ID</TableCell>
+                          <TableCell align="right" sx={{ color: 'var(--text-primary)', fontWeight: 600 }}>Units Sold</TableCell>
+                          <TableCell align="right" sx={{ color: 'var(--text-primary)', fontWeight: 600 }}>Total Revenue</TableCell>
+                          <TableCell align="right" sx={{ color: 'var(--text-primary)', fontWeight: 600 }}>Orders</TableCell>
                         </TableRow>
                       </TableHead>
                       <TableBody>
@@ -1076,16 +1079,16 @@ const Reports = () => {
                               <Chip 
                                 label={product.id} 
                                 size="small" 
-                                sx={{ bgcolor: '#6c63ff10', color: '#6c63ff' }}
+                                sx={{ bgcolor: 'rgba(108, 99, 255, 0.1)', color: 'var(--text-primary)' }}
                               />
                             </TableCell>
                             <TableCell align="right">
-                              <Typography fontWeight={600} sx={{ color: '#2E3A8C' }}>
+                              <Typography fontWeight={600} sx={{ color: 'var(--text-primary)' }}>
                                 {product.totalQuantity.toLocaleString()}
                               </Typography>
                             </TableCell>
                             <TableCell align="right">
-                              <Typography fontWeight={600} sx={{ color: '#06D6A0' }}>
+                              <Typography fontWeight={600} sx={{ color: 'var(--success)' }}>
                                 {formatCurrency(product.totalRevenue)}
                               </Typography>
                             </TableCell>
@@ -1106,23 +1109,23 @@ const Reports = () => {
           
           {/* Top 5 Selling Products */}
           <Grid item xs={12} md={4} width="100%">
-            <Card elevation={0} sx={{ borderRadius: 3, border: '1px solid #e5e7eb', height: '100%' }}>
+            <Card elevation={0} sx={{ borderRadius: 3, border: '1px solid var(--border-color)', height: '100%', background: 'var(--surface)' }}>
               <CardContent>
                 <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 2 }}>
-                  <Typography variant="h6" fontWeight={600}>
+                  <Typography variant="h6" fontWeight={600} sx={{ color: 'var(--text-primary)' }}>
                     Top 5 Selling Products
                   </Typography>
                   <Chip 
                     label="Best Sellers" 
                     size="small" 
                     color="success" 
-                    sx={{ minWidth: 80 }}
+                    sx={{ minWidth: 80, background: 'var(--success)', color: 'var(--surface)' }}
                   />
                 </Stack>
 
                 {(!metrics?.top5Products || metrics.top5Products.length === 0) ? (
                   <Box sx={{ py: 4, textAlign: 'center' }}>
-                    <InventoryIcon sx={{ fontSize: 48, color: '#ccc', mb: 1 }} />
+                    <InventoryIcon sx={{ fontSize: 48, color: 'var(--text-secondary)', mb: 1 }} />
                     <Typography color="text.secondary">
                       No sales data available
                     </Typography>
@@ -1131,10 +1134,10 @@ const Reports = () => {
                   <TableContainer>
                     <Table size="small">
                       <TableHead>
-                        <TableRow sx={{ bgcolor: '#f5f7ff' }}>
-                          <TableCell>Rank</TableCell>
-                          <TableCell>Product</TableCell>
-                          <TableCell align="right">Units Sold</TableCell>
+                        <TableRow sx={{ background: 'var(--surface)' }}>
+                          <TableCell sx={{ color: 'var(--text-primary)', fontWeight: 600 }}>Rank</TableCell>
+                          <TableCell sx={{ color: 'var(--text-primary)', fontWeight: 600 }}>Product</TableCell>
+                          <TableCell align="right" sx={{ color: 'var(--text-primary)', fontWeight: 600 }}>Units Sold</TableCell>
                         </TableRow>
                       </TableHead>
                       <TableBody>
@@ -1148,8 +1151,8 @@ const Reports = () => {
                                 label={`#${index + 1}`}
                                 size="small"
                                 sx={{ 
-                                  bgcolor: index === 0 ? '#FFD700' : index === 1 ? '#C0C0C0' : index === 2 ? '#CD7F32' : '#6c63ff10',
-                                  color: index < 3 ? '#fff' : '#6c63ff',
+                                  bgcolor: index === 0 ? '#FFD700' : index === 1 ? '#C0C0C0' : index === 2 ? '#CD7F32' : 'rgba(108, 99, 255, 0.1)',
+                                  color: index < 3 ? '#fff' : 'var(--text-primary)',
                                   fontWeight: 600
                                 }}
                               />
@@ -1160,7 +1163,7 @@ const Reports = () => {
                               </Typography>
                             </TableCell>
                             <TableCell align="right">
-                              <Typography fontWeight={600} sx={{ color: '#2E3A8C' }}>
+                              <Typography fontWeight={600} sx={{ color: 'var(--text-primary)' }}>
                                 {product.totalQuantity.toLocaleString()}
                               </Typography>
                             </TableCell>
@@ -1189,7 +1192,7 @@ const Reports = () => {
           sx={{ mb: 4 }}
         >
           <Box>
-            <Typography variant="h4" fontWeight={800} sx={{ color: '#2E3A8C', mb: 0.5 }}>
+            <Typography variant="h4" fontWeight={800} sx={{ color: 'var(--text-primary)', mb: 0.5 }}>
               Reports & Analytics
             </Typography>
             <Typography color="text.secondary">
@@ -1208,10 +1211,11 @@ const Reports = () => {
               onClick={fetchData}
               sx={{ 
                 borderRadius: 2, 
-                background: '#6c63ff', 
+                background: 'var(--text-primary)', 
+                color: 'var(--surface)',
                 fontWeight: 600,
                 px: 3,
-                '&:hover': { bgcolor: '#5a52e0' }
+                '&:hover': { background: 'rgba(108, 99, 255, 0.8)' }
               }}
             >
               Refresh Data

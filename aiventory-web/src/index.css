@@ -1,19 +1,41 @@
 :root {
   --page-bg: #f5f7fa;
   --surface: #ffffff;
+  --surface-glass: rgba(255, 255, 255, 0.85);
   --text-primary: #1f2933;
   --text-secondary: #4b5563;
   --border-color: #e5e7eb;
+  --border-glass: rgba(255, 255, 255, 0.3);
   --card-shadow: 0 15px 30px rgba(15, 23, 42, 0.08);
+  --glass-shadow: 0 8px 32px rgba(31, 38, 135, 0.15);
+  --backdrop-filter: blur(12px);
+  --primary-gradient: linear-gradient(135deg, #2E3A8C 0%, #6C63FF 100%);
+  --secondary-gradient: linear-gradient(135deg, #06D6A0 0%, #118AB2 100%);
+  --accent-gradient: linear-gradient(135deg, #FF6B6B 0%, #F4A261 100%);
+  --success: #06D6A0;
+  --warning: #F4A261;
+  --danger: #FF6B6B;
+  --info: #118AB2;
 }
 
 [data-theme='dark'] {
-  --page-bg: #0f172a;
+  --page-bg: #121212;
   --surface: #1e293b;
+  --surface-glass: rgba(30, 41, 59, 0.85);
   --text-primary: #f8fafc;
   --text-secondary: #cbd5f5;
-  --border-color: #1f2937;
+  --border-color: #494040d7;
+  --border-glass: rgba(30, 41, 59, 0.4);
   --card-shadow: 0 20px 35px rgba(2, 6, 23, 0.75);
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  --backdrop-filter: blur(12px);
+  --primary-gradient: linear-gradient(135deg, #6C63FF 0%, #2E3A8C 100%);
+  --secondary-gradient: linear-gradient(135deg, #118AB2 0%, #06D6A0 100%);
+  --accent-gradient: linear-gradient(135deg, #F4A261 0%, #FF6B6B 100%);
+  --success: #06D6A0;
+  --warning: #F4A261;
+  --danger: #FF6B6B;
+  --info: #118AB2;
 }
 
 * {
@@ -27,6 +49,9 @@ body {
   background-color: var(--page-bg);
   color: var(--text-primary);
   transition: background-color 0.3s ease, color 0.3s ease;
+  font-weight: 400;
+  line-height: 1.6;
+  letter-spacing: -0.01em;
 }
 
 #root {

@@ -654,15 +654,34 @@ export default function Inventory() {
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
-                    <SearchIcon />
+                    <SearchIcon sx={{ color: 'var(--text-secondary)' }} />
                   </InputAdornment>
                 ),
+                style: { color: 'var(--text-primary)' }
+              }}
+              InputLabelProps={{
+                style: { color: 'var(--text-primary)' }
               }}
               sx={{ 
-                background: '#fff', 
+                background: 'var(--surface)', 
                 borderRadius: 2,
                 minWidth: { xs: 0, sm: 250 },
-                width: { xs: '100%', sm: 'auto' }
+                width: { xs: '100%', sm: 'auto' },
+                '& .MuiOutlinedInput-root': {
+                  '& fieldset': {
+                    borderColor: 'var(--border-color)',
+                  },
+                  '&:hover fieldset': {
+                    borderColor: 'var(--border-color)',
+                  },
+                  '&.Mui-focused fieldset': {
+                    borderColor: 'var(--border-color)',
+                  },
+                },
+                '& .MuiInputBase-input::placeholder': {
+                  color: 'var(--text-secondary)',
+                  opacity: 1
+                }
               }}
             />
             <Button
@@ -676,7 +695,11 @@ export default function Inventory() {
                 fontWeight: 600, 
                 textTransform: 'none',
                 px: { xs: 2, sm: 3 },
-                width: { xs: '100%', sm: 'auto' }
+                width: { xs: '100%', sm: 'auto' },
+                color: 'white',
+                '&:hover': {
+                  background: '#5a52e0'
+                }
               }}
             >
               Add New Item
@@ -685,11 +708,11 @@ export default function Inventory() {
         </Box>
 
         {/* Filters and View Options */}
-        <Card sx={{ mb: 3, borderRadius: 3, border: '1px solid #e5e7eb' }}>
+        <Card sx={{ mb: 3, borderRadius: 3, border: '1px solid var(--border-color)', background: 'var(--surface)' }}>
           <CardContent>
             <Box display="flex" justifyContent="space-between" alignItems="center" mb={2} flexWrap="wrap" gap={2} flexDirection={{ xs: 'column', sm: 'row' }} width={{ xs: '100%', sm: 'auto' }}>
               <Box>
-                <Typography variant="h6" fontWeight={600}>
+                <Typography variant="h6" fontWeight={600} color="var(--text-primary)">
                   Filter Inventory
                 </Typography>
               </Box>
@@ -701,10 +724,10 @@ export default function Inventory() {
                   size="small"
                   sx={{ height: 40 }}
                 >
-                  <ToggleButton value="table" sx={{ borderRadius: 2, border: '1px solid #ccc' }}>
+                  <ToggleButton value="table" sx={{ borderRadius: 2, border: '1px solid var(--primary)', color: 'var(--text-primary)' }}>
                     <TableRowsIcon />
                   </ToggleButton>
-                  <ToggleButton value="grid" sx={{ borderRadius: 2, border: '1px solid #ccc' }}>
+                  <ToggleButton value="grid" sx={{ borderRadius: 2, border: '1px solid var(--pri)', color: 'var(--text-primary)' }}>
                     <GridViewIcon />
                   </ToggleButton>
                 </ToggleButtonGroup>
@@ -712,8 +735,8 @@ export default function Inventory() {
             </Box>
             
             <Box display="flex" gap={2} flexWrap="wrap" width={{ xs: '100%', sm: 'auto' }} justifyContent={{ xs: 'center', sm: 'flex-start' }}>
-              <FormControl size="small" sx={{ minWidth: { xs: 120, sm: 150 }, width: { xs: '100%', sm: 'auto' } }}>
-                <InputLabel>Category</InputLabel>
+              <FormControl size="small" sx={{ minWidth: { xs: 120, sm: 150 }, width: { xs: '100%', sm: 'auto' }  }}>
+                <InputLabel sx={{ color: 'var(--text-primary)' }}>Category</InputLabel>
                 <Select
                   value={categoryFilter}
                   label="Category"
@@ -722,15 +745,51 @@ export default function Inventory() {
                     setPage(1);
                   }}
                   fullWidth={{ xs: true, sm: false }}
+                  sx={{ 
+                    color: 'var(--text-primary)',
+                    backgroundColor: 'var(--surface)',
+                    '& .MuiOutlinedInput-notchedOutline': { 
+                      borderColor: 'var(--border-color) !important',
+                      borderWidth: '1px'
+                    },
+                    '&:hover .MuiOutlinedInput-notchedOutline': { 
+                      borderColor: 'var(--border-color) !important',
+                      borderWidth: '1px'
+                    },
+                    '&.Mui-focused .MuiOutlinedInput-notchedOutline': { 
+                      borderColor: 'var(--border-color) !important',
+                      borderWidth: '1px'
+                    },
+                    '& .MuiSvgIcon-root': {
+                      color: 'var(--text-primary)'
+                    }
+                  }}
+                  MenuProps={{
+                    PaperProps: {
+                      sx: {
+                        backgroundColor: 'var(--surface)',
+                        color: 'var(--text-primary)',
+                        '& .MuiMenuItem-root:hover': {
+                          backgroundColor: 'rgba(0, 0, 0, 0.04)'
+                        },
+                        '& .Mui-selected': {
+                          backgroundColor: 'rgba(255, 0, 0, 0.08)'
+                        },
+                        '& .Mui-selected:hover': {
+                          backgroundColor: 'rgba(0, 0, 0, 0.12)'
+                        }
+                      }
+                    }
+                  }}
                 >
                   {uniqueCategories.map(category => (
-                    <MenuItem key={category} value={category}>{category}</MenuItem>
+                    <MenuItem key={category} value={category} sx={{ color: 'var(--text-primary)' }}>{category}</MenuItem>
                   ))}
                 </Select>
               </FormControl>
               
               <FormControl size="small" sx={{ minWidth: { xs: 120, sm: 150 }, width: { xs: '100%', sm: 'auto' } }}>
-                <InputLabel>Status</InputLabel>
+                <InputLabel sx={{ color: 'var(--text-primary)' }}>Status</InputLabel>
                 <Select
                   value={statusFilter}
                   label="Status"
@@ -739,9 +798,45 @@ export default function Inventory() {
                     setPage(1);
                   }}
                   fullWidth={{ xs: true, sm: false }}
+                  sx={{ 
+                    color: 'var(--text-primary)',
+                    backgroundColor: 'var(--surface)',
+                    '& .MuiOutlinedInput-notchedOutline': { 
+                      borderColor: 'var(--primary) !important',
+                      borderWidth: '1px'
+                    },
+                    '&:hover .MuiOutlinedInput-notchedOutline': { 
+                      borderColor: 'var(--primary) !important',
+                      borderWidth: '1px'
+                    },
+                    '&.Mui-focused .MuiOutlinedInput-notchedOutline': { 
+                      borderColor: 'var(--primary) !important',
+                      borderWidth: '1px'
+                    },
+                    '& .MuiSvgIcon-root': {
+                      color: 'var(--text-primary)'
+                    }
+                  }}
+                  MenuProps={{
+                    PaperProps: {
+                      sx: {
+                        backgroundColor: 'var(--surface)',
+                        color: 'var(--text-primary)',
+                        '& .MuiMenuItem-root:hover': {
+                          backgroundColor: 'rgba(0, 0, 0, 0.04)'
+                        },
+                        '& .Mui-selected': {
+                          backgroundColor: 'rgba(0, 0, 0, 0.08)'
+                        },
+                        '& .Mui-selected:hover': {
+                          backgroundColor: 'rgba(0, 0, 0, 0.12)'
+                        }
+                      }
+                    }
+                  }}
                 >
                   {uniqueStatuses.map(status => (
-                    <MenuItem key={status} value={status}>{status}</MenuItem>
+                    <MenuItem key={status} value={status} sx={{ color: 'var(--text-primary)' }}>{status}</MenuItem>
                   ))}
                 </Select>
               </FormControl>
@@ -757,7 +852,19 @@ export default function Inventory() {
                 variant="outlined"
                 size="small"
                 fullWidth={{ xs: true, sm: false }}
-                sx={{ height: 40, width: { xs: '100%', sm: 'auto' } }}
+                sx={{ 
+                  height: 40, 
+                  width: { xs: '100%', sm: 'auto' },
+                  color: 'var(--text-primary)',
+                  borderColor: 'var(--border-color) !important',
+                  borderWidth: '1px',
+                  backgroundColor: 'var(--surface)',
+                  '&:hover': { 
+                    borderColor: 'var(--border-color) !important',
+                    borderWidth: '1px',
+                    backgroundColor: 'var(--surface)'
+                  }
+                }}
               >
                 Reset Filters
               </Button>
@@ -768,64 +875,64 @@ export default function Inventory() {
         {/* Stats Summary */}
         <Grid container spacing={{ xs: 2, sm: 3 }} mb={3} sx={{ display: 'flex', justifyContent: 'center' }}>
           <Grid item xs={12} sm={6} md={3}>
-            <Card sx={{ borderRadius: 3, border: '1px solid #e5e7eb', height: '100%' }}>
+            <Card sx={{ borderRadius: 3, border: '1px solid var(--border-color)', height: '100%', background: 'var(--surface)' }}>
               <CardContent>
-                <Box display="flex" justifyContent="space-between">
+                <Box display="flex" alignItems="center">
+                  <Box sx={{ bgcolor: 'rgba(46, 58, 140, 0.1)', borderRadius: '100%', width: 48, height: 48, display: 'flex', alignItems: 'center', justifyContent: 'center', mr: 2 }}>
+                    <InventoryIcon sx={{ color: '#2E3A8C' }} />
+                  </Box>
                   <Box>
                     <Typography color="text.secondary" variant="body2">Total Items</Typography>
                     <Typography variant="h4" fontWeight={700}>{inventory.length}</Typography>
-                  </Box>
-                  <Box sx={{ bgcolor: '#2E3A8C10', borderRadius: '100%', width: 48, height: 48, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <InventoryIcon sx={{ color: '#2E3A8C' }} />
                   </Box>
                 </Box>
               </CardContent>
             </Card>
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
-            <Card sx={{ borderRadius: 3, border: '1px solid #e5e7eb', height: '100%' }}>
+            <Card sx={{ borderRadius: 3, border: '1px solid var(--border-color)', height: '100%', background: 'var(--surface)' }}>
               <CardContent>
-                <Box display="flex" justifyContent="space-between">
+                <Box display="flex" alignItems="center">
+                  <Box sx={{ bgcolor: 'rgba(255, 209, 102, 0.1)', borderRadius: '50%', width: 48, height: 48, display: 'flex', alignItems: 'center', justifyContent: 'center', mr: 2 }}>
+                    <WarningIcon sx={{ color: '#FFD166' }} />
+                  </Box>
                   <Box>
                     <Typography color="text.secondary" variant="body2">Warning Items</Typography>
                     <Typography variant="h4" fontWeight={700}>
                       {inventory.filter(item => item.status === 'Warning').length}
                     </Typography>
                   </Box>
-                  <Box sx={{ bgcolor: '#FFD16610', borderRadius: '50%', width: 48, height: 48, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <WarningIcon sx={{ color: '#FFD166' }} />
-                  </Box>
                 </Box>
               </CardContent>
             </Card>
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
-            <Card sx={{ borderRadius: 3, border: '1px solid #e5e7eb', height: '100%' }}>
+            <Card sx={{ borderRadius: 3, border: '1px solid var(--border-color)', height: '100%', background: 'var(--surface)' }}>
               <CardContent>
-                <Box display="flex" justifyContent="space-between">
+                <Box display="flex" alignItems="center">
+                  <Box sx={{ bgcolor: 'rgba(255, 77, 79, 0.1)', borderRadius: '50%', width: 48, height: 48, display: 'flex', alignItems: 'center', justifyContent: 'center', mr: 2 }}>
+                    <ErrorOutlineIcon sx={{ color: '#FF4D4F' }} />
+                  </Box>
                   <Box>
                     <Typography color="text.secondary" variant="body2">Critical Items</Typography>
                     <Typography variant="h4" fontWeight={700}>
                       {inventory.filter(item => item.status === 'Critical').length}
                     </Typography>
                   </Box>
-                  <Box sx={{ bgcolor: '#FF4D4F10', borderRadius: '50%', width: 48, height: 48, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <ErrorOutlineIcon sx={{ color: '#FF4D4F' }} />
-                  </Box>
                 </Box>
               </CardContent>
             </Card>
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
-            <Card sx={{ borderRadius: 3, border: '1px solid #e5e7eb', height: '100%' }}>
+            <Card sx={{ borderRadius: 3, border: '1px solid var(--border-color)', height: '100%', background: 'var(--surface)' }}>
               <CardContent>
-                <Box display="flex" justifyContent="space-between">
+                <Box display="flex" alignItems="center">
+                  <Box sx={{ bgcolor: 'rgba(108, 99, 255, 0.1)', borderRadius: '50%', width: 48, height: 48, display: 'flex', alignItems: 'center', justifyContent: 'center', mr: 2 }}>
+                    <CategoryIcon sx={{ color: '#6C63FF' }} />
+                  </Box>
                   <Box>
                     <Typography color="text.secondary" variant="body2">Categories</Typography>
                     <Typography variant="h4" fontWeight={700}>{uniqueCategories.length - 1}</Typography>
-                  </Box>
-                  <Box sx={{ bgcolor: '#6C63FF10', borderRadius: '50%', width: 48, height: 48, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <CategoryIcon sx={{ color: '#6C63FF' }} />
                   </Box>
                 </Box>
               </CardContent>
@@ -846,18 +953,18 @@ export default function Inventory() {
           <>
             {viewMode === 'table' ? (
               // Table View
-              <Card sx={{ borderRadius: { xs: 2, sm: 3 }, border: '1px solid #e5e7eb' }}>
+              <Card sx={{ borderRadius: { xs: 2, sm: 3 }, border: '1px solid var(--border-color)', background: 'var(--surface)' }}>
                 <TableContainer sx={{ overflowX: 'auto' }}>
                   <Table>
                     <TableHead>
-                      <TableRow sx={{ bgcolor: '#f5f7ff' }}>
-                        <TableCell sx={{ fontWeight: 600, whiteSpace: 'nowrap' }}>Item Name</TableCell>
-                        <TableCell sx={{ fontWeight: 600, whiteSpace: 'nowrap' }}>SKU</TableCell>
-                        <TableCell sx={{ fontWeight: 600, whiteSpace: 'nowrap' }}>Category</TableCell>
-                        <TableCell sx={{ fontWeight: 600, whiteSpace: 'nowrap' }}>Current Stock</TableCell>
-                        <TableCell sx={{ fontWeight: 600, whiteSpace: 'nowrap' }}>Threshold</TableCell>
-                        <TableCell sx={{ fontWeight: 600, whiteSpace: 'nowrap' }}>Status</TableCell>
-                        <TableCell sx={{ fontWeight: 600, whiteSpace: 'nowrap' }}>Actions</TableCell>
+                      <TableRow sx={{ bgcolor: 'var(--surface)' }}>
+                        <TableCell sx={{ fontWeight: 600, whiteSpace: 'nowrap', color: 'var(--text-primary)', borderBottom: '1px solid rgba(255, 255, 255, 0.03)' }}>Item Name</TableCell>
+                        <TableCell sx={{ fontWeight: 600, whiteSpace: 'nowrap', color: 'var(--text-primary)', borderBottom: '1px solid rgba(255, 255, 255, 0.03)' }}>SKU</TableCell>
+                        <TableCell sx={{ fontWeight: 600, whiteSpace: 'nowrap', color: 'var(--text-primary)', borderBottom: '1px solid rgba(255, 255, 255, 0.03)' }}>Category</TableCell>
+                        <TableCell sx={{ fontWeight: 600, whiteSpace: 'nowrap', color: 'var(--text-primary)', borderBottom: '1px solid rgba(255, 255, 255, 0.03)' }}>Current Stock</TableCell>
+                        <TableCell sx={{ fontWeight: 600, whiteSpace: 'nowrap', color: 'var(--text-primary)', borderBottom: '1px solid rgba(255, 255, 255, 0.03)' }}>Threshold</TableCell>
+                        <TableCell sx={{ fontWeight: 600, whiteSpace: 'nowrap', color: 'var(--text-primary)', borderBottom: '1px solid rgba(255, 255, 255, 0.03)' }}>Status</TableCell>
+                        <TableCell sx={{ fontWeight: 600, whiteSpace: 'nowrap', color: 'var(--text-primary)', borderBottom: '1px solid rgba(255, 255, 255, 0.03)' }}>Actions</TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>
@@ -887,66 +994,66 @@ export default function Inventory() {
                           <TableRow 
                             key={item.id} 
                             sx={{ 
-                              '&:hover': { bgcolor: '#f9f9ff', cursor: 'pointer' },
+                              '&:hover': { bgcolor: 'var(--surface)', cursor: 'pointer' },
                               '&:last-child td, &:last-child th': { border: 0 }
                             }}
                             onClick={() => handleAdjustmentOpen(item, 'view')}
                           >
-                            <TableCell>
+                            <TableCell sx={{ borderBottom: '1px solid rgba(255, 255, 255, 0.03)' }}>
                               <Box display="flex" alignItems="center">
                                 <Box 
                                   sx={{ 
                                     width: 40, 
                                     height: 40, 
                                     borderRadius: '50%', 
-                                    bgcolor: '#f0f2f5', 
+                                    bgcolor: 'var(--surface)', 
                                     display: 'flex', 
                                     alignItems: 'center', 
                                     justifyContent: 'center',
                                     mr: 2
                                   }}
                                 >
-                                  <InventoryIcon sx={{ color: '#2E3A8C' }} />
+                                  <InventoryIcon sx={{ color: 'var(--text-secondary)' }} />
                                 </Box>
                                 <Box>
-                                  <Typography fontWeight={500}>{item.name}</Typography>
-                                  <Typography variant="body2" color="text.secondary">
+                                  <Typography fontWeight={500} sx={{ color: 'var(--text-primary)' }}>{item.name}</Typography>
+                                  <Typography variant="body2" sx={{ color: 'var(--text-secondary)' }}>
                                     {item.category}
                                   </Typography>
                                 </Box>
                               </Box>
                             </TableCell>
-                            <TableCell>
+                            <TableCell sx={{ borderBottom: '1px solid rgba(255, 255, 255, 0.03)' }}>
                               <Chip 
                                 label={item.sku} 
                                 size="small" 
                                 sx={{ 
-                                  bgcolor: '#6c63ff10', 
-                                  color: '#6c63ff',
+                                  bgcolor: 'rgba(108, 99, 255, 0.1)', 
+                                  color: 'var(--text-primary)',
                                   fontWeight: 500
                                 }} 
                               />
                             </TableCell>
-                            <TableCell>{item.category}</TableCell>
-                            <TableCell>
+                            <TableCell sx={{ borderBottom: '1px solid rgba(255, 255, 255, 0.03)', color: 'var(--text-primary)' }}>{item.category}</TableCell>
+                            <TableCell sx={{ borderBottom: '1px solid rgba(255, 255, 255, 0.03)', color: 'var(--text-primary)' }}>
                               <Typography fontWeight={500}>{item.stock}</Typography>
                             </TableCell>
-                            <TableCell>{item.threshold}</TableCell>
-                            <TableCell>
+                            <TableCell sx={{ borderBottom: '1px solid rgba(255, 255, 255, 0.03)', color: 'var(--text-primary)' }}>{item.threshold}</TableCell>
+                            <TableCell sx={{ borderBottom: '1px solid rgba(255, 255, 255, 0.03)' }}>
                               <Chip
                                 label={item.status}
                                 size="small"
                                 sx={{
                                   backgroundColor: statusColors[item.status] 
                                     ? `${statusColors[item.status]}20` 
-                                    : '#cccc20',
+                                    : 'rgba(204, 204, 32, 0.2)',
                                   color: statusColors[item.status] || '#ccc',
                                   fontWeight: 600,
                                   minWidth: 100
                                 }}
                               />
                             </TableCell>
-                            <TableCell>
+                            <TableCell sx={{ borderBottom: '1px solid rgba(255, 255, 255, 0.03)' }}>
                               <Stack direction="row" spacing={0.5}>
                                 <IconButton 
                                   color="info" 
@@ -957,8 +1064,8 @@ export default function Inventory() {
                                   }}
                                   title="View AI Prediction Details"
                                   sx={{ 
-                                    bgcolor: '#6c63ff10',
-                                    '&:hover': { bgcolor: '#6c63ff20' }
+                                    bgcolor: 'rgba(108, 99, 255, 0.1)',
+                                    '&:hover': { bgcolor: 'rgba(108, 99, 255, 0.2)' }
                                   }}
                                 >
                                   <AIAwesomeIcon sx={{ fontSize: 18 }} />
@@ -972,8 +1079,8 @@ export default function Inventory() {
                                     handleAdjustmentOpen(item, 'add');
                                   }}
                                   sx={{ 
-                                    bgcolor: '#06D6A010',
-                                    '&:hover': { bgcolor: '#06D6A020' }
+                                    bgcolor: 'rgba(6, 214, 160, 0.1)',
+                                    '&:hover': { bgcolor: 'rgba(6, 214, 160, 0.2)' }
                                   }}
                                 >
                                   <AddIcon sx={{ fontSize: 18 }} />
@@ -987,8 +1094,8 @@ export default function Inventory() {
                                     handleAdjustmentOpen(item, 'remove');
                                   }}
                                   sx={{ 
-                                    bgcolor: '#FF6B6B10',
-                                    '&:hover': { bgcolor: '#FF6B6B20' }
+                                    bgcolor: 'rgba(255, 107, 107, 0.1)',
+                                    '&:hover': { bgcolor: 'rgba(255, 107, 107, 0.2)' }
                                   }}
                                 >
                                   <RemoveIcon sx={{ fontSize: 18 }} />
@@ -1002,8 +1109,8 @@ export default function Inventory() {
                                     handleOpenModal(item, (page - 1) * itemsPerPage + idx);
                                   }}
                                   sx={{ 
-                                    bgcolor: '#2E3A8C10',
-                                    '&:hover': { bgcolor: '#2E3A8C20' }
+                                    bgcolor: 'rgba(46, 58, 140, 0.1)',
+                                    '&:hover': { bgcolor: 'rgba(46, 58, 140, 0.2)' }
                                   }}
                                 >
                                   <EditIcon sx={{ fontSize: 18 }} />
@@ -1017,8 +1124,8 @@ export default function Inventory() {
                                     navigate(`/analysis?sku=${item.sku || item.Product_sku}`);
                                   }}
                                   sx={{ 
-                                    bgcolor: '#FFD16610',
-                                    '&:hover': { bgcolor: '#FFD16620' }
+                                    bgcolor: 'rgba(255, 209, 102, 0.1)',
+                                    '&:hover': { bgcolor: 'rgba(255, 209, 102, 0.2)' }
                                   }}
                                 >
                                   <InsightsIcon sx={{ fontSize: 18 }} />
@@ -1032,8 +1139,8 @@ export default function Inventory() {
                                     handleDelete((page - 1) * itemsPerPage + idx);
                                   }}
                                   sx={{ 
-                                    bgcolor: '#FF6B6B10',
-                                    '&:hover': { bgcolor: '#FF6B6B20' }
+                                    bgcolor: 'rgba(255, 107, 107, 0.1)',
+                                    '&:hover': { bgcolor: 'rgba(255, 107, 107, 0.2)' }
                                   }}
                                 >
                                   <DeleteIcon sx={{ fontSize: 18 }} />
@@ -1051,7 +1158,7 @@ export default function Inventory() {
               // Grid View
               <Box>
                 {paginatedInventory.length === 0 ? (
-                  <Card sx={{ borderRadius: 3, border: '1px solid #e5e7eb', py: 8 }}>
+                  <Card sx={{ borderRadius: 3, border: '1px solid var(--border-color)', py: 8, background: 'var(--surface)' }}>
                     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                       <InventoryIcon sx={{ fontSize: 48, color: '#ccc', mb: 2 }} />
                       <Typography variant="h6" color="text.secondary">
@@ -1076,11 +1183,12 @@ export default function Inventory() {
                         <Card 
                           sx={{ 
                             borderRadius: { xs: 2, sm: 3 }, 
-                            border: '1px solid #e5e7eb',
+                            border: '1px solid var(--border-color)',
                             height: '100%',
                             display: 'flex',
                             flexDirection: 'column',
                             transition: '0.3s',
+                            background: 'var(--surface)',
                             '&:hover': {
                               transform: 'translateY(-4px)',
                               boxShadow: '0 10px 20px rgba(0,0,0,0.1)',
@@ -1096,13 +1204,13 @@ export default function Inventory() {
                                   width: 50, 
                                   height: 50, 
                                   borderRadius: '50%', 
-                                  bgcolor: '#f0f2f5', 
+                                  bgcolor: 'var(--surface)', 
                                   display: 'flex', 
                                   alignItems: 'center', 
                                   justifyContent: 'center'
                                 }}
                               >
-                                <InventoryIcon sx={{ color: '#2E3A8C' }} />
+                                <InventoryIcon sx={{ color: 'var(--text-secondary)' }} />
                               </Box>
                               <Chip
                                 label={item.status}
@@ -1110,7 +1218,7 @@ export default function Inventory() {
                                 sx={{
                                   backgroundColor: statusColors[item.status] 
                                     ? `${statusColors[item.status]}20` 
-                                    : '#cccc20',
+                                    : 'rgba(204, 204, 32, 0.2)',
                                   color: statusColors[item.status] || '#ccc',
                                   fontWeight: 600
                                 }}
@@ -1126,7 +1234,7 @@ export default function Inventory() {
                                 label={item.sku} 
                                 size="small" 
                                 sx={{ 
-                                  bgcolor: '#6c63ff10', 
+                                  bgcolor: 'rgba(108, 99, 255, 0.1)', 
                                   color: '#6c63ff',
                                   fontWeight: 500,
                                   mr: 1
@@ -1162,7 +1270,7 @@ export default function Inventory() {
                               sx={{ 
                                 height: 8, 
                                 borderRadius: 4, 
-                                bgcolor: '#f1f3f9',
+                                bgcolor: 'var(--surface)',
                                 '& .MuiLinearProgress-bar': { 
                                   bgcolor: statusColors[item.status] || '#2E3A8C' 
                                 },
@@ -1183,8 +1291,8 @@ export default function Inventory() {
                                 sx={{ 
                                   flexGrow: 1,
                                   textTransform: 'none',
-                                  bgcolor: '#06D6A010',
-                                  '&:hover': { bgcolor: '#06D6A020' }
+                                  bgcolor: 'rgba(6, 214, 160, 0.1)',
+                                  '&:hover': { bgcolor: 'rgba(6, 214, 160, 0.2)' }
                                 }}
                               >
                                 Add
@@ -1199,8 +1307,8 @@ export default function Inventory() {
                                 sx={{ 
                                   flexGrow: 1,
                                   textTransform: 'none',
-                                  bgcolor: '#FF6B6B10',
-                                  '&:hover': { bgcolor: '#FF6B6B20' }
+                                  bgcolor: 'rgba(255, 107, 107, 0.1)',
+                                  '&:hover': { bgcolor: 'rgba(255, 107, 107, 0.2)' }
                                 }}
                               >
                                 Remove
@@ -1254,21 +1362,21 @@ export default function Inventory() {
                       width: 60, 
                       height: 60, 
                       borderRadius: '50%', 
-                      bgcolor: '#f0f2f5', 
+                      bgcolor: 'var(--surface)', 
                       display: 'flex', 
                       alignItems: 'center', 
                       justifyContent: 'center',
                       mr: 2
                     }}
                   >
-                    <InventoryIcon sx={{ color: '#2E3A8C', fontSize: 30 }} />
+                    <InventoryIcon sx={{ color: 'var(--text-secondary)', fontSize: 30 }} />
                   </Box>
                   <Box>
                     <Typography variant="h5" fontWeight={600}>{selectedItem?.name}</Typography>
                     <Chip 
                       label={selectedItem?.sku} 
                       sx={{ 
-                        bgcolor: '#6c63ff10', 
+                        bgcolor: 'rgba(108, 99, 255, 0.1)', 
                         color: '#6c63ff',
                         fontWeight: 500,
                         mt: 0.5
@@ -1322,7 +1430,7 @@ export default function Inventory() {
                       sx={{ 
                         flexGrow: 1,
                         bgcolor: '#06D6A0',
-                        '&:hover': { bgcolor: '#05c591' }
+                        '&:hover': { bgcolor: 'rgba(6, 214, 160, 0.8)' }
                       }}
                       variant="contained"
                     >
@@ -1337,7 +1445,7 @@ export default function Inventory() {
                       sx={{ 
                         flexGrow: 1,
                         bgcolor: '#FF6B6B',
-                        '&:hover': { bgcolor: '#ff5a5a' }
+                        '&:hover': { bgcolor: 'rgba(255, 107, 107, 0.8)' }
                       }}
                       variant="contained"
                     >
@@ -1352,7 +1460,7 @@ export default function Inventory() {
                       sx={{ 
                         flexGrow: 1,
                         bgcolor: '#2E3A8C',
-                        '&:hover': { bgcolor: '#1a246e' }
+                        '&:hover': { bgcolor: 'rgba(46, 58, 140, 0.8)' }
                       }}
                       variant="contained"
                     >
@@ -1412,7 +1520,7 @@ export default function Inventory() {
                     sx={{ 
                       bgcolor: adjustmentType === 'add' ? '#06D6A0' : '#FF6B6B',
                       '&:hover': { 
-                        bgcolor: adjustmentType === 'add' ? '#05c591' : '#ff5a5a' 
+                        bgcolor: adjustmentType === 'add' ? 'rgba(6, 214, 160, 0.8)' : 'rgba(255, 107, 107, 0.8)'
                       }
                     }}
                   >

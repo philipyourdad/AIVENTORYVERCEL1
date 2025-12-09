@@ -550,10 +550,10 @@ const handleCreateOpen = () => {
           sx={{ mb: 3 }}
         >
           <Box>
-            <Typography variant="h4" fontWeight={800} sx={{ color: '#2E3A8C', mb: 0.5 }}>
+            <Typography variant="h4" fontWeight={800} sx={{ color: 'var(--text-primary)', mb: 0.5 }}>
               Invoice Management
             </Typography>
-            <Typography color="text.secondary">
+            <Typography sx={{ color: 'var(--text-secondary)' }}>
             </Typography>
           </Box>
           <Stack direction="row" spacing={1} flexWrap="wrap">
@@ -568,14 +568,32 @@ const handleCreateOpen = () => {
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
-                    <SearchIcon />
+                    <SearchIcon sx={{ color: 'var(--text-primary)' }} />
                   </InputAdornment>
                 ),
               }}
               sx={{ 
-                background: '#fff', 
+                background: 'var(--surface)', 
                 borderRadius: 2,
-                minWidth: 200
+                minWidth: 200,
+                '& .MuiOutlinedInput-root': {
+                  '& fieldset': {
+                    borderColor: 'var(--border-color)',
+                  },
+                  '&:hover fieldset': {
+                    borderColor: 'var(--border-color)',
+                  },
+                  '&.Mui-focused fieldset': {
+                    borderColor: 'var(--border-color)',
+                  },
+                  '& input': {
+                    color: 'var(--text-primary)',
+                  },
+                },
+                '& .MuiInputBase-input::placeholder': {
+                  color: 'var(--text-secondary)',
+                  opacity: 1,
+                },
               }}
             />
             <IconButton 
@@ -583,8 +601,9 @@ const handleCreateOpen = () => {
               onClick={fetchInvoices} 
               title="Refresh invoices"
               sx={{ 
-                bgcolor: '#2E3A8C10',
-                '&:hover': { bgcolor: '#2E3A8C20' }
+                bgcolor: 'rgba(46, 58, 140, 0.1)',
+                color: 'var(--text-primary)',
+                '&:hover': { bgcolor: 'rgba(46, 58, 140, 0.2)' }
               }}
             >
               <RefreshIcon />
@@ -598,7 +617,10 @@ const handleCreateOpen = () => {
                 background: '#6c63ff', 
                 fontWeight: 600, 
                 textTransform: 'none',
-                px: 3
+                px: 3,
+                '&:hover': {
+                  background: '#5a52d5',
+                }
               }}
             >
               New Invoice
@@ -607,11 +629,11 @@ const handleCreateOpen = () => {
         </Stack>
 
         {/* Filters */}
-        <Card sx={{ mb: 3, borderRadius: 3, border: '1px solid #e5e7eb' }}>
+        <Card sx={{ mb: 3, borderRadius: 3, border: '1px solid var(--border-color)', background: 'var(--surface)' }}>
           <CardContent>
             <Box display="flex" justifyContent="space-between" alignItems="center" mb={2} flexWrap="wrap" gap={2}>
               <Box>
-                <Typography variant="h6" fontWeight={600}>
+                <Typography variant="h6" fontWeight={600} sx={{ color: 'var(--text-primary)' }}>
                   Filter Invoices
                 </Typography>
               </Box>
@@ -623,10 +645,10 @@ const handleCreateOpen = () => {
                   size="small"
                   sx={{ height: 40 }}
                 >
-                  <ToggleButton value="list" sx={{ borderRadius: 2, border: '1px solid #ccc' }}>
+                  <ToggleButton value="list" sx={{ borderRadius: 2, border: '1px solid var(--border-color)', color: 'var(--text-primary)' }}>
                     <TableRowsIcon />
                   </ToggleButton>
-                  <ToggleButton value="grid" sx={{ borderRadius: 2, border: '1px solid #ccc' }}>
+                  <ToggleButton value="grid" sx={{ borderRadius: 2, border: '1px solid var(--border-color)', color: 'var(--text-primary)' }}>
                     <GridViewIcon />
                   </ToggleButton>
                 </ToggleButtonGroup>
@@ -643,7 +665,29 @@ const handleCreateOpen = () => {
                   setPage(1);
                 }}
                 size="small"
-                sx={{ minWidth: 150 }}
+                sx={{ 
+                  minWidth: 150,
+                  color: 'var(--text-primary)',
+                  background: 'var(--surface)',
+                  '& .MuiOutlinedInput-notchedOutline': { 
+                    borderColor: 'var(--border-color) !important',
+                  },
+                  '&:hover .MuiOutlinedInput-notchedOutline': { 
+                    borderColor: 'var(--border-color) !important',
+                  },
+                  '&.Mui-focused .MuiOutlinedInput-notchedOutline': { 
+                    borderColor: 'var(--border-color) !important',
+                  },
+                  '& .MuiSvgIcon-root': {
+                    color: 'var(--text-primary)',
+                  }
+                }}
+                SelectProps={{
+                  sx: { color: 'var(--text-primary)' }
+                }}
+                InputLabelProps={{
+                  sx: { color: 'var(--text-secondary)' }
+                }}
               >
                 <MenuItem value="All">All Statuses</MenuItem>
                 <MenuItem value="Paid">Paid</MenuItem>
@@ -660,7 +704,16 @@ const handleCreateOpen = () => {
                 }}
                 variant="outlined"
                 size="small"
-                sx={{ height: 40 }}
+                sx={{ 
+                height: 40,
+                color: 'var(--text-primary)',
+                borderColor: 'var(--border-color) !important',
+                background: 'var(--surface)',
+                '&:hover': { 
+                  borderColor: 'var(--border-color) !important',
+                  background: 'var(--surface)',
+                }
+              }}
               >
                 Reset Filters
               </Button>
@@ -671,14 +724,14 @@ const handleCreateOpen = () => {
         {/* Stats Summary */}
         <Grid container spacing={3} mb={3} width="100%" sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
           <Grid item xs={12} sm={6} md={3}>
-            <Card sx={{ borderRadius: 3, border: '1px solid #e5e7eb', height: '100%' }}>
+            <Card sx={{ borderRadius: 3, border: '1px solid var(--border-color)', height: '100%', background: 'var(--surface)' }}>
               <CardContent>
                 <Box display="flex" justifyContent="space-between">
                   <Box>
-                    <Typography color="text.secondary" variant="body2">Total Invoices</Typography>
-                    <Typography variant="h4" fontWeight={700}>{invoices.length}</Typography>
+                    <Typography sx={{ color: 'var(--text-secondary)', variant: 'body2' }}>Total Invoices</Typography>
+                    <Typography variant="h4" fontWeight={700} sx={{ color: 'var(--text-primary)' }}>{invoices.length}</Typography>
                   </Box>
-                  <Box sx={{ bgcolor: '#2E3A8C10', borderRadius: '50%', width: 48, height: 48, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <Box sx={{ bgcolor: 'rgba(46, 58, 140, 0.1)', borderRadius: '50%', width: 48, height: 48, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     <ReceiptIcon sx={{ color: '#2E3A8C' }} />
                   </Box>
                 </Box>
@@ -686,16 +739,16 @@ const handleCreateOpen = () => {
             </Card>
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
-            <Card sx={{ borderRadius: 3, border: '1px solid #e5e7eb', height: '100%' }}>
+            <Card sx={{ borderRadius: 3, border: '1px solid var(--border-color)', height: '100%', background: 'var(--surface)' }}>
               <CardContent>
                 <Box display="flex" justifyContent="space-between">
                   <Box>
-                    <Typography color="text.secondary" variant="body2">Paid</Typography>
-                    <Typography variant="h4" fontWeight={700}>
+                    <Typography sx={{ color: 'var(--text-secondary)', variant: 'body2' }}>Paid</Typography>
+                    <Typography variant="h4" fontWeight={700} sx={{ color: 'var(--text-primary)' }}>
                       {invoices.filter(inv => inv.status === 'Paid').length}
                     </Typography>
                   </Box>
-                  <Box sx={{ bgcolor: '#06D6A010', borderRadius: '50%', width: 48, height: 48, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <Box sx={{ bgcolor: 'rgba(6, 214, 160, 0.1)', borderRadius: '50%', width: 48, height: 48, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     <CheckCircleIcon sx={{ color: '#06D6A0' }} />
                   </Box>
                 </Box>
@@ -703,16 +756,16 @@ const handleCreateOpen = () => {
             </Card>
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
-            <Card sx={{ borderRadius: 3, border: '1px solid #e5e7eb', height: '100%' }}>
+            <Card sx={{ borderRadius: 3, border: '1px solid var(--border-color)', height: '100%', background: 'var(--surface)' }}>
               <CardContent>
                 <Box display="flex" justifyContent="space-between">
                   <Box>
-                    <Typography color="text.secondary" variant="body2">Pending</Typography>
-                    <Typography variant="h4" fontWeight={700}>
+                    <Typography sx={{ color: 'var(--text-secondary)', variant: 'body2' }}>Pending</Typography>
+                    <Typography variant="h4" fontWeight={700} sx={{ color: 'var(--text-primary)' }}>
                       {invoices.filter(inv => inv.status === 'Pending').length}
                     </Typography>
                   </Box>
-                  <Box sx={{ bgcolor: '#FFD16610', borderRadius: '50%', width: 48, height: 48, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <Box sx={{ bgcolor: 'rgba(255, 209, 102, 0.1)', borderRadius: '50%', width: 48, height: 48, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     <PendingIcon sx={{ color: '#FFD166' }} />
                   </Box>
                 </Box>
@@ -720,16 +773,16 @@ const handleCreateOpen = () => {
             </Card>
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
-            <Card sx={{ borderRadius: 3, border: '1px solid #e5e7eb', height: '100%' }}>
+            <Card sx={{ borderRadius: 3, border: '1px solid var(--border-color)', height: '100%', background: 'var(--surface)' }}>
               <CardContent>
                 <Box display="flex" justifyContent="space-between">
                   <Box>
-                    <Typography color="text.secondary" variant="body2">Overdue</Typography>
-                    <Typography variant="h4" fontWeight={700}>
+                    <Typography sx={{ color: 'var(--text-secondary)', variant: 'body2' }}>Overdue</Typography>
+                    <Typography variant="h4" fontWeight={700} sx={{ color: 'var(--text-primary)' }}>
                       {invoices.filter(inv => inv.status === 'Overdue').length}
                     </Typography>
                   </Box>
-                  <Box sx={{ bgcolor: '#FF6B6B10', borderRadius: '50%', width: 48, height: 48, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <Box sx={{ bgcolor: 'rgba(255, 107, 107, 0.1)', borderRadius: '50%', width: 48, height: 48, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     <ErrorIcon sx={{ color: '#FF6B6B' }} />
                   </Box>
                 </Box>
@@ -740,25 +793,25 @@ const handleCreateOpen = () => {
 
         <Grid container spacing={3} width="100%" sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
           <Grid item xs={12} md={viewMode === 'list' ? 9 : 12} width="100%">
-            <Paper elevation={2} sx={{ p: 2, height: '100%', borderRadius: 3, border: '1px solid #e5e7eb' }}>
+            <Paper elevation={2} sx={{ p: 2, height: '100%', borderRadius: 3, border: '1px solid var(--border-color)', background: 'var(--surface)' }}>
               <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 4 }}>
-                <Typography variant="h6" fontWeight={700}>
+                <Typography variant="h6" fontWeight={700} sx={{ color: 'var(--text-primary)' }}>
                   Invoice List
                 </Typography>
                 {loading && <CircularProgress size={24} />}
               </Stack>
               {error && (
-                <Alert severity="error" sx={{ mb: 2, borderRadius: 2 }}>
+                <Alert severity="error" sx={{ mb: 2, borderRadius: 2, background: 'var(--surface)', color: 'var(--text-primary)' }}>
                   {error}
                 </Alert>
               )}
               {!loading && filteredInvoices.length === 0 && !error ? (
                 <Box sx={{ py: 8, textAlign: 'center' }}>
-                  <ReceiptIcon sx={{ fontSize: 48, color: '#ccc', mb: 2 }} />
-                  <Typography color="text.secondary" variant="h6">
+                  <ReceiptIcon sx={{ fontSize: 48, color: 'var(--text-secondary)', mb: 2 }} />
+                  <Typography sx={{ color: 'var(--text-secondary)', variant: 'h6' }}>
                     No invoices found
                   </Typography>
-                  <Typography color="text.secondary" sx={{ mb: 2 }}>
+                  <Typography sx={{ color: 'var(--text-secondary)', mb: 2 }}>
                     Try adjusting your search or filter criteria
                   </Typography>
                   <Button 
@@ -773,12 +826,12 @@ const handleCreateOpen = () => {
                 // List View
                 <Table size="small">
                   <TableHead>
-                    <TableRow sx={{ bgcolor: '#f5f7ff' }}>
-                      <TableCell>Invoice #</TableCell>
-                      <TableCell>Customer</TableCell>
-                      <TableCell>Date</TableCell>
-                      <TableCell align="right">Amount</TableCell>
-                      <TableCell align="right">Status</TableCell>
+                    <TableRow sx={{ bgcolor: 'var(--surface)' }}>
+                      <TableCell sx={{ fontWeight: 600, color: 'var(--text-primary)', borderBottom: '1px solid var(--border-color)' }}>Invoice #</TableCell>
+                      <TableCell sx={{ fontWeight: 600, color: 'var(--text-primary)', borderBottom: '1px solid var(--border-color)' }}>Customer</TableCell>
+                      <TableCell sx={{ fontWeight: 600, color: 'var(--text-primary)', borderBottom: '1px solid var(--border-color)' }}>Date</TableCell>
+                      <TableCell align="right" sx={{ fontWeight: 600, color: 'var(--text-primary)', borderBottom: '1px solid var(--border-color)' }}>Amount</TableCell>
+                      <TableCell align="right" sx={{ fontWeight: 600, color: 'var(--text-primary)', borderBottom: '1px solid var(--border-color)' }}>Status</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
@@ -790,17 +843,21 @@ const handleCreateOpen = () => {
                           hover
                           selected={isActive}
                           onClick={() => setSelectedInvoice(invoice)}
-                          sx={{ cursor: 'pointer', '&:last-child td, &:last-child th': { border: 0 } }}
+                          sx={{ 
+                            cursor: 'pointer', 
+                            '&:hover': { bgcolor: 'var(--surface)' },
+                            '&:last-child td, &:last-child th': { border: 0 }
+                          }}
                         >
-                          <TableCell>
-                            <Typography fontWeight={500}>{invoice.invoiceNumber}</Typography>
+                          <TableCell sx={{ borderBottom: '1px solid var(--border-color)', color: 'var(--text-primary)' }}>
+                            <Typography fontWeight={500} sx={{ color: 'var(--text-primary)' }}>{invoice.invoiceNumber}</Typography>
                           </TableCell>
-                          <TableCell>
-                            <Typography fontWeight={500}>{invoice.customer.name}</Typography>
+                          <TableCell sx={{ borderBottom: '1px solid var(--border-color)', color: 'var(--text-primary)' }}>
+                            <Typography fontWeight={500} sx={{ color: 'var(--text-primary)' }}>{invoice.customer.name}</Typography>
                           </TableCell>
-                          <TableCell>{invoice.date}</TableCell>
-                          <TableCell align="right">
-                            <Typography fontWeight={600}>{formatCurrency(invoice.total)}</Typography>
+                          <TableCell sx={{ borderBottom: '1px solid var(--border-color)', color: 'var(--text-primary)' }}>{invoice.date}</TableCell>
+                          <TableCell align="right" sx={{ borderBottom: '1px solid var(--border-color)', color: 'var(--text-primary)' }}>
+                            <Typography fontWeight={600} sx={{ color: 'var(--text-primary)' }}>{formatCurrency(invoice.total)}</Typography>
                           </TableCell>
                           <TableCell align="right">
                             <Chip
@@ -825,12 +882,13 @@ const handleCreateOpen = () => {
                         <Card 
                           sx={{ 
                             borderRadius: 2, 
-                            border: isActive ? '2px solid #6c63ff' : '1px solid #e5e7eb',
+                            border: isActive ? '2px solid #6c63ff' : '1px solid var(--border-color)',
                             height: '100%',
                             transition: '0.3s',
+                            background: 'var(--surface)',
                             '&:hover': {
                               transform: 'translateY(-4px)',
-                              boxShadow: '0 10px 20px rgba(0,0,0,0.1)',
+                              boxShadow: 'var(--card-shadow)',
                               cursor: 'pointer'
                             }
                           }}
@@ -839,10 +897,10 @@ const handleCreateOpen = () => {
                           <CardContent>
                             <Box display="flex" justifyContent="space-between" alignItems="flex-start" mb={2}>
                               <Box>
-                                <Typography variant="h6" fontWeight={600}>
+                                <Typography variant="h6" fontWeight={600} sx={{ color: 'var(--text-primary)' }}>
                                   {invoice.invoiceNumber}
                                 </Typography>
-                                <Typography variant="body2" color="text.secondary">
+                                <Typography variant="body2" sx={{ color: 'var(--text-secondary)' }}>
                                   {invoice.date}
                                 </Typography>
                               </Box>
@@ -854,14 +912,14 @@ const handleCreateOpen = () => {
                             </Box>
                             
                             <Box mb={2}>
-                              <Typography fontWeight={500}>{invoice.customer.name}</Typography>
+                              <Typography fontWeight={500} sx={{ color: 'var(--text-primary)' }}>{invoice.customer.name}</Typography>
                             </Box>
                             
-                            <Divider sx={{ my: 1 }} />
+                            <Divider sx={{ my: 1, borderColor: 'var(--border-color)' }} />
                             
                             <Box display="flex" justifyContent="space-between" alignItems="center">
-                              <Typography color="text.secondary">Total</Typography>
-                              <Typography variant="h6" fontWeight={700}>
+                              <Typography sx={{ color: 'var(--text-secondary)' }}>Total</Typography>
+                              <Typography variant="h6" fontWeight={700} sx={{ color: 'var(--text-primary)' }}>
                                 {formatCurrency(invoice.total)}
                               </Typography>
                             </Box>
@@ -883,6 +941,22 @@ const handleCreateOpen = () => {
                     color="primary"
                     siblingCount={1}
                     boundaryCount={1}
+                    sx={{
+                      '& .MuiPaginationItem-root': {
+                        color: 'var(--text-primary)',
+                        borderColor: 'var(--border-color)',
+                      },
+                      '& .Mui-selected': {
+                        backgroundColor: '#6c63ff',
+                        color: 'white',
+                        '&:hover': {
+                          backgroundColor: '#5a52d5',
+                        }
+                      },
+                      '& .MuiPaginationItem-ellipsis': {
+                        color: 'var(--text-primary)',
+                      }
+                    }}
                   />
                 </Box>
               )}
@@ -890,49 +964,49 @@ const handleCreateOpen = () => {
           </Grid>
 
           <Grid item xs={12} md={6} width="100%">
-            <Paper elevation={2} sx={{ p: 3, height: '100%', borderRadius: 3, border: '1px solid #e5e7eb' }}>
+            <Paper elevation={2} sx={{ p: 3, height: '100%', borderRadius: 3, border: '1px solid var(--border-color)', background: 'var(--surface)' }}>
               {selectedInvoice ? (
                 <Box className="invoice-receipt">
                   {/* Receipt Header */}
                   <Box sx={{ textAlign: 'center', mb: 3 }}>
-                    <Typography variant="h5" fontWeight={800} sx={{ color: '#2E3A8C', mb: 1 }}>
+                    <Typography variant="h5" fontWeight={800} sx={{ color: 'var(--text-primary)', mb: 1 }}>
                       AIVENTORY RECEIPT
                     </Typography>
-                    <Typography color="text.secondary">
+                    <Typography sx={{ color: 'var(--text-secondary)' }}>
                       Motorcycle Parts & Accessories
                     </Typography>
-                    <Typography color="text.secondary" sx={{ mb: 2 }}>
+                    <Typography sx={{ color: 'var(--text-secondary)', mb: 2 }}>
                       Quezon City, Philippines
                     </Typography>
-                    <Divider sx={{ mb: 2 }} />
+                    <Divider sx={{ mb: 2, borderColor: 'var(--border-color)' }} />
                   </Box>
                   
                   {/* Invoice Info */}
                   <Grid container spacing={2} sx={{ mb: 4 }} width="100%" justifyContent="center" alignItems="center">
                     <Grid item xs={12} md={6}>
-                      <Typography variant="subtitle2" color="text.secondary" sx={{ mb: 1 }}>
+                      <Typography variant="subtitle2" sx={{ color: 'var(--text-secondary)', mb: 1 }}>
                         BILL TO
                       </Typography>
-                      <Typography fontWeight={600}>{selectedInvoice.customer.name}</Typography>
+                      <Typography fontWeight={600} sx={{ color: 'var(--text-primary)' }}>{selectedInvoice.customer.name}</Typography>
                       {selectedInvoice.customer.phone && (
-                        <Typography variant="body2">{selectedInvoice.customer.phone}</Typography>
+                        <Typography variant="body2" sx={{ color: 'var(--text-primary)' }}>{selectedInvoice.customer.phone}</Typography>
                       )}
                       {selectedInvoice.customer.address && (
-                        <Typography variant="body2">{selectedInvoice.customer.address}</Typography>
+                        <Typography variant="body2" sx={{ color: 'var(--text-primary)' }}>{selectedInvoice.customer.address}</Typography>
                       )}
                     </Grid>
                     <Grid item xs={12} md={6}>
                       <Box sx={{ textAlign: { xs: 'left', md: 'right' } }}>
-                        <Typography variant="subtitle2" color="text.secondary" sx={{ mb: 1 }}>
+                        <Typography variant="subtitle2" sx={{ color: 'var(--text-secondary)', mb: 1 }}>
                           INVOICE DETAILS
                         </Typography>
-                        <Typography>
+                        <Typography sx={{ color: 'var(--text-primary)' }}>
                           <strong>Invoice #:</strong> {selectedInvoice.invoiceNumber}
                         </Typography>
-                        <Typography>
+                        <Typography sx={{ color: 'var(--text-primary)' }}>
                           <strong>Date:</strong> {selectedInvoice.date}
                         </Typography>
-                        <Typography>
+                        <Typography sx={{ color: 'var(--text-primary)' }}>
                           <strong>Due Date:</strong> {selectedInvoice.dueDate}
                         </Typography>
                         <Chip
@@ -948,22 +1022,22 @@ const handleCreateOpen = () => {
                   {/* Items Table */}
                   <Table size="small" sx={{ mb: 3 }}>
                     <TableHead>
-                      <TableRow sx={{ bgcolor: '#f5f7ff' }}>
-                        <TableCell><strong>Item</strong></TableCell>
-                        <TableCell align="right"><strong>Qty</strong></TableCell>
-                        <TableCell align="right"><strong>Price</strong></TableCell>
-                        <TableCell align="right"><strong>Total</strong></TableCell>
+                      <TableRow sx={{ bgcolor: 'var(--surface)' }}>
+                        <TableCell sx={{ fontWeight: 600, color: 'var(--text-primary)', borderBottom: '1px solid var(--border-color)' }}><strong>Item</strong></TableCell>
+                        <TableCell align="right" sx={{ fontWeight: 600, color: 'var(--text-primary)', borderBottom: '1px solid var(--border-color)' }}><strong>Qty</strong></TableCell>
+                        <TableCell align="right" sx={{ fontWeight: 600, color: 'var(--text-primary)', borderBottom: '1px solid var(--border-color)' }}><strong>Price</strong></TableCell>
+                        <TableCell align="right" sx={{ fontWeight: 600, color: 'var(--text-primary)', borderBottom: '1px solid var(--border-color)' }}><strong>Total</strong></TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>
                       {selectedInvoice.items.map((item, index) => (
                         <TableRow key={index}>
-                          <TableCell>
-                            <Typography fontWeight={500}>{item.description}</Typography>
+                          <TableCell sx={{ borderBottom: '1px solid var(--border-color)', color: 'var(--text-primary)' }}>
+                            <Typography fontWeight={500} sx={{ color: 'var(--text-primary)' }}>{item.description}</Typography>
                           </TableCell>
-                          <TableCell align="right">{item.quantity}</TableCell>
-                          <TableCell align="right">{formatCurrency(item.unitPrice)}</TableCell>
-                          <TableCell align="right">{formatCurrency(calculateLineTotal(item))}</TableCell>
+                          <TableCell align="right" sx={{ borderBottom: '1px solid var(--border-color)', color: 'var(--text-primary)' }}>{item.quantity}</TableCell>
+                          <TableCell align="right" sx={{ borderBottom: '1px solid var(--border-color)', color: 'var(--text-primary)' }}>{formatCurrency(item.unitPrice)}</TableCell>
+                          <TableCell align="right" sx={{ borderBottom: '1px solid var(--border-color)', color: 'var(--text-primary)' }}>{formatCurrency(calculateLineTotal(item))}</TableCell>
                         </TableRow>
                       ))}
                     </TableBody>
@@ -973,17 +1047,17 @@ const handleCreateOpen = () => {
                   <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 3 }}>
                     <Box sx={{ width: 250 }}>
                       <Stack direction="row" justifyContent="space-between" sx={{ mb: 1 }}>
-                        <Typography>Subtotal</Typography>
-                        <Typography>{formatCurrency(totals.subtotal)}</Typography>
+                        <Typography sx={{ color: 'var(--text-primary)' }}>Subtotal</Typography>
+                        <Typography sx={{ color: 'var(--text-primary)' }}>{formatCurrency(totals.subtotal)}</Typography>
                       </Stack>
                       <Stack direction="row" justifyContent="space-between" sx={{ mb: 1 }}>
-                        <Typography>Tax (5%)</Typography>
-                        <Typography>{formatCurrency(totals.tax)}</Typography>
+                        <Typography sx={{ color: 'var(--text-primary)' }}>Tax (5%)</Typography>
+                        <Typography sx={{ color: 'var(--text-primary)' }}>{formatCurrency(totals.tax)}</Typography>
                       </Stack>
-                      <Divider sx={{ my: 1 }} />
+                      <Divider sx={{ my: 1, borderColor: 'var(--border-color)' }} />
                       <Stack direction="row" justifyContent="space-between" fontWeight={700} sx={{ mb: 1 }}>
-                        <Typography variant="h6">TOTAL</Typography>
-                        <Typography variant="h6">{formatCurrency(totals.total)}</Typography>
+                        <Typography variant="h6" sx={{ color: 'var(--text-primary)' }}>TOTAL</Typography>
+                        <Typography variant="h6" sx={{ color: 'var(--text-primary)' }}>{formatCurrency(totals.total)}</Typography>
                       </Stack>
                     </Box>
                   </Box>
@@ -991,10 +1065,10 @@ const handleCreateOpen = () => {
                   {/* Notes */}
                   {selectedInvoice.notes && (
                     <Box sx={{ mb: 3 }}>
-                      <Typography variant="subtitle2" color="text.secondary" sx={{ mb: 1 }}>
+                      <Typography variant="subtitle2" sx={{ color: 'var(--text-secondary)', mb: 1 }}>
                         NOTES
                       </Typography>
-                      <Typography variant="body2">{selectedInvoice.notes}</Typography>
+                      <Typography variant="body2" sx={{ color: 'var(--text-primary)' }}>{selectedInvoice.notes}</Typography>
                     </Box>
                   )}
                   
@@ -1008,7 +1082,10 @@ const handleCreateOpen = () => {
                         borderRadius: 2, 
                         background: '#2E3A8C', 
                         fontWeight: 600,
-                        px: 3
+                        px: 3,
+                        '&:hover': {
+                          background: '#1a246e',
+                        }
                       }}
                     >
                       Print Receipt
@@ -1020,7 +1097,12 @@ const handleCreateOpen = () => {
                       sx={{ 
                         borderRadius: 2, 
                         fontWeight: 600,
-                        px: 3
+                        px: 3,
+                        color: 'var(--text-primary)',
+                        borderColor: 'var(--border-color)',
+                        '&:hover': {
+                          borderColor: 'var(--border-color)',
+                        }
                       }}
                     >
                       Download PDF
@@ -1029,11 +1111,11 @@ const handleCreateOpen = () => {
                 </Box>
               ) : (
                 <Box sx={{ py: 8, textAlign: 'center' }}>
-                  <ReceiptIcon sx={{ fontSize: 48, color: '#ccc', mb: 2 }} />
-                  <Typography color="text.secondary" variant="h6">
+                  <ReceiptIcon sx={{ fontSize: 48, color: 'var(--text-secondary)', mb: 2 }} />
+                  <Typography sx={{ color: 'var(--text-secondary)', variant: 'h6' }}>
                     Select an invoice to view details
                   </Typography>
-                  <Typography color="text.secondary">
+                  <Typography sx={{ color: 'var(--text-secondary)' }}>
                     Choose an invoice from the list to see its receipt format
                   </Typography>
                 </Box>
@@ -1043,17 +1125,40 @@ const handleCreateOpen = () => {
         </Grid>
       </Box>
 
-      <Dialog open={createOpen} onClose={handleCreateClose} maxWidth="sm" fullWidth>
-        <DialogTitle>
+      <Dialog open={createOpen} onClose={handleCreateClose} maxWidth="sm" fullWidth 
+        sx={{
+          '& .MuiDialog-paper': {
+            background: 'var(--surface)',
+            color: 'var(--text-primary)',
+            border: '1px solid var(--border-color)'
+          }
+        }}
+      >
+        <DialogTitle sx={{ color: 'var(--text-primary)' }}>
           Create New Invoice
-          <IconButton onClick={handleCreateClose} sx={{ position: 'absolute', right: 16, top: 16 }}>
+          <IconButton onClick={handleCreateClose} sx={{ position: 'absolute', right: 16, top: 16, color: 'var(--text-primary)' }}>
             <CloseIcon />
           </IconButton>
         </DialogTitle>
-        <DialogContent dividers>
+        <DialogContent dividers 
+          sx={{
+            background: 'var(--surface)',
+            color: 'var(--text-primary)',
+            borderColor: 'var(--border-color)'
+          }}
+        >
           <Stack spacing={2} sx={{ mt: 1 }}>
             {createError && (
-              <Alert severity="error" onClose={() => setCreateError(null)} sx={{ borderRadius: 2 }}>
+              <Alert severity="error" onClose={() => setCreateError(null)} 
+                sx={{ 
+                  borderRadius: 2,
+                  background: 'var(--surface)',
+                  color: 'var(--text-primary)',
+                  '& .MuiAlert-icon': {
+                    color: '#FF6B6B'
+                  }
+                }}
+              >
                 {createError}
               </Alert>
             )}
@@ -1063,6 +1168,29 @@ const handleCreateOpen = () => {
               value={createForm.invoiceNumber}
               InputProps={{ readOnly: true }}
               fullWidth
+              sx={{
+                '& .MuiOutlinedInput-root': {
+                  '& fieldset': {
+                    borderColor: 'var(--border-color)',
+                  },
+                  '&:hover fieldset': {
+                    borderColor: 'var(--border-color)',
+                  },
+                  '&.Mui-focused fieldset': {
+                    borderColor: 'var(--border-color)',
+                  },
+                  '& input': {
+                    color: 'var(--text-primary)',
+                    background: 'var(--surface)'
+                  },
+                },
+                '& .MuiInputLabel-root': {
+                  color: 'var(--text-secondary)',
+                },
+                '& .MuiInputLabel-root.Mui-focused': {
+                  color: 'var(--text-primary)',
+                }
+              }}
             />
             <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
               <TextField
@@ -1073,6 +1201,29 @@ const handleCreateOpen = () => {
                 InputLabelProps={{ shrink: true }}
                 required
                 fullWidth
+                sx={{
+                  '& .MuiOutlinedInput-root': {
+                    '& fieldset': {
+                      borderColor: 'var(--border-color)',
+                    },
+                    '&:hover fieldset': {
+                      borderColor: 'var(--border-color)',
+                    },
+                    '&.Mui-focused fieldset': {
+                      borderColor: 'var(--border-color)',
+                    },
+                    '& input': {
+                      color: 'var(--text-primary)',
+                      background: 'var(--surface)'
+                    },
+                  },
+                  '& .MuiInputLabel-root': {
+                    color: 'var(--text-secondary)',
+                  },
+                  '& .MuiInputLabel-root.Mui-focused': {
+                    color: 'var(--text-primary)',
+                  }
+                }}
               />
               <TextField
                 label="Due Date"
@@ -1081,6 +1232,29 @@ const handleCreateOpen = () => {
                 onChange={handleCreateInput('dueDate')}
                 InputLabelProps={{ shrink: true }}
                 fullWidth
+                sx={{
+                  '& .MuiOutlinedInput-root': {
+                    '& fieldset': {
+                      borderColor: 'var(--border-color)',
+                    },
+                    '&:hover fieldset': {
+                      borderColor: 'var(--border-color)',
+                    },
+                    '&.Mui-focused fieldset': {
+                      borderColor: 'var(--border-color)',
+                    },
+                    '& input': {
+                      color: 'var(--text-primary)',
+                      background: 'var(--surface)'
+                    },
+                  },
+                  '& .MuiInputLabel-root': {
+                    color: 'var(--text-secondary)',
+                  },
+                  '& .MuiInputLabel-root.Mui-focused': {
+                    color: 'var(--text-primary)',
+                  }
+                }}
               />
             </Stack>
             <TextField
@@ -1089,13 +1263,39 @@ const handleCreateOpen = () => {
               value={createForm.status}
               onChange={handleCreateInput('status')}
               fullWidth
+              sx={{
+                '& .MuiOutlinedInput-root': {
+                  '& fieldset': {
+                    borderColor: 'var(--border-color)',
+                  },
+                  '&:hover fieldset': {
+                    borderColor: 'var(--border-color)',
+                  },
+                  '&.Mui-focused fieldset': {
+                    borderColor: 'var(--border-color)',
+                  },
+                  '& input': {
+                    color: 'var(--text-primary)',
+                    background: 'var(--surface)'
+                  },
+                },
+                '& .MuiInputLabel-root': {
+                  color: 'var(--text-secondary)',
+                },
+                '& .MuiInputLabel-root.Mui-focused': {
+                  color: 'var(--text-primary)',
+                },
+                '& .MuiSelect-select': {
+                  color: 'var(--text-primary)',
+                }
+              }}
             >
-              <MenuItem value="Pending">Pending</MenuItem>
-              <MenuItem value="Paid">Paid</MenuItem>
-              <MenuItem value="Overdue">Overdue</MenuItem>
+              <MenuItem value="Pending" sx={{ color: 'var(--text-primary)', background: 'var(--surface)', '&:hover': { background: 'rgba(255, 255, 255, 0.05)' } }}>Pending</MenuItem>
+              <MenuItem value="Paid" sx={{ color: 'var(--text-primary)', background: 'var(--surface)', '&:hover': { background: 'rgba(255, 255, 255, 0.05)' } }}>Paid</MenuItem>
+              <MenuItem value="Overdue" sx={{ color: 'var(--text-primary)', background: 'var(--surface)', '&:hover': { background: 'rgba(255, 255, 255, 0.05)' } }}>Overdue</MenuItem>
             </TextField>
 
-            <Divider sx={{ my: 1 }} />
+            <Divider sx={{ my: 1, borderColor: 'var(--border-color)' }} />
             <Typography variant="subtitle2">Customer Details</Typography>
             <TextField
               label="Customer Name"
@@ -1103,12 +1303,58 @@ const handleCreateOpen = () => {
               onChange={handleCreateInput('customerName')}
               required
               fullWidth
+              sx={{
+                '& .MuiOutlinedInput-root': {
+                  '& fieldset': {
+                    borderColor: 'var(--border-color)',
+                  },
+                  '&:hover fieldset': {
+                    borderColor: 'var(--border-color)',
+                  },
+                  '&.Mui-focused fieldset': {
+                    borderColor: 'var(--border-color)',
+                  },
+                  '& input': {
+                    color: 'var(--text-primary)',
+                    background: 'var(--surface)'
+                  },
+                },
+                '& .MuiInputLabel-root': {
+                  color: 'var(--text-secondary)',
+                },
+                '& .MuiInputLabel-root.Mui-focused': {
+                  color: 'var(--text-primary)',
+                }
+              }}
             />
             <TextField
               label="Customer Phone"
               value={createForm.customerPhone}
               onChange={handleCreateInput('customerPhone')}
               fullWidth
+              sx={{
+                '& .MuiOutlinedInput-root': {
+                  '& fieldset': {
+                    borderColor: 'var(--border-color)',
+                  },
+                  '&:hover fieldset': {
+                    borderColor: 'var(--border-color)',
+                  },
+                  '&.Mui-focused fieldset': {
+                    borderColor: 'var(--border-color)',
+                  },
+                  '& input': {
+                    color: 'var(--text-primary)',
+                    background: 'var(--surface)'
+                  },
+                },
+                '& .MuiInputLabel-root': {
+                  color: 'var(--text-secondary)',
+                },
+                '& .MuiInputLabel-root.Mui-focused': {
+                  color: 'var(--text-primary)',
+                }
+              }}
             />
             <TextField
               label="Customer Address"
@@ -1117,9 +1363,32 @@ const handleCreateOpen = () => {
               multiline
               minRows={2}
               fullWidth
+              sx={{
+                '& .MuiOutlinedInput-root': {
+                  '& fieldset': {
+                    borderColor: 'var(--border-color)',
+                  },
+                  '&:hover fieldset': {
+                    borderColor: 'var(--border-color)',
+                  },
+                  '&.Mui-focused fieldset': {
+                    borderColor: 'var(--border-color)',
+                  },
+                  '& textarea': {
+                    color: 'var(--text-primary)',
+                    background: 'var(--surface)'
+                  },
+                },
+                '& .MuiInputLabel-root': {
+                  color: 'var(--text-secondary)',
+                },
+                '& .MuiInputLabel-root.Mui-focused': {
+                  color: 'var(--text-primary)',
+                }
+              }}
             />
 
-            <Divider sx={{ my: 1 }} />
+            <Divider sx={{ my: 1, borderColor: 'var(--border-color)' }} />
             <Typography variant="subtitle2">Line Items</Typography>
             {productsError && (
               <Alert severity="warning" onClose={() => setProductsError(null)} sx={{ borderRadius: 2 }}>
@@ -1128,11 +1397,20 @@ const handleCreateOpen = () => {
             )}
 
             {createForm.items.map((item, index) => (
-              <Box key={index} sx={{ p: 2, border: '1px solid #e5e7eb', borderRadius: 2, mb: 2 }}>
+              <Box key={index} sx={{ p: 2, border: '1px solid var(--border-color)', borderRadius: 2, mb: 2, background: 'var(--surface)' }}>
                 <Stack direction="row" justifyContent="space-between" alignItems="center" mb={1}>
                   <Typography variant="subtitle2">Product #{index + 1}</Typography>
                   {createForm.items.length > 1 && (
-                    <Button size="small" color="error" onClick={() => removeLineItem(index)}>
+                    <Button size="small" color="error" onClick={() => removeLineItem(index)}
+                      sx={{
+                        color: '#FF6B6B',
+                        borderColor: 'var(--border-color)',
+                        '&:hover': {
+                          backgroundColor: 'rgba(255, 107, 107, 0.1)',
+                          borderColor: '#FF6B6B'
+                        }
+                      }}
+                    >
                       Remove
                     </Button>
                   )}
@@ -1153,20 +1431,49 @@ const handleCreateOpen = () => {
                     }
                     disabled={productsLoading || products.length === 0}
                     fullWidth
+                    sx={{
+                      '& .MuiOutlinedInput-root': {
+                        '& fieldset': {
+                          borderColor: 'var(--border-color)',
+                        },
+                        '&:hover fieldset': {
+                          borderColor: 'var(--border-color)',
+                        },
+                        '&.Mui-focused fieldset': {
+                          borderColor: 'var(--border-color)',
+                        },
+                        '& input': {
+                          color: 'var(--text-primary)',
+                          background: 'var(--surface)'
+                        },
+                      },
+                      '& .MuiInputLabel-root': {
+                        color: 'var(--text-secondary)',
+                      },
+                      '& .MuiInputLabel-root.Mui-focused': {
+                        color: 'var(--text-primary)',
+                      },
+                      '& .MuiSelect-select': {
+                        color: 'var(--text-primary)',
+                      },
+                      '& .MuiFormHelperText-root': {
+                        color: 'var(--text-secondary)',
+                      }
+                    }}
                   >
                     {productsLoading ? (
-                      <MenuItem value="" disabled>
+                      <MenuItem value="" disabled sx={{ color: 'var(--text-primary)', background: 'var(--surface)', '&:hover': { background: 'rgba(255, 255, 255, 0.05)' } }}>
                         Loading…
                       </MenuItem>
                     ) : products.length > 0 ? (
                       products.map((product) => (
-                        <MenuItem key={product.Product_id} value={product.Product_id}>
+                        <MenuItem key={product.Product_id} value={product.Product_id} sx={{ color: 'var(--text-primary)', background: 'var(--surface)', '&:hover': { background: 'rgba(255, 255, 255, 0.05)' } }}>
                           {product.Product_name}
                           {product.Product_sku ? ` (${product.Product_sku})` : ''} — {formatCurrency(product.Product_price)}
                         </MenuItem>
                       ))
                     ) : (
-                      <MenuItem value="" disabled>
+                      <MenuItem value="" disabled sx={{ color: 'var(--text-primary)', background: 'var(--surface)', '&:hover': { background: 'rgba(255, 255, 255, 0.05)' } }}>
                         No products available
                       </MenuItem>
                     )}
@@ -1178,6 +1485,29 @@ const handleCreateOpen = () => {
                     multiline
                     minRows={2}
                     fullWidth
+                    sx={{
+                      '& .MuiOutlinedInput-root': {
+                        '& fieldset': {
+                          borderColor: 'var(--border-color)',
+                        },
+                        '&:hover fieldset': {
+                          borderColor: 'var(--border-color)',
+                        },
+                        '&.Mui-focused fieldset': {
+                          borderColor: 'var(--border-color)',
+                        },
+                        '& textarea': {
+                          color: 'var(--text-primary)',
+                          background: 'var(--surface)'
+                        },
+                      },
+                      '& .MuiInputLabel-root': {
+                        color: 'var(--text-secondary)',
+                      },
+                      '& .MuiInputLabel-root.Mui-focused': {
+                        color: 'var(--text-primary)',
+                      }
+                    }}
                   />
                   <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
                     <TextField
@@ -1188,6 +1518,29 @@ const handleCreateOpen = () => {
                       inputProps={{ min: 1 }}
                       required
                       fullWidth
+                      sx={{
+                        '& .MuiOutlinedInput-root': {
+                          '& fieldset': {
+                            borderColor: 'var(--border-color)',
+                          },
+                          '&:hover fieldset': {
+                            borderColor: 'var(--border-color)',
+                          },
+                          '&.Mui-focused fieldset': {
+                            borderColor: 'var(--border-color)',
+                          },
+                          '& input': {
+                            color: 'var(--text-primary)',
+                            background: 'var(--surface)'
+                          },
+                        },
+                        '& .MuiInputLabel-root': {
+                          color: 'var(--text-secondary)',
+                        },
+                        '& .MuiInputLabel-root.Mui-focused': {
+                          color: 'var(--text-primary)',
+                        }
+                      }}
                     />
                     <TextField
                       label="Unit Price"
@@ -1197,13 +1550,50 @@ const handleCreateOpen = () => {
                       required
                       InputProps={{ readOnly: true }}
                       fullWidth
+                      sx={{
+                        '& .MuiOutlinedInput-root': {
+                          '& fieldset': {
+                            borderColor: 'var(--border-color)',
+                          },
+                          '&:hover fieldset': {
+                            borderColor: 'var(--border-color)',
+                          },
+                          '&.Mui-focused fieldset': {
+                            borderColor: 'var(--border-color)',
+                          },
+                          '& input': {
+                            color: 'var(--text-primary)',
+                            background: 'var(--surface)'
+                          },
+                        },
+                        '& .MuiInputLabel-root': {
+                          color: 'var(--text-secondary)',
+                        },
+                        '& .MuiInputLabel-root.Mui-focused': {
+                          color: 'var(--text-primary)',
+                        }
+                      }}
                     />
                   </Stack>
                 </Stack>
               </Box>
             ))}
 
-            <Button variant="outlined" onClick={addLineItem} disabled={productsLoading || products.length === 0}>
+            <Button variant="outlined" onClick={addLineItem} disabled={productsLoading || products.length === 0}
+              sx={{
+                color: 'var(--text-primary)',
+                borderColor: 'var(--border-color)',
+                background: 'var(--surface)',
+                '&:hover': {
+                  borderColor: 'var(--border-color)',
+                  background: 'rgba(255, 255, 255, 0.05)'
+                },
+                '&.Mui-disabled': {
+                  borderColor: 'rgba(229, 231, 235, 0.3)',
+                  color: 'var(--text-secondary)'
+                }
+              }}
+            >
               Add Another Product
             </Button>
 
@@ -1214,18 +1604,65 @@ const handleCreateOpen = () => {
               multiline
               minRows={2}
               fullWidth
+              sx={{
+                '& .MuiOutlinedInput-root': {
+                  '& fieldset': {
+                    borderColor: 'var(--border-color)',
+                  },
+                  '&:hover fieldset': {
+                    borderColor: 'var(--border-color)',
+                  },
+                  '&.Mui-focused fieldset': {
+                    borderColor: 'var(--border-color)',
+                  },
+                  '& textarea': {
+                    color: 'var(--text-primary)',
+                    background: 'var(--surface)'
+                  },
+                },
+                '& .MuiInputLabel-root': {
+                  color: 'var(--text-secondary)',
+                },
+                '& .MuiInputLabel-root.Mui-focused': {
+                  color: 'var(--text-primary)',
+                }
+              }}
             />
           </Stack>
         </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCreateClose} disabled={saving}>
+        <DialogActions 
+          sx={{
+            background: 'var(--surface)',
+            borderColor: 'var(--border-color)'
+          }}
+        >
+          <Button onClick={handleCreateClose} disabled={saving} 
+            sx={{
+              color: 'var(--text-primary)',
+              borderColor: 'var(--border-color)',
+              '&:hover': {
+                borderColor: 'var(--border-color)',
+                background: 'rgba(255, 255, 255, 0.05)'
+              }
+            }}
+          >
             Cancel
           </Button>
           <Button
             onClick={handleCreateSubmit}
             variant="contained"
             disabled={saving || productsLoading || products.length === 0}
-            sx={{ bgcolor: '#6c63ff' }}
+            sx={{ 
+              bgcolor: '#6c63ff',
+              color: 'white',
+              '&:hover': {
+                bgcolor: '#5a52d5'
+              },
+              '&.Mui-disabled': {
+                bgcolor: 'rgba(108, 99, 255, 0.5)',
+                color: 'rgba(255, 255, 255, 0.7)'
+              }
+            }}
           >
             {saving ? 'Saving…' : 'Create Invoice'}
           </Button>

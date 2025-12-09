@@ -72,7 +72,7 @@ export default function SidebarLayout({ children }) {
   // Determine profile picture based on role
   const getProfilePicture = () => {
     if (role === 'Admin') {
-      return '/assets/icons/admin.png';
+      return '/assets/icons/arthur.jpg';
     } else if (role === 'Staff') {
       return '/assets/icons/staff.png';
     }
@@ -240,13 +240,25 @@ export default function SidebarLayout({ children }) {
                       mb: 0.5,
                       mx: 0.5,
                       color: location.pathname === link.to ? '#fff' : 'rgba(255,255,255,0.8)',
-                      backgroundColor: location.pathname === link.to ? 'rgba(255,255,255,0.15)' : 'transparent',
+                      backgroundColor: location.pathname === link.to ? 'rgba(255,255,255,0.2)' : 'transparent',
+                      position: 'relative',
+                      overflow: 'hidden',
                       '&:hover': {
-                        backgroundColor: location.pathname === link.to ? 'rgba(255,255,255,0.2)' : 'rgba(255,255,255,0.1)',
+                        backgroundColor: location.pathname === link.to ? 'rgba(255,255,255,0.25)' : 'rgba(255,255,255,0.15)',
                         color: '#fff',
-                        transform: 'translateX(2px)',
+                        transform: 'translateX(4px)',
                       },
-                      transition: 'all 0.2s ease',
+                      '&::before': {
+                        content: location.pathname === link.to ? '""' : 'none',
+                        position: 'absolute',
+                        left: 0,
+                        top: 0,
+                        bottom: 0,
+                        width: '4px',
+                        backgroundColor: '#fff',
+                        borderRadius: '0 4px 4px 0',
+                      },
+                      transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                       justifyContent: collapsed ? 'center' : 'initial',
                       px: collapsed ? 2 : 2.5,
                       py: 1.5
@@ -268,7 +280,7 @@ export default function SidebarLayout({ children }) {
                       sx={{ 
                         opacity: collapsed ? 0 : 1, 
                         transition: 'opacity 0.3s ease',
-                        fontWeight: location.pathname === link.to ? 600 : 400
+                        fontWeight: location.pathname === link.to ? 700 : 500
                       }} 
                     />
                     {link.badge && (
@@ -320,7 +332,7 @@ export default function SidebarLayout({ children }) {
                     label={userRole} 
                     size="small" 
                     sx={{ 
-                      bgcolor: 'rgba(255,255,255,0.15)', 
+                      backgroundColor: 'rgba(228, 18, 18, 0.77)', 
                       color: '#fff',
                       fontWeight: 500,
                       height: 20,
@@ -354,7 +366,7 @@ export default function SidebarLayout({ children }) {
         sx={{
           flex: '1 1 auto',
           minHeight: '100vh',
-          background: 'linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%)',
+          background: 'var(--page-bg)',
           p: 0,
           width: 0, // Force flex to calculate width properly
           minWidth: 0, // Allow flex item to shrink below content size

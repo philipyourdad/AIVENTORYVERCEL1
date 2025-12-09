@@ -199,11 +199,10 @@ export default function Suppliers() {
         {/* Header with enhanced actions */}
         <Box display="flex" justifyContent="space-between" alignItems="center" mb={3} flexWrap="wrap" gap={2}>
           <Box>
-            <Typography variant="h4" fontWeight={800} sx={{ color: '#2E3A8C', mb: 0.5 }}>
+            <Typography variant="h4" fontWeight={800} sx={{ color: 'var(--text-primary)', mb: 0.5 }}>
               Supplier
             </Typography>
-            <Typography color="text.secondary">
-          
+            <Typography sx={{ color: 'var(--text-secondary)' }}>
             </Typography>
           </Box>
           <Box display="flex" gap={2} flexWrap="wrap">
@@ -218,14 +217,32 @@ export default function Suppliers() {
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
-                    <SearchIcon />
+                    <SearchIcon sx={{ color: 'var(--text-primary)' }} />
                   </InputAdornment>
                 ),
               }}
               sx={{ 
-                background: '#fff', 
+                background: 'var(--surface)', 
                 borderRadius: 2,
-                minWidth: 250
+                minWidth: 250,
+                '& .MuiOutlinedInput-root': {
+                  '& fieldset': {
+                    borderColor: 'var(--border-color)',
+                  },
+                  '&:hover fieldset': {
+                    borderColor: 'var(--border-color)',
+                  },
+                  '&.Mui-focused fieldset': {
+                    borderColor: 'var(--border-color)',
+                  },
+                  '& input': {
+                    color: 'var(--text-primary)',
+                  },
+                },
+                '& .MuiInputBase-input::placeholder': {
+                  color: 'var(--text-secondary)',
+                  opacity: 1,
+                },
               }}
             />
             <Button
@@ -237,7 +254,10 @@ export default function Suppliers() {
                 background: '#6c63ff', 
                 fontWeight: 600, 
                 textTransform: 'none',
-                px: 3
+                px: 3,
+                '&:hover': {
+                  background: '#5a52d5',
+                }
               }}
             >
               Add New Supplier
@@ -246,11 +266,11 @@ export default function Suppliers() {
         </Box>
 
         {/* Filters and View Options */}
-        <Card sx={{ mb: 3, borderRadius: 3, border: '1px solid #e5e7eb' }}>
+        <Card sx={{ mb: 3, borderRadius: 3, border: '1px solid var(--border-color)', background: 'var(--surface)' }}>
           <CardContent>
             <Box display="flex" justifyContent="space-between" alignItems="center" mb={2} flexWrap="wrap" gap={2}>
               <Box>
-                <Typography variant="h6" fontWeight={600}>
+                <Typography variant="h6" fontWeight={600} sx={{ color: 'var(--text-primary)' }}>
                   Filter Suppliers
                 </Typography>
               </Box>
@@ -262,10 +282,10 @@ export default function Suppliers() {
                   size="small"
                   sx={{ height: 40 }}
                 >
-                  <ToggleButton value="table" sx={{ borderRadius: 2, border: '1px solid #ccc' }}>
+                  <ToggleButton value="table" sx={{ borderRadius: 2, border: '1px solid var(--border-color)', color: 'var(--text-primary)' }}>
                     <TableRowsIcon />
                   </ToggleButton>
-                  <ToggleButton value="grid" sx={{ borderRadius: 2, border: '1px solid #ccc' }}>
+                  <ToggleButton value="grid" sx={{ borderRadius: 2, border: '1px solid var(--border-color)', color: 'var(--text-primary)' }}>
                     <GridViewIcon />
                   </ToggleButton>
                 </ToggleButtonGroup>
@@ -273,41 +293,73 @@ export default function Suppliers() {
             </Box>
             
             <Box display="flex" gap={2} flexWrap="wrap">
-              <TextField
-                select
-                label="Category"
-                value={categoryFilter}
-                onChange={(e) => {
-                  setCategoryFilter(e.target.value);
-                  setPage(1);
-                }}
-                size="small"
-                sx={{ minWidth: 150 }}
-              >
-                <MenuItem value="All">All Categories</MenuItem>
-                {uniqueCategories.filter(cat => cat !== 'All').map(category => (
-                  <MenuItem key={category} value={category}>{category}</MenuItem>
-                ))}
-              </TextField>
+              <FormControl size="small" sx={{ minWidth: 150 }}>
+                <InputLabel sx={{ color: 'var(--text-secondary)' }}>Category</InputLabel>
+                <Select
+                  value={categoryFilter}
+                  label="Category"
+                  onChange={(e) => {
+                    setCategoryFilter(e.target.value);
+                    setPage(1);
+                  }}
+                  sx={{ 
+                    color: 'var(--text-primary)',
+                    background: 'var(--surface)',
+                    '& .MuiOutlinedInput-notchedOutline': { 
+                      borderColor: 'var(--border-color) !important',
+                    },
+                    '&:hover .MuiOutlinedInput-notchedOutline': { 
+                      borderColor: 'var(--border-color) !important',
+                    },
+                    '&.Mui-focused .MuiOutlinedInput-notchedOutline': { 
+                      borderColor: 'var(--border-color) !important',
+                    },
+                    '& .MuiSvgIcon-root': {
+                      color: 'var(--text-primary)',
+                    }
+                  }}
+                >
+                  <MenuItem value="All">All Categories</MenuItem>
+                  {uniqueCategories.filter(cat => cat !== 'All').map(category => (
+                    <MenuItem key={category} value={category} sx={{ color: 'var(--text-primary)' }}>{category}</MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
               
-              <TextField
-                select
-                label="Rating"
-                value={ratingFilter}
-                onChange={(e) => {
-                  setRatingFilter(e.target.value);
-                  setPage(1);
-                }}
-                size="small"
-                sx={{ minWidth: 150 }}
-              >
-                <MenuItem value="All">All Ratings</MenuItem>
-                <MenuItem value="5">5 Stars</MenuItem>
-                <MenuItem value="4">4 Stars & Up</MenuItem>
-                <MenuItem value="3">3 Stars & Up</MenuItem>
-                <MenuItem value="2">2 Stars & Up</MenuItem>
-                <MenuItem value="1">1 Star & Up</MenuItem>
-              </TextField>
+              <FormControl size="small" sx={{ minWidth: 150 }}>
+                <InputLabel sx={{ color: 'var(--text-secondary)' }}>Rating</InputLabel>
+                <Select
+                  value={ratingFilter}
+                  label="Rating"
+                  onChange={(e) => {
+                    setRatingFilter(e.target.value);
+                    setPage(1);
+                  }}
+                  sx={{ 
+                    color: 'var(--text-primary)',
+                    background: 'var(--surface)',
+                    '& .MuiOutlinedInput-notchedOutline': { 
+                      borderColor: 'var(--border-color) !important',
+                    },
+                    '&:hover .MuiOutlinedInput-notchedOutline': { 
+                      borderColor: 'var(--border-color) !important',
+                    },
+                    '&.Mui-focused .MuiOutlinedInput-notchedOutline': { 
+                      borderColor: 'var(--border-color) !important',
+                    },
+                    '& .MuiSvgIcon-root': {
+                      color: 'var(--text-primary)',
+                    }
+                  }}
+                >
+                  <MenuItem value="All">All Ratings</MenuItem>
+                  <MenuItem value="5">5 Stars</MenuItem>
+                  <MenuItem value="4">4 Stars & Up</MenuItem>
+                  <MenuItem value="3">3 Stars & Up</MenuItem>
+                  <MenuItem value="2">2 Stars & Up</MenuItem>
+                  <MenuItem value="1">1 Star & Up</MenuItem>
+                </Select>
+              </FormControl>
               
               <Button
                 startIcon={<RefreshIcon />}
@@ -319,7 +371,16 @@ export default function Suppliers() {
                 }}
                 variant="outlined"
                 size="small"
-                sx={{ height: 40 }}
+                sx={{ 
+                  height: 40,
+                  color: 'var(--text-primary)',
+                  borderColor: 'var(--border-color) !important',
+                  background: 'var(--surface)',
+                  '&:hover': { 
+                    borderColor: 'var(--border-color) !important',
+                    background: 'var(--surface)',
+                  }
+                }}
               >
                 Reset Filters
               </Button>
@@ -330,14 +391,14 @@ export default function Suppliers() {
         {/* Stats Summary */}
         <Grid container spacing={3} mb={3} sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
           <Grid item xs={12} sm={6} md={3}>
-            <Card sx={{ borderRadius: 3, border: '1px solid #e5e7eb', height: '100%' }}>
+            <Card sx={{ borderRadius: 3, border: '1px solid var(--border-color)', height: '100%', background: 'var(--surface)' }}>
               <CardContent>
                 <Box display="flex" justifyContent="space-between">
                   <Box>
-                    <Typography color="text.secondary" variant="body2">Total Suppliers</Typography>
-                    <Typography variant="h4" fontWeight={700}>{suppliers.length}</Typography>
+                    <Typography sx={{ color: 'var(--text-secondary)', variant: 'body2' }}>Total Suppliers</Typography>
+                    <Typography variant="h4" fontWeight={700} sx={{ color: 'var(--text-primary)' }}>{suppliers.length}</Typography>
                   </Box>
-                  <Box sx={{ bgcolor: '#2E3A8C10', borderRadius: '50%', width: 48, height: 48, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <Box sx={{ bgcolor: 'rgba(46, 58, 140, 0.1)', borderRadius: '50%', width: 48, height: 48, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     <BusinessIcon sx={{ color: '#2E3A8C' }} />
                   </Box>
                 </Box>
@@ -345,14 +406,14 @@ export default function Suppliers() {
             </Card>
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
-            <Card sx={{ borderRadius: 3, border: '1px solid #e5e7eb', height: '100%' }}>
+            <Card sx={{ borderRadius: 3, border: '1px solid var(--border-color)', height: '100%', background: 'var(--surface)' }}>
               <CardContent>
                 <Box display="flex" justifyContent="space-between">
                   <Box>
-                    <Typography color="text.secondary" variant="body2">Categories</Typography>
-                    <Typography variant="h4" fontWeight={700}>{uniqueCategories.length - 1}</Typography>
+                    <Typography sx={{ color: 'var(--text-secondary)', variant: 'body2' }}>Categories</Typography>
+                    <Typography variant="h4" fontWeight={700} sx={{ color: 'var(--text-primary)' }}>{uniqueCategories.length - 1}</Typography>
                   </Box>
-                  <Box sx={{ bgcolor: '#6C63FF10', borderRadius: '50%', width: 48, height: 48, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <Box sx={{ bgcolor: 'rgba(108, 99, 255, 0.1)', borderRadius: '50%', width: 48, height: 48, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     <CategoryIcon sx={{ color: '#6C63FF' }} />
                   </Box>
                 </Box>
@@ -360,18 +421,18 @@ export default function Suppliers() {
             </Card>
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
-            <Card sx={{ borderRadius: 3, border: '1px solid #e5e7eb', height: '100%' }}>
+            <Card sx={{ borderRadius: 3, border: '1px solid var(--border-color)', height: '100%', background: 'var(--surface)' }}>
               <CardContent>
                 <Box display="flex" justifyContent="space-between">
                   <Box>
-                    <Typography color="text.secondary" variant="body2">Avg. Rating</Typography>
-                    <Typography variant="h4" fontWeight={700}>
+                    <Typography sx={{ color: 'var(--text-secondary)', variant: 'body2' }}>Avg. Rating</Typography>
+                    <Typography variant="h4" fontWeight={700} sx={{ color: 'var(--text-primary)' }}>
                       {suppliers.length > 0 
                         ? (suppliers.reduce((sum, s) => sum + (Number(s.supplier_rating) || 0), 0) / suppliers.length).toFixed(1)
                         : '0.0'}
                     </Typography>
                   </Box>
-                  <Box sx={{ bgcolor: '#FFD16610', borderRadius: '50%', width: 48, height: 48, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <Box sx={{ bgcolor: 'rgba(255, 209, 102, 0.1)', borderRadius: '50%', width: 48, height: 48, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     <StarIcon sx={{ color: '#FFD166' }} />
                   </Box>
                 </Box>
@@ -379,16 +440,16 @@ export default function Suppliers() {
             </Card>
           </Grid>
           <Grid item xs={12} sm={6} md={3}>
-            <Card sx={{ borderRadius: 3, border: '1px solid #e5e7eb', height: '100%' }}>
+            <Card sx={{ borderRadius: 3, border: '1px solid var(--border-color)', height: '100%', background: 'var(--surface)' }}>
               <CardContent>
                 <Box display="flex" justifyContent="space-between">
                   <Box>
-                    <Typography color="text.secondary" variant="body2">Top Rated</Typography>
-                    <Typography variant="h4" fontWeight={700}>
+                    <Typography sx={{ color: 'var(--text-secondary)', variant: 'body2' }}>Top Rated</Typography>
+                    <Typography variant="h4" fontWeight={700} sx={{ color: 'var(--text-primary)' }}>
                       {suppliers.filter(s => Number(s.supplier_rating) >= 4).length}
                     </Typography>
                   </Box>
-                  <Box sx={{ bgcolor: '#06D6A010', borderRadius: '50%', width: 48, height: 48, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <Box sx={{ bgcolor: 'rgba(6, 214, 160, 0.1)', borderRadius: '50%', width: 48, height: 48, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     <StarIcon sx={{ color: '#06D6A0' }} />
                   </Box>
                 </Box>
@@ -399,7 +460,7 @@ export default function Suppliers() {
 
         {/* Error message */}
         {apiError && (
-          <Alert severity="error" sx={{ mb: 3, borderRadius: 2 }}>
+          <Alert severity="error" sx={{ mb: 3, borderRadius: 2, background: 'var(--surface)', color: 'var(--text-primary)' }}>
             {apiError}
           </Alert>
         )}
@@ -407,17 +468,17 @@ export default function Suppliers() {
         {/* Suppliers Display */}
         {viewMode === 'table' ? (
           // Table View
-          <Card sx={{ borderRadius: 3, border: '1px solid #e5e7eb' }}>
+          <Card sx={{ borderRadius: 3, border: '1px solid var(--border-color)', background: 'var(--surface)' }}>
             <TableContainer>
               <Table>
                 <TableHead>
-                  <TableRow sx={{ bgcolor: '#f5f7ff' }}>
-                    <TableCell sx={{ fontWeight: 600 }}>Supplier</TableCell>
-                    <TableCell sx={{ fontWeight: 600 }}>Contact</TableCell>
-                    <TableCell sx={{ fontWeight: 600 }}>Category</TableCell>
-                    <TableCell sx={{ fontWeight: 600 }}>Lead Time</TableCell>
-                    <TableCell sx={{ fontWeight: 600 }}>Rating</TableCell>
-                    <TableCell sx={{ fontWeight: 600 }}>Actions</TableCell>
+                  <TableRow sx={{ bgcolor: 'var(--surface)' }}>
+                    <TableCell sx={{ fontWeight: 600, color: 'var(--text-primary)', borderBottom: '1px solid rgba(255, 255, 255, 0.05)' }}>Supplier</TableCell>
+                    <TableCell sx={{ fontWeight: 600, color: 'var(--text-primary)', borderBottom: '1px solid rgba(255, 255, 255, 0.05)' }}>Contact</TableCell>
+                    <TableCell sx={{ fontWeight: 600, color: 'var(--text-primary)', borderBottom: '1px solid rgba(255, 255, 255, 0.05)' }}>Category</TableCell>
+                    <TableCell sx={{ fontWeight: 600, color: 'var(--text-primary)', borderBottom: '1px solid rgba(255, 255, 255, 0.05)' }}>Lead Time</TableCell>
+                    <TableCell sx={{ fontWeight: 600, color: 'var(--text-primary)', borderBottom: '1px solid rgba(255, 255, 255, 0.05)' }}>Rating</TableCell>
+                    <TableCell sx={{ fontWeight: 600, color: 'var(--text-primary)', borderBottom: '1px solid rgba(255, 255, 255, 0.05)' }}>Actions</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -425,17 +486,24 @@ export default function Suppliers() {
                     <TableRow>
                       <TableCell colSpan={6} align="center" sx={{ py: 8 }}>
                         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                          <BusinessIcon sx={{ fontSize: 48, color: '#ccc', mb: 2 }} />
-                          <Typography variant="h6" color="text.secondary">
+                          <BusinessIcon sx={{ fontSize: 48, color: 'var(--text-secondary)', mb: 2 }} />
+                          <Typography variant="h6" sx={{ color: 'var(--text-secondary)' }}>
                             No suppliers found
                           </Typography>
-                          <Typography color="text.secondary" sx={{ mb: 2 }}>
+                          <Typography sx={{ color: 'var(--text-secondary)', mb: 2 }}>
                             Try adjusting your search or filter criteria
                           </Typography>
                           <Button 
                             variant="outlined" 
                             startIcon={<AddIcon />}
                             onClick={() => handleOpen()}
+                            sx={{ 
+                              color: 'var(--text-primary)',
+                              borderColor: 'var(--border-color)',
+                              '&:hover': {
+                                borderColor: 'var(--border-color)',
+                              }
+                            }}
                           >
                             Add New Supplier
                           </Button>
@@ -447,80 +515,80 @@ export default function Suppliers() {
                       <TableRow 
                         key={supplier.supplier_id} 
                         sx={{ 
-                          '&:hover': { bgcolor: '#f9f9ff' },
+                          '&:hover': { bgcolor: 'var(--surface)' },
                           '&:last-child td, &:last-child th': { border: 0 }
                         }}
                       >
-                        <TableCell>
+                        <TableCell sx={{ borderBottom: '1px solid rgba(255, 255, 255, 0.05)', color: 'var(--text-primary)' }}>
                           <Box display="flex" alignItems="center">
                             <Box 
                               sx={{ 
                                 width: 40, 
                                 height: 40, 
                                 borderRadius: '50%', 
-                                bgcolor: '#f0f2f5', 
+                                bgcolor: 'var(--surface)', 
                                 display: 'flex', 
                                 alignItems: 'center', 
                                 justifyContent: 'center',
                                 mr: 2
                               }}
                             >
-                              <BusinessIcon sx={{ color: '#2E3A8C' }} />
+                              <BusinessIcon sx={{ color: 'var(--text-secondary)' }} />
                             </Box>
                             <Box>
-                              <Typography fontWeight={500}>{supplier.supplier_name}</Typography>
-                              <Typography variant="body2" color="text.secondary">
+                              <Typography fontWeight={500} sx={{ color: 'var(--text-primary)' }}>{supplier.supplier_name}</Typography>
+                              <Typography variant="body2" sx={{ color: 'var(--text-secondary)' }}>
                                 {supplier.supplier_address}
                               </Typography>
                             </Box>
                           </Box>
                         </TableCell>
-                        <TableCell>
+                        <TableCell sx={{ borderBottom: '1px solid rgba(255, 255, 255, 0.05)', color: 'var(--text-primary)' }}>
                           <Box display="flex" flexDirection="column" gap={0.5}>
                             <Box display="flex" alignItems="center" gap={0.5}>
-                              <EmailIcon sx={{ fontSize: 16, color: '#6c63ff' }} />
-                              <Typography variant="body2">{supplier.supplier_email}</Typography>
+                              <EmailIcon sx={{ fontSize: 16, color: 'var(--text-secondary)' }} />
+                              <Typography variant="body2" sx={{ color: 'var(--text-primary)' }}>{supplier.supplier_email}</Typography>
                             </Box>
                             <Box display="flex" alignItems="center" gap={0.5}>
-                              <PhoneIcon sx={{ fontSize: 16, color: '#6c63ff' }} />
-                              <Typography variant="body2">{supplier.supplier_contactnum}</Typography>
+                              <PhoneIcon sx={{ fontSize: 16, color: 'var(--text-secondary)' }} />
+                              <Typography variant="body2" sx={{ color: 'var(--text-primary)' }}>{supplier.supplier_contactnum}</Typography>
                             </Box>
                           </Box>
                         </TableCell>
-                        <TableCell>
+                        <TableCell sx={{ borderBottom: '1px solid rgba(255, 255, 255, 0.05)' }}>
                           <Chip 
                             label={supplier.supplier_category || 'N/A'} 
                             size="small" 
                             sx={{ 
-                              bgcolor: '#6c63ff10', 
-                              color: '#6c63ff',
+                              bgcolor: 'rgba(108, 99, 255, 0.1)', 
+                              color: 'var(--text-primary)',
                               fontWeight: 500
                             }} 
                           />
                         </TableCell>
-                        <TableCell>
+                        <TableCell sx={{ borderBottom: '1px solid rgba(255, 255, 255, 0.05)', color: 'var(--text-primary)' }}>
                           <Box display="flex" alignItems="center" gap={0.5}>
-                            <AccessTimeIcon sx={{ fontSize: 16, color: '#FF6B6B' }} />
-                            <Typography>{supplier.lead_time} days</Typography>
+                            <AccessTimeIcon sx={{ fontSize: 16, color: 'var(--text-secondary)' }} />
+                            <Typography sx={{ color: 'var(--text-primary)' }}>{supplier.lead_time} days</Typography>
                           </Box>
                         </TableCell>
-                        <TableCell>
+                        <TableCell sx={{ borderBottom: '1px solid rgba(255, 255, 255, 0.05)' }}>
                           <Box display="flex" alignItems="center" gap={1}>
                             <Rating value={Number(supplier.supplier_rating) || 0} readOnly size="small" />
-                            <Typography variant="body2">
+                            <Typography variant="body2" sx={{ color: 'var(--text-primary)' }}>
                               {Number(supplier.supplier_rating) || 0}
                             </Typography>
                           </Box>
                         </TableCell>
-                        <TableCell>
+                        <TableCell sx={{ borderBottom: '1px solid rgba(255, 255, 255, 0.05)' }}>
                           <Stack direction="row" spacing={0.5}>
                             <IconButton 
                               color="primary" 
                               size="small"
                               onClick={() => handleOpen(supplier)}
                               sx={{ 
-                                bgcolor: '#2E3A8C10',
-                                '&:hover': { bgcolor: '#2E3A8C20' }
+                                bgcolor: 'rgba(46, 58, 140, 0.1)',
+                                '&:hover': { bgcolor: 'rgba(46, 58, 140, 0.2)' }
                               }}
                             >
                               <EditIcon sx={{ fontSize: 18 }} />
@@ -530,8 +598,8 @@ export default function Suppliers() {
                               size="small"
                               onClick={() => handleDelete(supplier.supplier_id)}
                               sx={{ 
-                                bgcolor: '#FF6B6B10',
-                                '&:hover': { bgcolor: '#FF6B6B20' }
+                                bgcolor: 'rgba(255, 107, 107, 0.1)',
+                                '&:hover': { bgcolor: 'rgba(255, 107, 107, 0.2)' }
                               }}
                             >
                               <DeleteIcon sx={{ fontSize: 18 }} />
@@ -549,19 +617,26 @@ export default function Suppliers() {
           // Grid View
           <Box>
             {paginatedSuppliers.length === 0 ? (
-              <Card sx={{ borderRadius: 3, border: '1px solid #e5e7eb', py: 8 }}>
+              <Card sx={{ borderRadius: 3, border: '1px solid var(--border-color)', py: 8, background: 'var(--surface)' }}>
                 <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                  <BusinessIcon sx={{ fontSize: 48, color: '#ccc', mb: 2 }} />
-                  <Typography variant="h6" color="text.secondary">
+                  <BusinessIcon sx={{ fontSize: 48, color: 'var(--text-secondary)', mb: 2 }} />
+                  <Typography variant="h6" sx={{ color: 'var(--text-secondary)' }}>
                     No suppliers found
                   </Typography>
-                  <Typography color="text.secondary" sx={{ mb: 2 }}>
+                  <Typography sx={{ color: 'var(--text-secondary)', mb: 2 }}>
                     Try adjusting your search or filter criteria
                   </Typography>
                   <Button 
                     variant="outlined" 
                     startIcon={<AddIcon />}
                     onClick={() => handleOpen()}
+                    sx={{ 
+                      color: 'var(--text-primary)',
+                      borderColor: 'var(--border-color)',
+                      '&:hover': {
+                        borderColor: 'var(--border-color)',
+                      }
+                    }}
                   >
                     Add New Supplier
                   </Button>
@@ -574,11 +649,12 @@ export default function Suppliers() {
                     <Card 
                       sx={{ 
                         borderRadius: 3, 
-                        border: '1px solid #e5e7eb',
+                        border: '1px solid var(--border-color)',
                         height: '100%',
                         display: 'flex',
                         flexDirection: 'column',
                         transition: '0.3s',
+                        background: 'var(--surface)',
                         '&:hover': {
                           transform: 'translateY(-4px)',
                           boxShadow: '0 10px 20px rgba(0,0,0,0.1)'
@@ -592,46 +668,46 @@ export default function Suppliers() {
                               width: 50, 
                               height: 50, 
                               borderRadius: '50%', 
-                              bgcolor: '#f0f2f5', 
+                              bgcolor: 'var(--surface)', 
                               display: 'flex', 
                               alignItems: 'center', 
                               justifyContent: 'center'
                             }}
                           >
-                            <BusinessIcon sx={{ color: '#2E3A8C' }} />
+                            <BusinessIcon sx={{ color: 'var(--text-secondary)' }} />
                           </Box>
                           <Chip 
                             label={supplier.supplier_category || 'N/A'} 
                             size="small" 
                             sx={{ 
-                              bgcolor: '#6c63ff10', 
-                              color: '#6c63ff',
+                              bgcolor: 'rgba(108, 99, 255, 0.1)', 
+                              color: 'var(--text-primary)',
                               fontWeight: 500
                             }} 
                           />
                         </Box>
                         
-                        <Typography variant="h6" fontWeight={600} mb={1}>
+                        <Typography variant="h6" fontWeight={600} mb={1} sx={{ color: 'var(--text-primary)' }}>
                           {supplier.supplier_name}
                         </Typography>
                         
                         <Box display="flex" alignItems="center" mb={1}>
-                          <LocationIcon sx={{ fontSize: 16, color: '#6c63ff', mr: 1 }} />
-                          <Typography variant="body2" color="text.secondary">
+                          <LocationIcon sx={{ fontSize: 16, color: 'var(--text-secondary)', mr: 1 }} />
+                          <Typography variant="body2" sx={{ color: 'var(--text-secondary)' }}>
                             {supplier.supplier_address || 'No address provided'}
                           </Typography>
                         </Box>
                         
                         <Box display="flex" gap={1} mb={2}>
                           <Box display="flex" alignItems="center" sx={{ flex: 1 }}>
-                            <EmailIcon sx={{ fontSize: 16, color: '#6c63ff', mr: 1 }} />
-                            <Typography variant="body2">
+                            <EmailIcon sx={{ fontSize: 16, color: 'var(--text-secondary)', mr: 1 }} />
+                            <Typography variant="body2" sx={{ color: 'var(--text-primary)' }}>
                               {supplier.supplier_email || 'N/A'}
                             </Typography>
                           </Box>
                           <Box display="flex" alignItems="center" sx={{ flex: 1 }}>
-                            <PhoneIcon sx={{ fontSize: 16, color: '#6c63ff', mr: 1 }} />
-                            <Typography variant="body2">
+                            <PhoneIcon sx={{ fontSize: 16, color: 'var(--text-secondary)', mr: 1 }} />
+                            <Typography variant="body2" sx={{ color: 'var(--text-primary)' }}>
                               {supplier.supplier_contactnum || 'N/A'}
                             </Typography>
                           </Box>
@@ -639,23 +715,23 @@ export default function Suppliers() {
                         
                         <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
                           <Box>
-                            <Typography variant="body2" color="text.secondary">
+                            <Typography variant="body2" sx={{ color: 'var(--text-secondary)' }}>
                               Lead Time
                             </Typography>
                             <Box display="flex" alignItems="center" gap={0.5}>
-                              <AccessTimeIcon sx={{ fontSize: 16, color: '#FF6B6B' }} />
-                              <Typography fontWeight={600}>
+                              <AccessTimeIcon sx={{ fontSize: 16, color: 'var(--text-secondary)' }} />
+                              <Typography fontWeight={600} sx={{ color: 'var(--text-primary)' }}>
                                 {supplier.lead_time} days
                               </Typography>
                             </Box>
                           </Box>
                           <Box>
-                            <Typography variant="body2" color="text.secondary">
+                            <Typography variant="body2" sx={{ color: 'var(--text-secondary)' }}>
                               Rating
                             </Typography>
                             <Box display="flex" alignItems="center" gap={0.5}>
-                              <StarIcon sx={{ fontSize: 16, color: '#FFD166' }} />
-                              <Typography fontWeight={600}>
+                              <StarIcon sx={{ fontSize: 16, color: 'var(--text-secondary)' }} />
+                              <Typography fontWeight={600} sx={{ color: 'var(--text-primary)' }}>
                                 {Number(supplier.supplier_rating) || 0}
                               </Typography>
                             </Box>
@@ -668,7 +744,7 @@ export default function Suppliers() {
                           sx={{ 
                             height: 8, 
                             borderRadius: 4, 
-                            bgcolor: '#f1f3f9',
+                            bgcolor: 'var(--surface)',
                             '& .MuiLinearProgress-bar': { 
                               bgcolor: Number(supplier.supplier_rating) >= 4 
                                 ? '#06D6A0' 
@@ -690,8 +766,9 @@ export default function Suppliers() {
                             sx={{ 
                               flexGrow: 1,
                               textTransform: 'none',
-                              bgcolor: '#2E3A8C10',
-                              '&:hover': { bgcolor: '#2E3A8C20' }
+                              bgcolor: 'rgba(46, 58, 140, 0.1)',
+                              color: 'var(--text-primary)',
+                              '&:hover': { bgcolor: 'rgba(46, 58, 140, 0.2)' }
                             }}
                           >
                             Edit
@@ -703,8 +780,9 @@ export default function Suppliers() {
                             sx={{ 
                               flexGrow: 1,
                               textTransform: 'none',
-                              bgcolor: '#FF6B6B10',
-                              '&:hover': { bgcolor: '#FF6B6B20' }
+                              bgcolor: 'rgba(255, 107, 107, 0.1)',
+                              color: 'var(--text-primary)',
+                              '&:hover': { bgcolor: 'rgba(255, 107, 107, 0.2)' }
                             }}
                           >
                             Delete
@@ -729,15 +807,50 @@ export default function Suppliers() {
               color="primary"
               siblingCount={1}
               boundaryCount={1}
+              sx={{
+                '& .MuiPaginationItem-root': {
+                  color: 'var(--text-primary)',
+                  borderColor: 'var(--border-color)',
+                },
+                '& .Mui-selected': {
+                  backgroundColor: '#6c63ff',
+                  color: 'white',
+                  '&:hover': {
+                    backgroundColor: '#5a52d5',
+                  }
+                },
+                '& .MuiPaginationItem-ellipsis': {
+                  color: 'var(--text-primary)',
+                }
+              }}
             />
           </Box>
         )}
 
         {/* Add/Edit Dialog */}
-        <Dialog open={open} onClose={handleClose} maxWidth="sm" fullWidth>
-          <DialogTitle>
+        <Dialog 
+          open={open} 
+          onClose={handleClose} 
+          maxWidth="sm" 
+          fullWidth
+          PaperProps={{
+            sx: {
+              background: 'var(--surface)',
+              color: 'var(--text-primary)',
+            }
+          }}
+        >
+          <DialogTitle sx={{ color: 'var(--text-primary)' }}>
             {editSupplier ? 'Edit Supplier' : 'Add New Supplier'}
-            <IconButton onClick={handleClose} sx={{ position: 'absolute', right: 16, top: 16 }}>
+            <IconButton 
+              onClick={handleClose} 
+              sx={{ 
+                position: 'absolute', 
+                right: 16, 
+                top: 16,
+                color: 'var(--text-primary)'
+              }}
+            >
               <CloseIcon />
             </IconButton>
           </DialogTitle>
@@ -752,6 +865,28 @@ export default function Suppliers() {
                   required 
                   fullWidth 
                   variant="outlined"
+                  InputLabelProps={{
+                    sx: { color: 'var(--text-secondary)' }
+                  }}
+                  InputProps={{
+                    sx: { 
+                      color: 'var(--text-primary)',
+                      '& .MuiOutlinedInput-notchedOutline': {
+                        borderColor: 'var(--border-color)',
+                      },
+                      '&:hover .MuiOutlinedInput-notchedOutline': {
+                        borderColor: 'var(--border-color)',
+                      },
+                      '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                        borderColor: 'var(--border-color)',
+                      }
+                    }
+                  }}
+                  sx={{
+                    '& .MuiFormLabel-root.Mui-focused': {
+                      color: 'var(--text-primary)',
+                    }
+                  }}
                 />
                 <TextField 
                   label="Contact Number" 
@@ -760,6 +895,28 @@ export default function Suppliers() {
                   onChange={handleChange} 
                   fullWidth 
                   variant="outlined"
+                  InputLabelProps={{
+                    sx: { color: 'var(--text-secondary)' }
+                  }}
+                  InputProps={{
+                    sx: { 
+                      color: 'var(--text-primary)',
+                      '& .MuiOutlinedInput-notchedOutline': {
+                        borderColor: 'var(--border-color)',
+                      },
+                      '&:hover .MuiOutlinedInput-notchedOutline': {
+                        borderColor: 'var(--border-color)',
+                      },
+                      '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                        borderColor: 'var(--border-color)',
+                      }
+                    }
+                  }}
+                  sx={{
+                    '& .MuiFormLabel-root.Mui-focused': {
+                      color: 'var(--text-primary)',
+                    }
+                  }}
                 />
                 <TextField 
                   label="Email" 
@@ -769,6 +926,28 @@ export default function Suppliers() {
                   type="email"
                   fullWidth 
                   variant="outlined"
+                  InputLabelProps={{
+                    sx: { color: 'var(--text-secondary)' }
+                  }}
+                  InputProps={{
+                    sx: { 
+                      color: 'var(--text-primary)',
+                      '& .MuiOutlinedInput-notchedOutline': {
+                        borderColor: 'var(--border-color)',
+                      },
+                      '&:hover .MuiOutlinedInput-notchedOutline': {
+                        borderColor: 'var(--border-color)',
+                      },
+                      '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                        borderColor: 'var(--border-color)',
+                      }
+                    }
+                  }}
+                  sx={{
+                    '& .MuiFormLabel-root.Mui-focused': {
+                      color: 'var(--text-primary)',
+                    }
+                  }}
                 />
                 <TextField 
                   label="Address" 
@@ -779,6 +958,28 @@ export default function Suppliers() {
                   variant="outlined"
                   multiline
                   rows={2}
+                  InputLabelProps={{
+                    sx: { color: 'var(--text-secondary)' }
+                  }}
+                  InputProps={{
+                    sx: { 
+                      color: 'var(--text-primary)',
+                      '& .MuiOutlinedInput-notchedOutline': {
+                        borderColor: 'var(--border-color)',
+                      },
+                      '&:hover .MuiOutlinedInput-notchedOutline': {
+                        borderColor: 'var(--border-color)',
+                      },
+                      '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                        borderColor: 'var(--border-color)',
+                      }
+                    }
+                  }}
+                  sx={{
+                    '& .MuiFormLabel-root.Mui-focused': {
+                      color: 'var(--text-primary)',
+                    }
+                  }}
                 />
                 <TextField 
                   label="Category" 
@@ -787,6 +988,28 @@ export default function Suppliers() {
                   onChange={handleChange} 
                   fullWidth 
                   variant="outlined"
+                  InputLabelProps={{
+                    sx: { color: 'var(--text-secondary)' }
+                  }}
+                  InputProps={{
+                    sx: { 
+                      color: 'var(--text-primary)',
+                      '& .MuiOutlinedInput-notchedOutline': {
+                        borderColor: 'var(--border-color)',
+                      },
+                      '&:hover .MuiOutlinedInput-notchedOutline': {
+                        borderColor: 'var(--border-color)',
+                      },
+                      '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                        borderColor: 'var(--border-color)',
+                      }
+                    }
+                  }}
+                  sx={{
+                    '& .MuiFormLabel-root.Mui-focused': {
+                      color: 'var(--text-primary)',
+                    }
+                  }}
                 />
                 <TextField 
                   label="Lead Time (days)" 
@@ -797,9 +1020,31 @@ export default function Suppliers() {
                   inputProps={{ min: 0 }} 
                   fullWidth 
                   variant="outlined"
+                  InputLabelProps={{
+                    sx: { color: 'var(--text-secondary)' }
+                  }}
+                  InputProps={{
+                    sx: { 
+                      color: 'var(--text-primary)',
+                      '& .MuiOutlinedInput-notchedOutline': {
+                        borderColor: 'var(--border-color)',
+                      },
+                      '&:hover .MuiOutlinedInput-notchedOutline': {
+                        borderColor: 'var(--border-color)',
+                      },
+                      '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                        borderColor: 'var(--border-color)',
+                      }
+                    }
+                  }}
+                  sx={{
+                    '& .MuiFormLabel-root.Mui-focused': {
+                      color: 'var(--text-primary)',
+                    }
+                  }}
                 />
                 <Box>
-                  <Typography gutterBottom>Rating</Typography>
+                  <Typography gutterBottom sx={{ color: 'var(--text-primary)' }}>Rating</Typography>
                   <Rating 
                     name="supplier_rating" 
                     value={form.supplier_rating} 
@@ -809,8 +1054,23 @@ export default function Suppliers() {
                 </Box>
               </Stack>
               <DialogActions sx={{ mt: 2 }}>
-                <Button onClick={handleClose}>Cancel</Button>
-                <Button type="submit" variant="contained" sx={{ bgcolor: '#6c63ff' }}>
+                <Button 
+                  onClick={handleClose}
+                  sx={{ color: 'var(--text-primary)' }}
+                >
+                  Cancel
+                </Button>
+                <Button 
+                  type="submit" 
+                  variant="contained" 
+                  sx={{ 
+                    bgcolor: '#6c63ff',
+                    color: 'white',
+                    '&:hover': {
+                      bgcolor: '#5a52d5',
+                    }
+                  }}
+                >
                   {editSupplier ? 'Update Supplier' : 'Add Supplier'}
                 </Button>
               </DialogActions>
@@ -825,6 +1085,12 @@ export default function Suppliers() {
           onClose={() => setSnackbar({ ...snackbar, open: false })}
           message={snackbar.msg}
           anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+          ContentProps={{
+            sx: {
+              background: 'var(--surface)',
+              color: 'var(--text-primary)',
+            }
+          }}
         />
       </Box>
     </SidebarLayout>

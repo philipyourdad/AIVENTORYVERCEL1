@@ -176,7 +176,7 @@ const Login = () => {
           }}
         >
           <img 
-            src="/src/assets/logo copy.jpg" 
+            src="/assets/logo.jpg" 
             alt="AIVENTORY Logo" 
             style={{ 
               width: '80px',
@@ -190,22 +190,22 @@ const Login = () => {
               }
             }} 
           />
-          <Typography variant="h4" fontWeight={700} mb={1}>
+          <Typography variant="h4" fontWeight={700} mb={1} sx={{ color: 'white' }}>
             AIVENTORY
           </Typography>
-          <Typography variant="h6" fontWeight={500} mb={1}>
+          <Typography variant="h6" fontWeight={500} mb={1} sx={{ color: 'white' }}>
             SMART INVENTORY MANAGEMENT
           </Typography>
-          <Typography variant="body1" color="rgba(255,255,255,0.8)">
+          <Typography variant="body1" sx={{ color: 'rgba(255,255,255,0.8)' }}>
             Predictive Replenishment and Alert Notifications
           </Typography>
         </Box>
         
-        <Box sx={{ p: { xs: 2, sm: 3 } }}>
+        <Box sx={{ p: { xs: 2, sm: 3 }, background: 'var(--surface)' }}>
           {error && (
             <Alert 
               severity="error" 
-              sx={{ mb: 2, borderRadius: 2 }}
+              sx={{ mb: 2, borderRadius: 2, background: 'var(--surface)', color: 'var(--text-primary)' }}
               onClose={() => setError('')}
             >
               {error}
@@ -227,9 +227,29 @@ const Login = () => {
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
-                      <AccountCircle />
+                      <AccountCircle sx={{ color: 'var(--text-primary)' }} />
                     </InputAdornment>
                   ),
+                  sx: { color: 'var(--text-primary)' }
+                }}
+                InputLabelProps={{
+                  sx: { color: 'var(--text-secondary)' }
+                }}
+                sx={{ 
+                  '& .MuiOutlinedInput-root': {
+                    '& fieldset': {
+                      borderColor: 'var(--border-color)',
+                    },
+                    '&:hover fieldset': {
+                      borderColor: 'var(--border-color)',
+                    },
+                    '&.Mui-focused fieldset': {
+                      borderColor: 'var(--border-color)',
+                    },
+                  },
+                  '& .MuiFormHelperText-root': {
+                    color: 'var(--text-secondary)'
+                  }
                 }}
               />
               
@@ -245,7 +265,7 @@ const Login = () => {
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
-                      <Lock />
+                      <Lock sx={{ color: 'var(--text-primary)' }} />
                     </InputAdornment>
                   ),
                   endAdornment: (
@@ -255,11 +275,29 @@ const Login = () => {
                         onClick={handleClickShowLoginPassword}
                         onMouseDown={handleMouseDownPassword}
                         edge="end"
+                        sx={{ color: 'var(--text-primary)' }}
                       >
                         {showLoginPassword ? <VisibilityOff /> : <Visibility />}
                       </IconButton>
                     </InputAdornment>
                   ),
+                  sx: { color: 'var(--text-primary)' }
+                }}
+                InputLabelProps={{
+                  sx: { color: 'var(--text-secondary)' }
+                }}
+                sx={{ 
+                  '& .MuiOutlinedInput-root': {
+                    '& fieldset': {
+                      borderColor: 'var(--border-color)',
+                    },
+                    '&:hover fieldset': {
+                      borderColor: 'var(--border-color)',
+                    },
+                    '&.Mui-focused fieldset': {
+                      borderColor: 'var(--border-color)',
+                    },
+                  }
                 }}
               />
               
@@ -268,9 +306,10 @@ const Login = () => {
                 mt: 3, 
                 mb: 2, 
                 gap: { xs: 0.5, sm: 1 },
-                background: '#f5f7ff',
+                background: 'var(--surface)',
                 borderRadius: { xs: 1.5, sm: 2 },
-                p: { xs: 0.25, sm: 0.5 }
+                p: { xs: 0.25, sm: 0.5 },
+                border: '1px solid var(--border-color)'
               }}>
                 <Button
                   fullWidth
@@ -284,10 +323,16 @@ const Login = () => {
                     fontWeight: 600,
                     ...(role === 'Admin' ? {
                       bgcolor: '#2E3A8C',
-                      '&:hover': { bgcolor: '#1a246e' }
+                      '&:hover': { bgcolor: '#1a246e' },
+                      color: 'white'
                     } : {
-                      color: '#2E3A8C',
-                      borderColor: '#2E3A8C'
+                      color: 'var(--text-primary)',
+                      borderColor: 'var(--border-color)',
+                      backgroundColor: 'var(--surface)',
+                      '&:hover': { 
+                        backgroundColor: 'rgba(46, 58, 140, 0.1)',
+                        borderColor: 'var(--border-color)'
+                      }
                     })
                   }}
                 >
@@ -299,16 +344,22 @@ const Login = () => {
                   onClick={() => handleRoleClick('Staff')}
                   startIcon={<SupervisorAccount />}
                   sx={{
-                    py: 1.5,
-                    borderRadius: 2,
+                    py: { xs: 1, sm: 1.5 },
+                    borderRadius: { xs: 1.5, sm: 2 },
                     textTransform: 'none',
                     fontWeight: 600,
                     ...(role === 'Staff' ? {
                       bgcolor: '#2E3A8C',
-                      '&:hover': { bgcolor: '#1a246e' }
+                      '&:hover': { bgcolor: '#1a246e' },
+                      color: 'white'
                     } : {
-                      color: '#2E3A8C',
-                      borderColor: '#2E3A8C'
+                      color: 'var(--text-primary)',
+                      borderColor: 'var(--border-color)',
+                      backgroundColor: 'var(--surface)',
+                      '&:hover': { 
+                        backgroundColor: 'rgba(46, 58, 140, 0.1)',
+                        borderColor: 'var(--border-color)'
+                      }
                     })
                   }}
                 >
@@ -329,18 +380,19 @@ const Login = () => {
                   '&:hover': { bgcolor: '#1a246e' },
                   borderRadius: { xs: 1.5, sm: 2 },
                   fontWeight: 600,
-                  textTransform: 'none'
+                  textTransform: 'none',
+                  color: 'white'
                 }}
               >
                 {loading ? <CircularProgress size={24} sx={{ color: 'white' }} /> : 'Login'}
               </Button>
               
               <Box sx={{ textAlign: 'center' }}>
-                <Typography variant="body2" color="text.secondary">
+                <Typography variant="body2" sx={{ color: 'var(--text-secondary)' }}>
                   Don't have an account?{' '}
                   <Button 
                     onClick={handleShowCreateAccount}
-                    sx={{ textTransform: 'none', fontWeight: 600 }}
+                    sx={{ textTransform: 'none', fontWeight: 600, color: '#2E3A8C' }}
                   >
                     Create Account
                   </Button>
@@ -361,9 +413,26 @@ const Login = () => {
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
-                      <Person />
+                      <Person sx={{ color: 'var(--text-primary)' }} />
                     </InputAdornment>
                   ),
+                  sx: { color: 'var(--text-primary)' }
+                }}
+                InputLabelProps={{
+                  sx: { color: 'var(--text-secondary)' }
+                }}
+                sx={{ 
+                  '& .MuiOutlinedInput-root': {
+                    '& fieldset': {
+                      borderColor: 'var(--border-color)',
+                    },
+                    '&:hover fieldset': {
+                      borderColor: 'var(--border-color)',
+                    },
+                    '&.Mui-focused fieldset': {
+                      borderColor: 'var(--border-color)',
+                    },
+                  }
                 }}
               />
               
@@ -379,9 +448,26 @@ const Login = () => {
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
-                      <Email />
+                      <Email sx={{ color: 'var(--text-primary)' }} />
                     </InputAdornment>
                   ),
+                  sx: { color: 'var(--text-primary)' }
+                }}
+                InputLabelProps={{
+                  sx: { color: 'var(--text-secondary)' }
+                }}
+                sx={{ 
+                  '& .MuiOutlinedInput-root': {
+                    '& fieldset': {
+                      borderColor: 'var(--border-color)',
+                    },
+                    '&:hover fieldset': {
+                      borderColor: 'var(--border-color)',
+                    },
+                    '&.Mui-focused fieldset': {
+                      borderColor: 'var(--border-color)',
+                    },
+                  }
                 }}
               />
               
@@ -397,9 +483,26 @@ const Login = () => {
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
-                      <AccountCircle />
+                      <AccountCircle sx={{ color: 'var(--text-primary)' }} />
                     </InputAdornment>
                   ),
+                  sx: { color: 'var(--text-primary)' }
+                }}
+                InputLabelProps={{
+                  sx: { color: 'var(--text-secondary)' }
+                }}
+                sx={{ 
+                  '& .MuiOutlinedInput-root': {
+                    '& fieldset': {
+                      borderColor: 'var(--border-color)',
+                    },
+                    '&:hover fieldset': {
+                      borderColor: 'var(--border-color)',
+                    },
+                    '&.Mui-focused fieldset': {
+                      borderColor: 'var(--border-color)',
+                    },
+                  }
                 }}
               />
               
@@ -415,7 +518,7 @@ const Login = () => {
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
-                      <Lock />
+                      <Lock sx={{ color: 'var(--text-primary)' }} />
                     </InputAdornment>
                   ),
                   endAdornment: (
@@ -425,11 +528,29 @@ const Login = () => {
                         onClick={handleClickShowRegPassword}
                         onMouseDown={handleMouseDownPassword}
                         edge="end"
+                        sx={{ color: 'var(--text-primary)' }}
                       >
                         {showRegPassword ? <VisibilityOff /> : <Visibility />}
                       </IconButton>
                     </InputAdornment>
                   ),
+                  sx: { color: 'var(--text-primary)' }
+                }}
+                InputLabelProps={{
+                  sx: { color: 'var(--text-secondary)' }
+                }}
+                sx={{ 
+                  '& .MuiOutlinedInput-root': {
+                    '& fieldset': {
+                      borderColor: 'var(--border-color)',
+                    },
+                    '&:hover fieldset': {
+                      borderColor: 'var(--border-color)',
+                    },
+                    '&.Mui-focused fieldset': {
+                      borderColor: 'var(--border-color)',
+                    },
+                  }
                 }}
               />
               
@@ -438,9 +559,10 @@ const Login = () => {
                 mt: 3, 
                 mb: 2, 
                 gap: { xs: 0.5, sm: 1 },
-                background: '#f5f7ff',
+                background: 'var(--surface)',
                 borderRadius: { xs: 1.5, sm: 2 },
-                p: { xs: 0.25, sm: 0.5 }
+                p: { xs: 0.25, sm: 0.5 },
+                border: '1px solid var(--border-color)'
               }}>
                 <Button
                   fullWidth
@@ -454,10 +576,16 @@ const Login = () => {
                     fontWeight: 600,
                     ...(newRole === 'Admin' ? {
                       bgcolor: '#2E3A8C',
-                      '&:hover': { bgcolor: '#1a246e' }
+                      '&:hover': { bgcolor: '#1a246e' },
+                      color: 'white'
                     } : {
-                      color: '#2E3A8C',
-                      borderColor: '#2E3A8C'
+                      color: 'var(--text-primary)',
+                      borderColor: 'var(--border-color)',
+                      backgroundColor: 'var(--surface)',
+                      '&:hover': { 
+                        backgroundColor: 'rgba(46, 58, 140, 0.1)',
+                        borderColor: 'var(--border-color)'
+                      }
                     })
                   }}
                 >
@@ -475,10 +603,16 @@ const Login = () => {
                     fontWeight: 600,
                     ...(newRole === 'Staff' ? {
                       bgcolor: '#2E3A8C',
-                      '&:hover': { bgcolor: '#1a246e' }
+                      '&:hover': { bgcolor: '#1a246e' },
+                      color: 'white'
                     } : {
-                      color: '#2E3A8C',
-                      borderColor: '#2E3A8C'
+                      color: 'var(--text-primary)',
+                      borderColor: 'var(--border-color)',
+                      backgroundColor: 'var(--surface)',
+                      '&:hover': { 
+                        backgroundColor: 'rgba(46, 58, 140, 0.1)',
+                        borderColor: 'var(--border-color)'
+                      }
                     })
                   }}
                 >
@@ -499,18 +633,19 @@ const Login = () => {
                   '&:hover': { bgcolor: '#1a246e' },
                   borderRadius: { xs: 1.5, sm: 2 },
                   fontWeight: 600,
-                  textTransform: 'none'
+                  textTransform: 'none',
+                  color: 'white'
                 }}
               >
                 {loading ? <CircularProgress size={24} sx={{ color: 'white' }} /> : 'Create Account'}
               </Button>
               
               <Box sx={{ textAlign: 'center' }}>
-                <Typography variant="body2" color="text.secondary">
+                <Typography variant="body2" sx={{ color: 'var(--text-secondary)' }}>
                   Already have an account?{' '}
                   <Button 
                     onClick={handleBackToLogin}
-                    sx={{ textTransform: 'none', fontWeight: 600 }}
+                    sx={{ textTransform: 'none', fontWeight: 600, color: '#2E3A8C' }}
                   >
                     Back to Login
                   </Button>

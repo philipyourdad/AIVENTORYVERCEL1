@@ -3,7 +3,7 @@
     display: flex;
     min-height: 100vh;
     width: 100%;
-    background-color: #f5f5f7;
+    background-color: var(--page-bg);
   }
   
   .sidebar {
@@ -36,7 +36,7 @@
   /* Sidebar Styles */
   .sidebar-header {
     padding: 1.5rem;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid var(--border-color);
     text-align: center;
   }
   
@@ -124,13 +124,25 @@
   
   /* Main Content Styles */
   .main-header {
-    margin-bottom: 2rem;
+    margin-bottom: 2.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border-glass);
   }
   
   .main-header h1 {
     color: var(--primary);
-    font-size: 1.8rem;
-    font-weight: 600;
+    font-size: 2.2rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    margin-bottom: 0.25rem;
+  }
+  
+  .main-header p {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+    line-height: 1.5;
+    margin-top: 0;
+    margin-bottom: 0;
   }
   
   /* Cards Layout */
@@ -143,15 +155,33 @@
   }
   
   .card {
-    background: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    background: var(--surface-glass);
+    border-radius: 16px;
+    box-shadow: var(--glass-shadow);
     padding: 1.5rem;
-    transition: transform 0.2s;
+    transition: all 0.3s ease;
+    backdrop-filter: var(--backdrop-filter);
+    border: 1px solid var(--border-glass);
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+    transform: rotate(30deg);
+    z-index: -1;
   }
   
   .card:hover {
-    transform: translateY(-2px);
+    transform: translateY(-12px) scale(1.03);
+    box-shadow: 0 16px 32px rgba(0, 0, 0, 0.2);
+    border-color: rgba(46, 58, 140, 0.3);
   }
   
   .card-header {
@@ -169,8 +199,10 @@
   }
   
   .card-header h3 {
-    font-size: 1rem;
-    color: var(--dark);
+    font-size: 1.1rem;
+    color: var(--text-primary);
+    font-weight: 600;
+    letter-spacing: -0.01em;
   }
   
   .card-body {
@@ -179,11 +211,13 @@
   }
   
   .card-value {
-    font-size: 2rem;
-    font-weight: 700;
+    font-size: 2.2rem;
+    font-weight: 800;
     color: var(--primary);
     line-height: 1;
     margin-bottom: 0.5rem;
+    letter-spacing: -0.02em;
+    text-shadow: 0 2px 4px rgba(46, 58, 140, 0.1);
   }
   
   .card-value.alert {
@@ -195,19 +229,20 @@
   }
   
   .card-trend {
-    font-size: 0.9rem;
-    color: var(--gray);
+    font-size: 0.95rem;
+    color: var(--text-secondary);
     display: flex;
     align-items: center;
     gap: 0.3rem;
+    font-weight: 500;
   }
 
   .card-trend.up {
-    color: #06D6A0;
+    color: var(--success);
   }
 
   .card-trend.down {
-    color: #FF6B6B;
+    color: var(--danger);
   }
   
   /* Alerts Section */
@@ -226,12 +261,29 @@
   .alert-card {
     display: flex;
     align-items: center;
-    background: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    background: var(--surface-glass);
+    border-radius: 16px;
+    box-shadow: var(--glass-shadow);
     padding: 1.2rem;
     margin-bottom: 1rem;
     border-left: 4px solid var(--gray);
+    backdrop-filter: var(--backdrop-filter);
+    border: 1px solid var(--border-glass);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+  
+  .alert-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+    transform: rotate(30deg);
+    z-index: -1;
   }
   
   .alert-card.urgent {
@@ -254,15 +306,18 @@
   }
   
   .alert-content h3 {
-    font-size: 1rem;
+    font-size: 1.1rem;
     margin-bottom: 0.5rem;
-    color: var(--dark);
+    color: var(--text-primary);
+    font-weight: 600;
+    letter-spacing: -0.01em;
   }
   
   .alert-content p {
-    font-size: 0.9rem;
-    color: var(--gray);
+    font-size: 0.95rem;
+    color: var(--text-secondary);
     margin-bottom: 0.3rem;
+    line-height: 1.5;
   }
   
   .alert-actions {
@@ -307,28 +362,62 @@
 
   /* Analysis Tabs */
   .analysis-tabs {
-    background: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    background: var(--surface-glass);
+    border-radius: 16px;
+    box-shadow: var(--glass-shadow);
     margin-top: 1rem;
+    backdrop-filter: var(--backdrop-filter);
+    border: 1px solid var(--border-glass);
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .analysis-tabs::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+    transform: rotate(30deg);
+    z-index: -1;
   }
 
   .tab-buttons {
     display: flex;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid var(--border-color);
+    backdrop-filter: var(--backdrop-filter);
   }
 
   .tab-btn {
     flex: 1;
     padding: 1rem;
-    background: none;
+    background: transparent;
     border: none;
-    color: var(--gray);
+    color: var(--text-secondary);
     font-size: 0.9rem;
-    font-weight: 500;
+    font-weight: 600;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: all 0.3s ease;
     border-bottom: 2px solid transparent;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .tab-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: 0.5s;
+  }
+  
+  .tab-btn:hover::before {
+    left: 100%;
   }
 
   .tab-btn:hover {
@@ -339,7 +428,9 @@
   .tab-btn.active {
     color: var(--primary);
     border-bottom-color: var(--primary);
-    background: rgba(46, 58, 140, 0.05);
+    background: rgba(46, 58, 140, 0.1);
+    font-weight: 700;
+    text-shadow: 0 0 8px rgba(46, 58, 140, 0.3);
   }
 
   .tab-content {
@@ -366,25 +457,27 @@
   .data-table {
     width: 100%;
     border-collapse: collapse;
-    background: white;
-    border-radius: 8px;
+    background: var(--surface-glass);
+    border-radius: 16px;
     overflow: hidden;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    box-shadow: var(--glass-shadow);
+    backdrop-filter: var(--backdrop-filter);
+    border: 1px solid var(--border-glass);
   }
 
   .data-table th {
-    background: #f8f9fa;
+    background: var(--surface);
     padding: 1rem;
     text-align: left;
     font-weight: 600;
-    color: var(--dark);
-    border-bottom: 1px solid #eee;
+    color: var(--text-primary);
+    border-bottom: 1px solid var(--border-color);
   }
 
   .data-table td {
     padding: 1rem;
-    border-bottom: 1px solid #eee;
-    color: var(--dark);
+    border-bottom: 1px solid var(--border-color);
+    color: var(--text-primary);
   }
 
   .data-table tr:hover {
@@ -406,17 +499,17 @@
 
   .status-badge.success {
     background: rgba(6, 214, 160, 0.1);
-    color: #06D6A0;
+    color: var(--success);
   }
 
   .status-badge.warning {
-    background: rgba(255, 209, 102, 0.1);
-    color: #FFD166;
+    background: rgba(244, 162, 97, 0.1);
+    color: var(--warning);
   }
 
   .status-badge.danger {
     background: rgba(255, 107, 107, 0.1);
-    color: #FF6B6B;
+    color: var(--danger);
   }
 
   /* Chart Visual Elements */
@@ -473,11 +566,27 @@
   
   /* Chart Section */
   .chart-section {
-    background: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    background: var(--surface-glass);
+    border-radius: 16px;
+    box-shadow: var(--glass-shadow);
     padding: 1.5rem;
     margin-top: 1rem;
+    backdrop-filter: var(--backdrop-filter);
+    border: 1px solid var(--border-glass);
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .chart-section::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+    transform: rotate(30deg);
+    z-index: -1;
   }
   
   .chart-section h2 {
